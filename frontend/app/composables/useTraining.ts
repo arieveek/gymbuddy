@@ -1,4 +1,4 @@
-import { buildWorkout, currentStep, estimateMinutes, isLightWeek, skippedForInjury, type WorkoutInput } from '~/utils/plan'
+import { buildWorkout, currentStep, estimateMinutes, isLightWeek, restAdvised, setReduction, skippedForInjury, type WorkoutInput } from '~/utils/plan'
 import { todayISO } from '~/utils/date'
 import { levelDef } from '~/data/levels'
 import type { BodyArea, Level } from '~/data/types'
@@ -15,20 +15,30 @@ export function useTraining() {
   /** Device-only settings (not synced). */
   const growthSpurt = computed(() => !!store.device.growthSpurt)
   const ageBand = computed(() => (store.active?.ageGroup === 'child' ? store.device.ageBand ?? null : null))
+  /** Today's check-in, if he did one today. */
+  const checkin = computed(() => (store.device.checkin?.date === todayISO() ? store.device.checkin : null))
   const input = computed<WorkoutInput>(() => ({
-    growthSpurt: growthSpurt.value,
     level: level.value,
     step: step.value,
     ageGroup: store.active?.ageGroup ?? 'child',
     testPullups: store.latestTest?.pullups ?? 0,
     lightWeek: lightWeek.value,
-    injuries: injuries.value
+    injuries: injuries.value,
+    growthSpurt: growthSpurt.value,
+    readiness: checkin.value?.readiness,
+    clubToday: checkin.value?.club
   }))
   const workout = computed(() => buildWorkout(input.value))
   /** Exercises left out today because of an injury. */
   const skipped = computed(() => skippedForInjury(input.value))
+  /** Sets dropped today (light week, growth spurt, tiredness, club day). */
+  const reduction = computed(() => setReduction(input.value))
   const minutes = computed(() => estimateMinutes(workout.value))
   const doneToday = computed(() => store.activeSessions.some(s => s.date === todayISO()))
+  const restedToday = computed(() => !!checkin.value?.rest && !doneToday.value)
 
-  return { store, level, def, step, lightWeek, injuries, growthSpurt, ageBand, workout, skipped, minutes, doneToday }
+  return {
+    store, level, def, step, lightWeek, injuries, growthSpurt, ageBand, checkin, workout, skipped, reduction,
+    minutes, doneToday, restedToday, restAdvised
+  }
 }

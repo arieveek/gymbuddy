@@ -91,6 +91,36 @@
     "weekProgress": "That's {n} of {target} this week. Rest a day before the next one.",
     "back": "Back to Today"
   },
+  "checkin": {
+    "title": "Quick check",
+    "intro": "Two questions before you start. Saved on this phone only.",
+    "feel": "How do you feel?",
+    "mood": {
+      "fit": "Fit",
+      "tired": "A bit tired",
+      "sore": "Tired or sore"
+    },
+    "club": "Gym training at the club today?",
+    "yes": "Yes",
+    "no": "No",
+    "lighter": "Lighter workout today: one set less on everything.",
+    "lighterChip": "Lighter today: 1 set less | Lighter today: {n} sets less",
+    "restTitle": "Rest is the better choice today.",
+    "restBody": "Muscles get stronger while resting, and tired training is when most injuries happen.",
+    "restButton": "Rest today",
+    "lightAnyway": "Do a light workout anyway",
+    "restedTitle": "Rest day",
+    "restedBody": "Good choice. Rest is part of training. See you next time!"
+  },
+  "reminder": {
+    "title": "Reminders",
+    "enable": "Remind me on workout days",
+    "days": "Days",
+    "time": "Time",
+    "hint": "A notification on these days at this time, also when the app is closed.",
+    "denied": "Notifications are turned off for GymBuddy. Turn them on in the iPhone or iPad Settings.",
+    "appOnly": "Reminders work in the GymBuddy app on iPhone and iPad. A website can't send them."
+  },
   "device": {
     "title": "Only on this phone",
     "badge": "Not online",

@@ -91,6 +91,36 @@
     "weekProgress": "Dat is {n} van {target} deze week. Neem een rustdag voor de volgende.",
     "back": "Terug naar Vandaag"
   },
+  "checkin": {
+    "title": "Even checken",
+    "intro": "Twee vragen voordat je begint. Alleen op deze telefoon bewaard.",
+    "feel": "Hoe voel je je?",
+    "mood": {
+      "fit": "Fit",
+      "tired": "Beetje moe",
+      "sore": "Moe of pijnlijk"
+    },
+    "club": "Vandaag al turntraining gehad?",
+    "yes": "Ja",
+    "no": "Nee",
+    "lighter": "Vandaag een lichtere training: één set minder bij alles.",
+    "lighterChip": "Vandaag lichter: 1 set minder | Vandaag lichter: {n} sets minder",
+    "restTitle": "Rust is vandaag de betere keuze.",
+    "restBody": "Spieren worden sterker tijdens het rusten, en de meeste blessures ontstaan als je moe traint.",
+    "restButton": "Vandaag rusten",
+    "lightAnyway": "Toch een lichte training doen",
+    "restedTitle": "Rustdag",
+    "restedBody": "Goede keuze. Rust hoort bij trainen. Tot de volgende keer!"
+  },
+  "reminder": {
+    "title": "Herinneringen",
+    "enable": "Herinner me op trainingsdagen",
+    "days": "Dagen",
+    "time": "Tijd",
+    "hint": "Een melding op deze dagen op deze tijd, ook als de app dicht is.",
+    "denied": "Meldingen staan uit voor GymBuddy. Zet ze aan in Instellingen op de iPhone of iPad.",
+    "appOnly": "Herinneringen werken in de GymBuddy-app op iPhone en iPad. Een website kan ze niet sturen."
+  },
   "device": {
     "title": "Alleen op deze telefoon",
     "badge": "Niet online",

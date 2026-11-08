@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { buildWorkout, currentStep, isLightWeek, skippedForInjury } from '../app/utils/plan'
+import { buildWorkout, currentStep, isLightWeek, restAdvised, setReduction, skippedForInjury } from '../app/utils/plan'
 import type { Level, Session } from '../app/data/types'
 
 let seq = 0
@@ -90,6 +90,23 @@ describe('buildWorkout', () => {
     const normal = buildWorkout({ ...base, level: 1, step: 2 })
     const growing = buildWorkout({ ...base, level: 1, step: 2, growthSpurt: true })
     normal.forEach((s, i) => expect(growing[i]!.sets).toBe(Math.max(1, s.sets - 1)))
+  })
+
+  it('makes the workout lighter after the check-in, at most two sets less', () => {
+    const at = (extra: Partial<Parameters<typeof buildWorkout>[0]>) => buildWorkout({ ...base, level: 2, step: 4, ...extra }).find(s => s.ex === 'flexed')!.sets
+    expect(at({})).toBe(3)
+    expect(at({ readiness: 'fit', clubToday: false })).toBe(3)
+    expect(at({ readiness: 'tired' })).toBe(2)
+    expect(at({ readiness: 'fit', clubToday: true })).toBe(2)
+    expect(at({ readiness: 'tired', clubToday: true, growthSpurt: true })).toBe(1)
+    expect(setReduction({ ...base, level: 2, step: 1, lightWeek: true, growthSpurt: true, readiness: 'sore', clubToday: true })).toBe(2)
+  })
+
+  it('advises rest when sore, or tired after club training', () => {
+    expect(restAdvised({ readiness: 'fit', clubToday: true })).toBe(false)
+    expect(restAdvised({ readiness: 'tired', clubToday: false })).toBe(false)
+    expect(restAdvised({ readiness: 'tired', clubToday: true })).toBe(true)
+    expect(restAdvised({ readiness: 'sore', clubToday: false })).toBe(true)
   })
 
   it('offers weighted pull-ups only to adults with 12+ reps', () => {

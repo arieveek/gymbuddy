@@ -5,9 +5,10 @@ import { retestNudge } from '~/utils/progress'
 
 const { t } = useI18n()
 const text = useText()
-const { store, def, workout, minutes, doneToday, lightWeek, level, skipped, injuries, growthSpurt } = useTraining()
+const { store, def, workout, minutes, doneToday, lightWeek, level, skipped, injuries, growthSpurt, checkin, reduction, restedToday } = useTraining()
 const injuryAreas = computed(() => injuries.value.map(a => t(`injury.area.${a}`).toLowerCase()).join(', '))
 const testOpen = ref(false)
+const checkinOpen = ref(false)
 
 const nudge = computed(() => retestNudge(store.activeSessions, store.activeTests, level.value, todayISO()))
 const items = computed(() => workout.value.slice(1))
@@ -18,6 +19,11 @@ const doseLabel = (ex: (typeof items.value)[number]) => EXERCISES[ex.ex].type ==
 
 <template>
   <section class="stack" :aria-label="t('nav.today')">
+    <div v-if="restedToday" class="card stack" role="status">
+      <h2>{{ t('checkin.restedTitle') }}</h2>
+      <p class="sub">{{ t('checkin.restedBody') }}</p>
+    </div>
+
     <div v-if="nudge" class="card stack">
       <h2>{{ t(`today.nudge.${nudge}.title`) }}</h2>
       <p class="sub">{{ t(`today.nudge.${nudge}.body`) }}</p>
@@ -31,6 +37,7 @@ const doseLabel = (ex: (typeof items.value)[number]) => EXERCISES[ex.ex].type ==
       </div>
       <p class="sub">{{ text(def.goal) }}</p>
       <p v-if="lightWeek" class="chip good" style="align-self: flex-start">{{ t('today.lightWeek') }}</p>
+      <p v-if="checkin && !checkin.rest && reduction > 0" class="chip good" style="align-self: flex-start">{{ t('checkin.lighterChip', reduction) }}</p>
       <ul class="exlist">
         <ExerciseRow v-for="item in items" :id="item.ex" :key="item.ex">
           <div class="dose">
@@ -39,7 +46,7 @@ const doseLabel = (ex: (typeof items.value)[number]) => EXERCISES[ex.ex].type ==
           </div>
         </ExerciseRow>
       </ul>
-      <NuxtLink to="/workout" class="btn big">{{ doneToday ? t('today.again') : t('today.start') }}</NuxtLink>
+      <button type="button" class="btn big" @click="checkinOpen = true">{{ doneToday ? t('today.again') : t('today.start') }}</button>
       <p class="note">{{ t('today.note') }}</p>
     </div>
 
@@ -58,5 +65,6 @@ const doseLabel = (ex: (typeof items.value)[number]) => EXERCISES[ex.ex].type ==
     </div>
 
     <TestDialog v-model:open="testOpen" />
+    <CheckinDialog v-model:open="checkinOpen" />
   </section>
 </template>

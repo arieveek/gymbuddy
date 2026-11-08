@@ -15,7 +15,8 @@ const plan = {
   steps: training.workout.value,
   level: training.level.value,
   step: training.step.value,
-  lightWeek: training.lightWeek.value
+  /** Stored as "lighter session": a light week, growth spurt, tiredness or a club day dropped a set. */
+  lightWeek: training.reduction.value > 0
 }
 const REST = 60
 

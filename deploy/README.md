@@ -66,4 +66,4 @@ npx cap open ios       # in Xcode: set the team, then Product → Archive → up
 ```
 
 In Xcode, add `nl` and `en` under Project → Info → Localizations so iOS lists both languages.
-Keep Awake and Haptics are already wired in the app; local workout reminders are not built yet.
+Keep Awake, Haptics and workout-day reminders (local notifications, set per athlete on the Profile screen) are wired in the app. iOS asks for notification permission the first time reminders are switched on.

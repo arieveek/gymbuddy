@@ -1,6 +1,8 @@
 import { defineStore } from 'pinia'
 import type { AgeGroup, Athlete, Level, Locale, Session, TestResult } from '~/data/types'
 import type { AgeBand } from '~/data/kngu'
+import type { Readiness } from '~/utils/plan'
+import type { ReminderSettings } from '~/utils/reminders'
 import { todayISO } from '~/utils/date'
 import { levelFromTest } from '~/utils/progress'
 import { enqueue, mergeAthletes, mergeById, type OutboxOp } from '~/utils/sync'
@@ -9,6 +11,9 @@ export interface DeviceProfile {
   ageBand?: AgeBand
   growthSpurt?: boolean
   knguDone?: string[]
+  /** Today's check-in (only counts on that date). rest: he chose to rest today. */
+  checkin?: { date: string, readiness: Readiness, club: boolean, rest: boolean }
+  reminders?: ReminderSettings
 }
 
 const byDate =<T extends { date: string, createdAt: string }>(a: T, b: T) =>

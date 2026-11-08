@@ -25,6 +25,8 @@ export default defineNuxtPlugin({
     if (Capacitor.isNativePlatform()) {
       const { App } = await import('@capacitor/app')
       await App.addListener('resume', () => void opened())
+      // Keep the scheduled workout reminders in step with the settings (e.g. after a reinstall or a name change).
+      useReminders().apply().catch(() => {})
     }
 
     let timer: ReturnType<typeof setTimeout> | null = null
