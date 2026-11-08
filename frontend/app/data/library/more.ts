@@ -73,7 +73,7 @@ export const MORE: Exercise[] = [
       t('Let the shoulders sink toward the ears, then push tall', 'Laat je schouders naar je oren zakken en duw je dan lang'),
       t('Elbows stay locked; 3 × 8 slow', 'Ellebogen blijven gestrekt; 3 × 8 langzaam')
     ],
-    why: t('Shoulder strength for support on pommel horse, parallel bars and rings.', 'Schouderkracht voor steun op voltige, brug (toestel) en ringen.'),
+    why: t('Shoulder strength for support on mushroom/pommel horse, parallel bars and rings.', 'Schouderkracht voor steun op paddenstoel/voltige, brug (toestel) en ringen.'),
     safety: t('Check the dip bar hooks sit fully on the rung.', 'Controleer dat de haken van de dipbar helemaal op de sport zitten.'),
     sources: ['gb-pommel-forum', 'rbwf-support']
   },
@@ -85,7 +85,7 @@ export const MORE: Exercise[] = [
       t('Hold 2 seconds, then over the right hand', 'Houd 2 tellen vast, dan boven je rechterhand'),
       t('Arms stay straight; 2 × 6 per side', 'Armen blijven gestrekt; 2 × 6 per kant')
     ],
-    why: t('The weight shifts of pommel horse circles.', 'De gewichtsverplaatsing van cirkels op voltige.'),
+    why: t('The weight shifts of circles on the mushroom, and later the pommel horse.', 'De gewichtsverplaatsing van cirkels op de paddenstoel, en later op voltige.'),
     sources: ['gb-pommel-forum']
   },
   {
@@ -96,7 +96,7 @@ export const MORE: Exercise[] = [
       t('Lift into one straight line, chest open (feet on a low rung is harder)', 'Til je op tot één rechte lijn, borst open (voeten op een lage sport is zwaarder)'),
       t('3 × 15–20 seconds', '3 × 15–20 seconden')
     ],
-    why: t('Back support for pommel horse and parallel bars, and shoulder extension.', 'Ruggelingse steun voor voltige en brug (toestel), en schouderstrekking.'),
+    why: t('Back support for mushroom/pommel horse and parallel bars, and shoulder extension.', 'Ruggelingse steun voor paddenstoel/voltige en brug (toestel), en schouderstrekking.'),
     safety: t('Only as far as the shoulders feel fine.', 'Maar zo ver als je schouders goed voelen.'),
     sources: ['gb-pommel-forum', 'kngu-leerlijn']
   },
@@ -108,7 +108,7 @@ export const MORE: Exercise[] = [
       t('Upper back rounded (push the floor away), walk forward on the hands', 'Bovenrug bol (duw de grond weg), loop vooruit op je handen'),
       t('3 × 3–5 metres; don\'t let the back sag', '3 × 3–5 meter; laat je rug niet doorzakken')
     ],
-    why: t('Support endurance for pommel horse.', 'Steunuithoudingsvermogen voor voltige.'),
+    why: t('Support endurance for mushroom/pommel horse.', 'Steunuithoudingsvermogen voor paddenstoel/voltige.'),
     safety: WRIST,
     sources: ['gb-pommel-forum']
   },
@@ -180,7 +180,7 @@ export const MORE: Exercise[] = [
       t('Lift one straight leg as high as you can, toes pointed', 'Til één gestrekt been zo hoog mogelijk op, tenen gestrekt'),
       t('Hold 3–5 seconds; 2 × 5 per leg', 'Houd 3–5 tellen vast; 2 × 5 per been')
     ],
-    why: t('Active flexibility: a FIG test item for leaps and leg work on pommel horse.', 'Actieve lenigheid: een FIG-testonderdeel voor sprongen en beenwerk op voltige.'),
+    why: t('Active flexibility: a FIG test item for leaps and leg work on mushroom/pommel horse.', 'Actieve lenigheid: een FIG-testonderdeel voor sprongen en beenwerk op paddenstoel/voltige.'),
     sources: ['fig-mag-tests']
   },
   {
@@ -191,7 +191,7 @@ export const MORE: Exercise[] = [
       t('Lift both straight legs off the floor for 1–2 seconds', 'Til beide gestrekte benen 1–2 tellen van de grond'),
       t('3 × 8', '3 × 8')
     ],
-    why: t('Active straddle flexibility for the straddle press, L and pommel horse.', 'Actieve lenigheid in spreidzit voor handstand opdrukken, hoeksteun en voltige.'),
+    why: t('Active straddle flexibility for the straddle press, L and mushroom/pommel horse.', 'Actieve lenigheid in spreidzit voor handstand opdrukken, hoeksteun en paddenstoel/voltige.'),
     sources: ['gb-pommel-forum', 'kngu-leerlijn']
   },
   {

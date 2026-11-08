@@ -51,7 +51,7 @@ export const FLEXIBILITY: Exercise[] = [
       t('Let the legs open slowly to the sides', 'Laat je benen langzaam naar opzij zakken'),
       t('Knees straight, toes pointed; 30–60 seconds', 'Knieën gestrekt, tenen gestrekt; 30–60 seconden')
     ],
-    why: t('Straddle elements on floor, pommel horse and bars.', 'Spreidelementen op vloer, voltige en brug (toestel).'),
+    why: t('Straddle elements on floor, mushroom/pommel horse and bars.', 'Spreidelementen op vloer, paddenstoel/voltige en brug (toestel).'),
     safety: GENTLE,
     sources: ['gymbc-kickstart', 'usag-tops', 'kngu-leerlijn'],
     easier: 'butterfly'

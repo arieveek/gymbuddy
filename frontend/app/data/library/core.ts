@@ -151,7 +151,7 @@ export const CORE: Exercise[] = [
       t('Straight legs together at horizontal, toes pointed', 'Gestrekte benen samen horizontaal, tenen gestrekt'),
       t('3 × 10 counts; one leg bent is fine at first', '3 × 10 tellen; in het begin mag één been gebogen')
     ],
-    why: t('The basic position on pommel horse and parallel bars.', 'De basishouding op voltige en brug (toestel).'),
+    why: t('The basic position on mushroom/pommel horse and parallel bars.', 'De basishouding op paddenstoel/voltige en brug (toestel).'),
     sources: ['gymmax', 'rbwf-support', 'antranik', 'kngu-leerlijn'],
     easier: 'l_sit_tuck', harder: 'straddle_l'
   },

@@ -34,7 +34,7 @@ export const PUSH: Exercise[] = [
       t('Elbows brush the ribs on the way down', 'Ellebogen schuren langs je ribben tijdens het zakken'),
       t('Straight body; test goal 10 in 30 seconds', 'Recht lichaam; testdoel 10 in 30 seconden')
     ],
-    why: t('Support strength for pommel horse and parallel bars.', 'Steunkracht voor voltige en brug (toestel).'),
+    why: t('Support strength for mushroom/pommel horse and parallel bars.', 'Steunkracht voor paddenstoel/voltige en brug (toestel).'),
     sources: ['gymbc-kickstart'],
     easier: 'pushup'
   },
@@ -46,7 +46,7 @@ export const PUSH: Exercise[] = [
       t('Push the shoulders down: long neck', 'Duw je schouders omlaag: lange nek'),
       t('Body slightly hollow, legs together; build to 60 seconds', 'Lichaam licht bol (schelphouding), benen tegen elkaar; werk naar 60 seconden')
     ],
-    why: t('The base of every support skill on bars and pommel horse.', 'De basis van elke steunoefening op brug (toestel) en voltige.'),
+    why: t('The base of every support skill on bars and mushroom/pommel horse.', 'De basis van elke steunoefening op brug (toestel) en paddenstoel/voltige.'),
     safety: t('Check the dip bar hooks sit fully on the rung.', 'Controleer dat de haken van de dipbar helemaal op de sport zitten.'),
     sources: ['rbwf-support', 'beyond-balance'],
     harder: 'dip_negative'

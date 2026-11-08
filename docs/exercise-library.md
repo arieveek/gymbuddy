@@ -264,6 +264,10 @@ Shown to children with the note "light weight, 15 clean reps, adult nearby, neve
 DU dumbbells, KB kettlebell.
 
 ### Second round: apparatus prep, prehab, balance and landings
+
+He trains circles on the paddenstoel (mushroom), not yet the full pommel horse, so the support work is aimed at the
+mushroom first; the same strength carries over to the pommel horse later.
+
 | Exercise | Lvl | Equipment | Why | Sources |
 |---|---|---|---|---|
 | Stick sequence (KNGU) | 1 | BA, FL | The KNGU boys' warm-up series | kngu-leerlijn |
@@ -271,17 +275,17 @@ DU dumbbells, KB kettlebell.
 | Serratus punch | 1 | DU, FL | Pushes the shoulders out in support | usag-shoulder |
 | Towel scrunches and toe lifts | 1 | FL | Ankles and feet for landings | precision-acro, tno-turnen |
 | Clamshells | 1 | FL | Keeps knees from caving in | precision-acro |
-| Support shrugs | 1 | DB | Pommel, parallel bars, rings support | gb-pommel-forum, rbwf-support |
-| Side-lean support | 2 | DB | Pommel circle weight shifts | gb-pommel-forum |
-| Rear support | 1 | FL, WB | Back support on pommel and parallel bars | gb-pommel-forum, kngu-leerlijn |
-| Seal walk | 2 | FL | Pommel support endurance | gb-pommel-forum |
+| Support shrugs | 1 | DB | Support on the mushroom, parallel bars, rings | gb-pommel-forum, rbwf-support |
+| Side-lean support | 2 | DB | Weight shifts for circles on the mushroom | gb-pommel-forum |
+| Rear support | 1 | FL, WB | Back support on the mushroom and parallel bars | gb-pommel-forum, kngu-leerlijn |
+| Seal walk | 2 | FL | Support endurance for the mushroom | gb-pommel-forum |
 | Tuck planche | 3 | FL | KNGU and FIG test hold | kngu-leerlijn, fig-mag-tests |
 | Plank-to-pike walkout | 2 | FL | Handstand line, press | flo-conditioning |
 | Bear crawl and crab walk | 1 | FL | Support shapes as a game | flo-conditioning |
 | Stalder hang on the wall bars | 2 | WB | KNGU test position | kngu-leerlijn |
 | Kneeling shoulder stretch on the bench | 1 | BE, BA | Open shoulder angle | usag-shoulder |
 | Front leg lift against the wall | 1 | W | FIG active-flexibility test | fig-mag-tests |
-| Straddle leg lifts | 1 | FL | Active straddle for press and pommel | gb-pommel-forum, kngu-leerlijn |
+| Straddle leg lifts | 1 | FL | Active straddle for press and the mushroom | gb-pommel-forum, kngu-leerlijn |
 | Knee-to-wall ankle check | 1 | W | Ankle bend for softer landings | precision-acro |
 | Quad lean | 2 | FL | Thighs and knee control | flo-conditioning, sportzorg-jeugd |
 | Pogo hops | 1 | FL | Springy ankles for vault and floor | bjsm-youth, kngu |
