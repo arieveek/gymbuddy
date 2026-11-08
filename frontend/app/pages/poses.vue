@@ -11,8 +11,9 @@ const route = useRoute()
 
 const only = computed(() => (CATEGORIES as readonly string[]).includes(String(route.query.cat)) ? route.query.cat as Category : null)
 const eq = computed(() => (EQUIPMENT as readonly string[]).includes(String(route.query.eq)) ? route.query.eq as Equipment : null)
+const ids = computed(() => (typeof route.query.ids === 'string' ? route.query.ids.split(',') : null))
 const list = computed(() => MOVE_ORDER.map(id => EXERCISES[id])
-  .filter(e => (!only.value || e.category === only.value) && (!eq.value || e.equipment.includes(eq.value))))
+  .filter(e => (!only.value || e.category === only.value) && (!eq.value || e.equipment.includes(eq.value)) && (!ids.value || ids.value.includes(e.id))))
 </script>
 
 <template>

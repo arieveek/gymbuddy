@@ -63,8 +63,58 @@ conditioning that no opened source described in detail.
 | rbwf-routine | [r/bodyweightfitness Recommended Routine](https://redditbwf.github.io/wiki/recommended_routine.html) | Community wiki | Progressions, 3×5–8 rule, wrist warm-up |
 | rbwf-support | [r/bodyweightfitness — Support progression](https://asdjflk.github.io/r/bodyweightfitness/wiki/exercises/support) | Community wiki | Support hold cues, 60 s benchmark |
 
+### Second research round
+
+| # | Source | Kind | Covers |
+|---|---|---|---|
+| kngu-leerlijn | [KNGU — Technische Leerlijn Turnen Heren 2021](https://dutchgymnastics.nl/assets/Wedstrijdzaken-/Turnen-Heren/TECHNISCHE-LEERLIJN-TURNEN-HEREN-VOLLEDIG_DEF_-16-9-2021.pdf) | Dutch federation (boys' artistic) | Physical-preparation tests per age band 7–14 with cues; the Dutch gymnastics terms |
+| tno-turnen | [TNO / KNGU — Blessures turnen (2009)](https://publications.tno.nl/publication/34622976/554377/hespen-2009-turnen.pdf) | Research institute | Where and how gymnasts get injured |
+| sportzorg-jeugd | [Sportzorg — Sportmedisch onderzoek bij jongeren](https://www.sportzorg.nl/_asset/_public/Files/SMNZ-Sportmedisch-onderzoek-bij-jongeren-210115.pdf) | Sports physician | Growth spurt, Osgood-Schlatter, prevention components |
+| kvlo-turnen | [KVLO — Werken met een methodiek, turnen](https://kvlo.nl/MagazineDownloads/Werken%20met%20een%20methodiek%20turnen%20(2)%20-%20Klein%20Lankhorst%20(praktijk).pdf) | PE teachers' association | Handstand progressions and cues |
+| gymbc-kickstart-l3 | [Gymnastics BC — KICKSTART Level 3](https://gymbc.org/media/d1jpzffn/kickstart-l3.pdf) | Federation (club programme) | Older boys' tests: hollow with arms up, pike hold, wall-bar leg lifts |
+| fig-mag-tests | [FIG men's age-group test battery (peer-reviewed)](https://pmc.ncbi.nlm.nih.gov/articles/PMC6358534) | Academic | Tuck planche, V-lever, leg lift at the wall, straddle lift |
+| usag-shoulder | [USA Gymnastics — Suggested shoulder exercises](https://static.usagym.org/PDFs/about/wellness/exercise/shoulder1.pdf) | Federation (physio handout) | Prone Y/T, side-lying rotation, lift-offs, serratus punch, lat stretch, with doses |
+| gb-pommel-forum | [GymnasticBodies coaches — Pommel horse strength](https://gymnasticbodies.com/forum/topic/265-important-strenght-exercises-for-the-pommel-horse) | Coaches' forum (weaker evidence) | Support holds, side leans, rear support, seal walks |
+| gb-seated-pike | [GymnasticBodies — Seated pike lift](https://www.gymnasticbodies.com/exercises/seated-pike-lift/) | Coach | Pike compression |
+| precision-acro | [Precision Acrobatics (with a physio)](https://precisionacrobatics.blogspot.com/2017/08) | Club blog with physio | Balance progression, towel scrunches, clamshells, knee-to-wall ankle test |
+| flo-conditioning | [FloGymnastics — Fun conditioning ideas](https://www.flogymnastics.com/articles/6519272-10-fun-gymnastics-conditioning-ideas-to-try) | Coach | Crawls, walkouts, quad leans |
+| youth-throwers-ten | [Youth Throwers Ten (Int J Sports Phys Ther 2021)](https://pmc.ncbi.nlm.nih.gov/articles/PMC8637265) | Physios, peer-reviewed | Shoulder and wrist prehab for 8–12 year olds |
+| uf-throwers-ten | [University of Florida Orthopaedics — Throwers Ten](https://www.ortho.ufl.edu/throwers-ten) | Academic orthopaedics | Side-lying rotation and prone T with 1 kg, 2 × 10 |
+| fifa-11-kids | [FIFA 11+ Kids](https://projectplay.org/s/FIFA-11-Kids-1.pdf) | Injury-prevention programme (*search only*) | Side plank progressions; 38% fewer injuries in under-12s |
+| nsca-youth-coach | [NSCA Coach — Teaching youth athletes](https://nsca.com/education/articles/nsca-coach/teaching-and-motivating-youth-athletesa-personal-perspective) | Professional body (*search only*) | Bodyweight squat first, then goblet squat |
+| nsca-carries | [NSCA Coach — Loaded carries](https://www.nsca.com/education/articles/nsca-coach/increase-hip-and-trunk-stability-with-loaded-carries/) | Professional body (*search only*, adults) | Farmer's carry: both hands first, then one |
+| acsm-youth | [ACSM — Youth resistance training](https://acsm.org/mythbusting-youth-resistance-training/) | Professional body (*search only*) | 1–3 sets of 6–15, 2–3 days a week; no growth-plate harm |
+| kidshealth | [KidsHealth (Nemours) — Strength training](https://kidshealth.org/en/parents/strength-training.html) | Children's hospital (*search only*) | Bodyweight first, then light weights for 8–12 good reps |
+| eurofit | [Eurofit flexed-arm hang test](https://www.topendsports.com/testing/tests/bent-arm-hang-eurofit.htm) | Fitness-test protocol (*search only*) | Chin-over-bar and 90° holds as children's tests |
+
 **Left out:** BenchK-branded pages on staging domains (unofficial), content farms and AI-written fitness sites,
-product-comparison sites, forum threads.
+product-comparison sites, forum threads (except the GymnasticBodies coaches' thread, marked as weaker evidence).
+
+## Dutch gymnastics terms
+
+From the KNGU boys' curriculum [kngu-leerlijn], used in the app:
+
+| Dutch | English |
+|---|---|
+| schelphouding / bolle houding | hollow body |
+| overstrekte houding | arch |
+| holle rug | arched back — a *fault* to avoid |
+| strekhang | dead hang |
+| steun, streksteun | support, straight-arm support |
+| hoeksteun, spreidhoeksteun | L-sit, straddle L |
+| bovenbalans (gehurkt) | planche (tuck planche) |
+| ligsteun voorlings / ruggelings | front / rear support |
+| stalderhang | straddle hang with the feet on the wall bars |
+| optrekken | pull-up |
+| spagaat, middenspagaat, spreidzit | front split, middle split, straddle sit |
+| gehurkt, gehoekt, gespreid, gestrekt | tuck, pike, straddle, straight |
+| brug | both the backbend *and* the parallel bars, so the app adds "(achteroverbuigen)" or "(toestel)" |
+| wandrek, sport | wall bars, rung |
+| rek, ringen, voltige, sprong, vloer | high bar, rings, pommel horse, vault, floor |
+
+**Correction:** the first version of the app called the hollow body "holle houding" and the arch "bolle houding".
+In Dutch gymnastics it is the other way round, so this has been fixed. "Weegschaal" (T-scale) and a Dutch word for
+relevé were not found in any source and stay unverified.
 
 ## Safety for children at home
 
@@ -80,6 +130,9 @@ From the medical and federation sources above:
 - **Lower back:** low-back pain that lasts more than two weeks and gets worse with arching needs a doctor's check (stress fracture risk). In bridges, open the shoulders instead of bending more in the lower back. [aap-gymnastics, boston-childrens, usag-tops]
 - **Knees:** good landing technique and hamstring strength protect the knees (ACL). [aap-gymnastics, tilley-legs]
 - **Long term:** strength is built over years; watch for burnout and let him have a say. [fig-mag, nsca-ltad, aap-gymnastics]
+- **Where gymnasts get hurt:** ankle 25%, knee 16%, lower back 11%, foot 9%, wrist 7%; a third of injuries come from bad landings and about a fifth build up slowly from overload. Boys' apparatus load the shoulders and wrists most. So: landing practice, ankle and foot strength, and shoulder and wrist prehab. [tno-turnen, kngu]
+- **Growth spurt:** longer levers and more weight raise the forces on the knees; during a spurt, lower the load and the technical demands. Knee pain below the kneecap in boys of 10–15 (Osgood-Schlatter): reduce jumping, pain-free stretching, see a doctor if it persists. [sportzorg-jeugd, gymnz]
+- **Light weights:** 1–3 sets of 6–15 reps, 2–3 days a week; shoulder prehab with 0.5–2 kg. [acsm-youth, kidshealth, uf-throwers-ten, youth-throwers-ten]
 
 ## Exercises
 
@@ -210,7 +263,41 @@ Shown to children with the note "light weight, 15 clean reps, adult nearby, neve
 
 DU dumbbells, KB kettlebell.
 
+### Second round: apparatus prep, prehab, balance and landings
+| Exercise | Lvl | Equipment | Why | Sources |
+|---|---|---|---|---|
+| Stick sequence (KNGU) | 1 | BA, FL | The KNGU boys' warm-up series | kngu-leerlijn |
+| Prone overhead lift-offs | 1 | FL | Overhead shoulder control | usag-shoulder |
+| Serratus punch | 1 | DU, FL | Pushes the shoulders out in support | usag-shoulder |
+| Towel scrunches and toe lifts | 1 | FL | Ankles and feet for landings | precision-acro, tno-turnen |
+| Clamshells | 1 | FL | Keeps knees from caving in | precision-acro |
+| Support shrugs | 1 | DB | Pommel, parallel bars, rings support | gb-pommel-forum, rbwf-support |
+| Side-lean support | 2 | DB | Pommel circle weight shifts | gb-pommel-forum |
+| Rear support | 1 | FL, WB | Back support on pommel and parallel bars | gb-pommel-forum, kngu-leerlijn |
+| Seal walk | 2 | FL | Pommel support endurance | gb-pommel-forum |
+| Tuck planche | 3 | FL | KNGU and FIG test hold | kngu-leerlijn, fig-mag-tests |
+| Plank-to-pike walkout | 2 | FL | Handstand line, press | flo-conditioning |
+| Bear crawl and crab walk | 1 | FL | Support shapes as a game | flo-conditioning |
+| Stalder hang on the wall bars | 2 | WB | KNGU test position | kngu-leerlijn |
+| Kneeling shoulder stretch on the bench | 1 | BE, BA | Open shoulder angle | usag-shoulder |
+| Front leg lift against the wall | 1 | W | FIG active-flexibility test | fig-mag-tests |
+| Straddle leg lifts | 1 | FL | Active straddle for press and pommel | gb-pommel-forum, kngu-leerlijn |
+| Knee-to-wall ankle check | 1 | W | Ankle bend for softer landings | precision-acro |
+| Quad lean | 2 | FL | Thighs and knee control | flo-conditioning, sportzorg-jeugd |
+| Pogo hops | 1 | FL | Springy ankles for vault and floor | bjsm-youth, kngu |
+| Line hops | 1 | FL | Landing skill and coordination | bjsm-youth, tno-turnen |
+| Single-leg balance | 1 | FL | Balance and ankle control | precision-acro, tno-turnen |
+
+### Better sources for earlier exercises
+Side plank (FIFA 11+ Kids), pike compression lifts (GymnasticBodies), side-lying shoulder rotation and Y-T-W (USA
+Gymnastics shoulder handout, Throwers Ten), wrist curls and palm lifts (Youth Throwers Ten), goblet squat (NSCA),
+farmer's carry (NSCA; start with both hands) and the 90° hold (Eurofit flexed-arm hang test) now have specific
+sources. Pause pull-ups, the overhead press and the kettlebell deadlift still rest on the general youth guidance only.
+
 ### Left out on purpose
 Oversplits (past flat), walkovers or limbers at home, bridge walk-down on the wall bars, human flag, kettlebell swings
-(technique to learn with a coach), heavy or maximal lifts, and weighted pull-ups for children (adults only): the
-sources advise against these at home or for this age, or reserve them for the club.
+(no source supports them under 12; a study in 12–17-year-old gymnasts was supervised), heavy or maximal lifts,
+weighted pull-ups for children (adults only), swings and casts on the home bar (a home bar may not be sturdy enough),
+German hang and back-lever holds (learn at the club), depth jumps, and **decline sit-ups** (removed in the second
+round: no source supports them for children, and spine research favours curl-ups and stability work over loaded
+sit-ups).

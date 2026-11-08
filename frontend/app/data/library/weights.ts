@@ -22,7 +22,7 @@ export const WEIGHTS: Exercise[] = [
     ],
     why: t('Stronger forearms take load off the wrists in supports and handstands.', 'Sterkere onderarmen ontlasten de polsen bij steun en handstand.'),
     safety: LIGHT,
-    sources: ['american-gymnast', 'childrens-mercy']
+    sources: ['american-gymnast', 'childrens-mercy', 'youth-throwers-ten', 'uf-throwers-ten']
   },
   {
     id: 'db_rotation', type: 'reps', category: 'prehab', equipment: ['dumbbell', 'floor'], difficulty: 1,
@@ -34,7 +34,7 @@ export const WEIGHTS: Exercise[] = [
     ],
     why: t('Strengthens the rotator cuff, the small muscles that keep the shoulder stable on bars and rings.', 'Versterkt de rotator cuff, de kleine spieren die de schouder stabiel houden aan rek en ringen.'),
     safety: LIGHT,
-    sources: ['american-gymnast'], commonPractice: true
+    sources: ['youth-throwers-ten', 'uf-throwers-ten', 'usag-shoulder', 'american-gymnast']
   },
   {
     id: 'ytw_raise', type: 'reps', category: 'prehab', equipment: ['dumbbell', 'floor'], difficulty: 1,
@@ -46,7 +46,7 @@ export const WEIGHTS: Exercise[] = [
     ],
     why: t('Shoulder-blade control for handstands, supports and swings.', 'Controle over de schouderbladen voor handstand, steun en zwaaien.'),
     safety: LIGHT,
-    sources: [...GUIDANCE], commonPractice: true
+    sources: ['usag-shoulder', 'uf-throwers-ten']
   },
   {
     id: 'db_row', type: 'reps', category: 'pull', equipment: ['dumbbell', 'bench'], difficulty: 1,
@@ -70,7 +70,7 @@ export const WEIGHTS: Exercise[] = [
     ],
     why: t('Overhead strength in the same line as the handstand.', 'Kracht boven het hoofd in dezelfde lijn als de handstand.'),
     safety: LIGHT,
-    sources: [...GUIDANCE], commonPractice: true
+    sources: ['acsm-youth', 'bjsm-youth', 'kidshealth'], commonPractice: true
   },
   {
     id: 'goblet_squat', type: 'reps', category: 'legs', equipment: ['kettlebell', 'dumbbell'], difficulty: 1,
@@ -82,7 +82,7 @@ export const WEIGHTS: Exercise[] = [
     ],
     why: t('Leg strength for take-offs and landings, and a good squat shape.', 'Beenkracht voor afzetten en landen, en een goede squathouding.'),
     safety: LIGHT,
-    sources: [...GUIDANCE], commonPractice: true
+    sources: ['nsca-youth-coach', 'bjsm-youth']
   },
   {
     id: 'kb_deadlift', type: 'reps', category: 'legs', equipment: ['kettlebell'], difficulty: 2,
@@ -94,18 +94,18 @@ export const WEIGHTS: Exercise[] = [
     ],
     why: t('Hamstrings and hip strength protect the knees and the lower back.', 'Kracht in hamstrings en heupen beschermt de knieën en de onderrug.'),
     safety: t('Back stays flat; light weight; learn it from an adult or the coach first.', 'Rug blijft recht; licht gewicht; leer het eerst van een volwassene of de trainer.'),
-    sources: ['aap-gymnastics', 'aap-resistance'], commonPractice: true
+    sources: ['nsca-ltad', 'bjsm-youth', 'aap-gymnastics'], commonPractice: true
   },
   {
     id: 'farmer_carry', type: 'hold', category: 'core', equipment: ['kettlebell', 'dumbbell'], difficulty: 1,
     name: t("Farmer's carry", 'Boerenwandeling'),
     cues: [
-      t('Hold the kettlebell or a dumbbell in one hand by your side', 'Houd de kettlebell of een dumbbell in één hand langs je zij'),
+      t('Start with a dumbbell in each hand; later one weight in one hand', 'Begin met een dumbbell in elke hand; later één gewicht in één hand'),
       t('Walk tall and slowly, do not lean to the side', 'Loop rechtop en langzaam, niet opzij hangen'),
       t('20–30 seconds, then switch hands', '20–30 seconden, dan wisselen van hand')
     ],
     why: t('Grip and trunk strength for bars and rings.', 'Grip- en rompkracht voor rek en ringen.'),
     safety: LIGHT,
-    sources: [...GUIDANCE], commonPractice: true
+    sources: ['nsca-carries', 'bjsm-youth']
   }
 ]

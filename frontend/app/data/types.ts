@@ -21,7 +21,7 @@ export const EXERCISE_IDS = [
   'pushup_incline', 'pushup', 'triceps_pushup', 'support_hold', 'dip_negative', 'dip', 'bench_dip', 'pike_pushup', 'planche_lean', 'frog_stand',
   // core
   'dead_bug', 'hollow_rock', 'arch_hold', 'tuck_up', 'plank', 'side_plank', 'leg_lift_bars', 'toes_to_bar', 'dip_leg_raise',
-  'l_sit_tuck', 'l_sit', 'straddle_l', 'reverse_leg_lift', 'compression', 'decline_situp',
+  'l_sit_tuck', 'l_sit', 'straddle_l', 'reverse_leg_lift', 'compression',
   // handstand and balance
   'releve', 't_scale', 'shoulder_plank', 'handstand_back', 'wall_walk', 'handstand_kick', 'handstand_free', 'pike_up', 'straddle_press',
   // legs and jumps
@@ -29,7 +29,13 @@ export const EXERCISE_IDS = [
   // flexibility
   'hamstring_rung', 'front_split', 'butterfly', 'middle_split', 'pike_stretch', 'pike_hang', 'hip_flexor', 'side_bend', 'thoracic', 'bridge', 'kicks',
   // light weights (dumbbells, kettlebell)
-  'wrist_curl', 'db_rotation', 'ytw_raise', 'db_row', 'db_press', 'goblet_squat', 'kb_deadlift', 'farmer_carry'
+  'wrist_curl', 'db_rotation', 'ytw_raise', 'db_row', 'db_press', 'goblet_squat', 'kb_deadlift', 'farmer_carry',
+  // second research round
+  'stick_sequence', 'overhead_liftoff', 'serratus_punch', 'towel_scrunch', 'clamshell',
+  'support_shrugs', 'side_lean', 'rear_support', 'seal_walk', 'tuck_planche',
+  'walkout', 'bear_crawl', 'stalder_hang',
+  'lat_stretch', 'wall_leg_lift', 'straddle_lift', 'ankle_stretch',
+  'quad_lean', 'pogo_hops', 'line_hops', 'single_leg_balance'
 ] as const
 
 export type ExerciseId = typeof EXERCISE_IDS[number]

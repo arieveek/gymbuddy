@@ -38,7 +38,7 @@ export const PREHAB: Exercise[] = [
       t('Lower slowly, 10 times', 'Langzaam terug, 10 keer')
     ],
     why: t('Strengthens the muscles that protect the wrist in landings.', 'Versterkt de spieren die de pols beschermen bij landingen.'),
-    sources: ['childrens-mercy'], commonPractice: true,
+    sources: ['childrens-mercy', 'youth-throwers-ten'], commonPractice: true,
     easier: 'wrist_rocks', harder: 'wrist_pushup'
   },
   {
@@ -69,7 +69,7 @@ export const PREHAB: Exercise[] = [
     id: 'scap', type: 'reps', category: 'prehab', equipment: ['pullupbar', 'wallbars'], difficulty: 1,
     name: t('Scap pulls', 'Schouderbladtrekken'),
     cues: [
-      t('Start in a dead hang with straight arms', 'Begin in een dode hang met gestrekte armen'),
+      t('Start in a dead hang with straight arms', 'Begin in een strekhang met gestrekte armen'),
       t('Pull shoulders down and back so the body rises a few centimetres', 'Trek je schouders omlaag en naar achteren, zodat je lichaam een paar centimeter stijgt'),
       t('Keep elbows straight the whole time', 'Houd je ellebogen de hele tijd gestrekt'),
       t('Pause 1 second at the top, then lower slowly', 'Houd 1 tel vast bovenaan en zak dan langzaam terug')
@@ -96,7 +96,7 @@ export const PREHAB: Exercise[] = [
       t('Arms straight, bring it slowly over the head to behind the back', 'Armen gestrekt, breng hem langzaam over je hoofd naar achter je rug'),
       t('Grip wider if it pinches, 10 slow passes', 'Pak wijder als het knelt, 10 rustige keren')
     ],
-    why: t('Shoulder mobility for bars, rings and bridges.', 'Schouderbeweeglijkheid voor rek, ringen en brug.'),
+    why: t('Shoulder mobility for bars, rings and bridges.', 'Schouderbeweeglijkheid voor rek, ringen en brug (achteroverbuigen).'),
     sources: ['rbwf-routine', 'breaking-muscle']
   },
   {
@@ -118,7 +118,7 @@ export const PREHAB: Exercise[] = [
       t('Bend at the hips until the back is flat, arms long', 'Buig in de heupen tot je rug vlak is, armen lang'),
       t('Let the chest sink gently, 30 seconds', 'Laat je borst rustig zakken, 30 seconden')
     ],
-    why: t('Opens the shoulder angle needed for a straight handstand and bridge.', 'Opent de schouderhoek die nodig is voor een rechte handstand en brug.'),
+    why: t('Opens the shoulder angle needed for a straight handstand and bridge.', 'Opent de schouderhoek die nodig is voor een rechte handstand en brug (achteroverbuigen).'),
     safety: t('Never push into pain; ribs stay in.', 'Nooit doorduwen bij pijn; ribben blijven binnen.'),
     sources: ['peak-stall', 'peak-swedish']
   }

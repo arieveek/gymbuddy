@@ -27,7 +27,7 @@ export const FLEXIBILITY: Exercise[] = [
     ],
     why: t('Leaps and split positions on every apparatus.', 'Sprongen en spagaathoudingen op elk toestel.'),
     safety: t('Never past flat (no oversplits at home).', 'Nooit verder dan plat (thuis geen overspagaat).'),
-    sources: ['ghq-splits', 'usag-tops', 'gymmax'],
+    sources: ['ghq-splits', 'usag-tops', 'gymmax', 'kngu-leerlijn'],
     easier: 'hamstring_rung'
   },
   {
@@ -45,15 +45,15 @@ export const FLEXIBILITY: Exercise[] = [
   },
   {
     id: 'middle_split', type: 'hold', category: 'flexibility', equipment: ['floor', 'wall'], difficulty: 2,
-    name: t('Middle split against the wall', 'Zijspagaat tegen de muur'),
+    name: t('Middle split against the wall', 'Middenspagaat tegen de muur'),
     cues: [
       t('Lie on your back, bottom against the wall, legs up the wall', 'Lig op je rug met je billen tegen de muur, benen omhoog tegen de muur'),
       t('Let the legs open slowly to the sides', 'Laat je benen langzaam naar opzij zakken'),
       t('Knees straight, toes pointed; 30–60 seconds', 'Knieën gestrekt, tenen gestrekt; 30–60 seconden')
     ],
-    why: t('Straddle elements on floor, pommel horse and bars.', 'Spreidelementen op vloer, voltige en brug.'),
+    why: t('Straddle elements on floor, pommel horse and bars.', 'Spreidelementen op vloer, voltige en brug (toestel).'),
     safety: GENTLE,
-    sources: ['gymbc-kickstart', 'usag-tops'],
+    sources: ['gymbc-kickstart', 'usag-tops', 'kngu-leerlijn'],
     easier: 'butterfly'
   },
   {
@@ -102,7 +102,7 @@ export const FLEXIBILITY: Exercise[] = [
       t('Arms up, bend sideways over the leg', 'Armen omhoog, buig zijwaarts over je been'),
       t('3 slow bends, then hold 15 seconds; both sides', '3 langzame buigingen, dan 15 seconden vasthouden; beide kanten')
     ],
-    why: t('Side flexibility for side splits and turns.', 'Zijwaartse lenigheid voor zijspagaat en draaien.'),
+    why: t('Side flexibility for side splits and turns.', 'Zijwaartse lenigheid voor middenspagaat en draaien.'),
     safety: GENTLE,
     sources: ['szeged']
   },
@@ -121,7 +121,7 @@ export const FLEXIBILITY: Exercise[] = [
   },
   {
     id: 'bridge', type: 'hold', category: 'flexibility', equipment: ['floor'], difficulty: 2,
-    name: t('Bridge', 'Brug'),
+    name: t('Bridge', 'Brug (achteroverbuigen)'),
     cues: [
       t('On your back, feet flat, hands by the ears with fingers to the shoulders', 'Op je rug, voeten plat, handen naast je oren met vingers naar je schouders'),
       t('Push up to straight arms, shoulders over the wrists', 'Duw op tot gestrekte armen, schouders boven je polsen'),
@@ -129,7 +129,7 @@ export const FLEXIBILITY: Exercise[] = [
     ],
     why: t('A federation test standard; open shoulders protect the lower back.', 'Een testnorm van de bond; open schouders beschermen de onderrug.'),
     safety: t('Stop if the lower back hurts. Back pain that lasts more than 2 weeks: see a doctor. Walkovers only at the club.', 'Stop als je onderrug pijn doet. Rugpijn die langer dan 2 weken duurt: ga naar de dokter. Overslagen alleen bij de club.'),
-    sources: ['usag-tops', 'gymbc-kickstart', 'gymmax', 'aap-gymnastics'],
+    sources: ['usag-tops', 'gymbc-kickstart', 'gymmax', 'aap-gymnastics', 'kngu-leerlijn'],
     easier: 'thoracic'
   },
   {

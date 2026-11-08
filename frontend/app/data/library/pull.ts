@@ -4,7 +4,7 @@ import { t } from './text'
 export const PULL: Exercise[] = [
   {
     id: 'hang', type: 'hold', category: 'pull', equipment: ['pullupbar', 'wallbars'], difficulty: 1,
-    name: t('Dead hang', 'Dode hang'),
+    name: t('Dead hang', 'Strekhang (dode hang)'),
     cues: [
       t('Grab the bar, hands shoulder-width, thumbs around the bar', 'Pak de stang op schouderbreedte, duimen om de stang'),
       t('Arms straight, shoulders gently pulled down (not up by the ears)', 'Armen gestrekt, schouders licht omlaag (niet bij je oren)'),
@@ -18,7 +18,7 @@ export const PULL: Exercise[] = [
     id: 'arch_hang', type: 'hold', category: 'pull', equipment: ['pullupbar'], difficulty: 1,
     name: t('Active hang', 'Actieve hang'),
     cues: [
-      t('Start in a dead hang', 'Begin in een dode hang'),
+      t('Start in a dead hang', 'Begin in een strekhang'),
       t('Pull the shoulder blades down and together, chest lifts a little', 'Trek je schouderbladen omlaag en naar elkaar, je borst komt iets omhoog'),
       t('Arms stay straight; hold 10–20 seconds', 'Armen blijven gestrekt; houd 10–20 seconden vast')
     ],
@@ -45,7 +45,7 @@ export const PULL: Exercise[] = [
     cues: [
       t('Step up on a rung or jump so your chin is above the bar', 'Stap op een sport of spring zodat je kin boven de stang is'),
       t('Hold there, elbows tight to your sides', 'Houd vast, ellebogen dicht bij je lichaam'),
-      t('Keep the hollow shape, legs together', 'Blijf in de holle houding, benen tegen elkaar'),
+      t('Keep the hollow shape, legs together', 'Blijf in de schelphouding, benen tegen elkaar'),
       t('Step down safely when time is up', 'Stap veilig af als de tijd om is')
     ],
     why: t('Makes the hardest part of the pull-up, the top, feel strong.', 'Maakt het zwaarste deel van de pull-up, bovenaan, sterk.'),
@@ -83,11 +83,11 @@ export const PULL: Exercise[] = [
     name: t('90° hold', '90°-houding'),
     cues: [
       t('Get to the top, then lower until elbows are at a right angle', 'Kom naar boven en zak tot je ellebogen haaks staan'),
-      t('Hold there, shoulders down, hollow body', 'Houd vast, schouders omlaag, holle houding'),
+      t('Hold there, shoulders down, hollow body', 'Houd vast, schouders omlaag, schelphouding'),
       t('This is the sticky point: owning it makes reps easier', 'Dit is het lastigste punt: als je dit beheerst, gaan herhalingen makkelijker')
     ],
     why: t('Strengthens the middle of the pull-up, where most kids get stuck.', 'Versterkt het midden van de pull-up, waar de meeste kinderen vastlopen.'),
-    sources: [], commonPractice: true
+    sources: ['eurofit'], commonPractice: true
   },
   {
     id: 'pullup', type: 'reps', category: 'pull', equipment: ['pullupbar'], difficulty: 2,
@@ -95,11 +95,11 @@ export const PULL: Exercise[] = [
     cues: [
       t('Overhand grip, hands shoulder-width', 'Bovenhandse greep, handen op schouderbreedte'),
       t('Start from straight arms every rep', 'Begin elke herhaling met gestrekte armen'),
-      t('Hollow body, legs together, toes pointed, no kicking', 'Holle houding, benen tegen elkaar, tenen gestrekt, niet schoppen'),
+      t('Hollow body, legs together, toes pointed, no kicking', 'Schelphouding, benen tegen elkaar, tenen gestrekt, niet schoppen'),
       t('Chin clearly over the bar, then lower with control', 'Kin duidelijk boven de stang, dan gecontroleerd zakken')
     ],
     why: t('The main event: bars, rings and rope all need it.', 'Het hoofdonderdeel: rek, ringen en touw hebben het allemaal nodig.'),
-    sources: ['ghq-home', 'ghq-principles', 'gymbc-kickstart'],
+    sources: ['ghq-home', 'ghq-principles', 'gymbc-kickstart', 'kngu-leerlijn'],
     easier: 'neg', harder: 'pause'
   },
   {

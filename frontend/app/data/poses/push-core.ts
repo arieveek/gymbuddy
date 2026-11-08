@@ -179,12 +179,5 @@ export const PUSH_CORE_POSES: Partial<Record<ExerciseId, PoseAnimation>> = {
       { a: { ua: 70, fa: 80, to: 88, th: 0, sh: 0, hd: -88 }, move: 800, hold: 300, cap: t('Sit tall, hands beside the knees', 'Zit rechtop, handen naast je knieën') },
       { a: { ua: 70, fa: 80, to: 82, th: -12, sh: -12, hd: -82 }, move: 800, hold: 1500, cap: t('Lift the heels without leaning back', 'Til je hielen op zonder achterover te leunen') }
     ]
-  },
-  decline_situp: {
-    root: 'hip', at: [58, 88.4], ground: G, scene: { wallbars: 96, bench: [[28, 98], [94, 83.6]] },
-    frames: [
-      { a: { ua: -30, fa: 150, to: -12, th: -45, sh: 40, hd: 168 }, move: 1200, hold: 300, cap: t('Feet hooked, back rounded', 'Voeten vastgehaakt, rug bol') },
-      { a: { ua: -60, fa: 120, to: 40, th: -45, sh: 40, hd: 220 }, move: 1000, hold: 300, cap: t('Come up without pulling the head', 'Kom omhoog zonder aan je hoofd te trekken') }
-    ]
   }
 }

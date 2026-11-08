@@ -29,7 +29,7 @@ export const BASIC_POSES: Partial<Record<ExerciseId, PoseAnimation>> = {
   scap: {
     root: 'hand', at: BAR,
     frames: [
-      { a: { ...HANG, hd: -62 }, len: PASSIVE, move: 0, hold: 600, cap: t('Dead hang, arms straight', 'Dode hang, armen gestrekt') },
+      { a: { ...HANG, hd: -62 }, len: PASSIVE, move: 0, hold: 600, cap: t('Dead hang, arms straight', 'Strekhang, armen gestrekt') },
       { a: { ...HANG, th: 83, sh: 85 }, len: { ua: 10.5 }, move: 800, hold: 1000, cap: t('Shoulders down: the body rises, elbows stay straight', 'Schouders omlaag: je lichaam komt omhoog, ellebogen gestrekt') },
       { a: { ...HANG, hd: -62 }, len: PASSIVE, move: 1300, hold: 200, cap: t('Lower slowly', 'Langzaam terug') }
     ]

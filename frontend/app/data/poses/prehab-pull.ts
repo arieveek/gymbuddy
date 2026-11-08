@@ -70,7 +70,7 @@ export const PREHAB_PULL_POSES: Partial<Record<ExerciseId, PoseAnimation>> = {
   arch_hang: {
     root: 'hand', at: BAR,
     frames: [
-      { a: { ...HANG, hd: -62 }, len: PASSIVE, move: 900, hold: 500, cap: t('Dead hang', 'Dode hang') },
+      { a: { ...HANG, hd: -62 }, len: PASSIVE, move: 900, hold: 500, cap: t('Dead hang', 'Strekhang (dode hang)') },
       { a: { ...HANG, to: 96, th: 100, sh: 100, hd: -95 }, len: { ua: 11 }, move: 900, hold: 2500, ring: true, cap: t('Shoulder blades down and together, chest up', 'Schouderbladen omlaag en naar elkaar, borst omhoog') }
     ]
   },

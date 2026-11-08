@@ -22,7 +22,7 @@ export const PUSH: Exercise[] = [
       t('Lower as far as you can control, elbows back', 'Zak zo ver als je kunt controleren, ellebogen naar achteren'),
       t('Push away until the arms are straight; on the knees is fine to start', 'Duw weg tot je armen gestrekt zijn; op de knieën mag in het begin')
     ],
-    why: t('Pushing and support strength for floor, vault and bars.', 'Duw- en steunkracht voor vloer, sprong en brug.'),
+    why: t('Pushing and support strength for floor, vault and bars.', 'Duw- en steunkracht voor vloer, sprong en brug (toestel).'),
     sources: ['ghq-home', 'gymmax', 'rbwf-routine'],
     easier: 'pushup_incline', harder: 'triceps_pushup'
   },
@@ -34,7 +34,7 @@ export const PUSH: Exercise[] = [
       t('Elbows brush the ribs on the way down', 'Ellebogen schuren langs je ribben tijdens het zakken'),
       t('Straight body; test goal 10 in 30 seconds', 'Recht lichaam; testdoel 10 in 30 seconden')
     ],
-    why: t('Support strength for pommel horse and parallel bars.', 'Steunkracht voor voltige en brug.'),
+    why: t('Support strength for pommel horse and parallel bars.', 'Steunkracht voor voltige en brug (toestel).'),
     sources: ['gymbc-kickstart'],
     easier: 'pushup'
   },
@@ -44,9 +44,9 @@ export const PUSH: Exercise[] = [
     cues: [
       t('Hands on the dip bar, jump or step up to straight arms', 'Handen op de dipbar, spring of stap op tot gestrekte armen'),
       t('Push the shoulders down: long neck', 'Duw je schouders omlaag: lange nek'),
-      t('Body slightly hollow, legs together; build to 60 seconds', 'Lichaam licht hol, benen tegen elkaar; werk naar 60 seconden')
+      t('Body slightly hollow, legs together; build to 60 seconds', 'Lichaam licht bol (schelphouding), benen tegen elkaar; werk naar 60 seconden')
     ],
-    why: t('The base of every support skill on bars and pommel horse.', 'De basis van elke steunoefening op brug en voltige.'),
+    why: t('The base of every support skill on bars and pommel horse.', 'De basis van elke steunoefening op brug (toestel) en voltige.'),
     safety: t('Check the dip bar hooks sit fully on the rung.', 'Controleer dat de haken van de dipbar helemaal op de sport zitten.'),
     sources: ['rbwf-support', 'beyond-balance'],
     harder: 'dip_negative'
@@ -72,7 +72,7 @@ export const PUSH: Exercise[] = [
       t('Until the upper arm is about horizontal, not deeper', 'Tot je bovenarm ongeveer horizontaal is, niet dieper'),
       t('Push back up to straight arms, shoulders down', 'Duw terug tot gestrekte armen, schouders omlaag')
     ],
-    why: t('Pressing strength for parallel bars and rings.', 'Duwkracht voor brug en ringen.'),
+    why: t('Pressing strength for parallel bars and rings.', 'Duwkracht voor brug (toestel) en ringen.'),
     safety: t('Stop if the front of the shoulder hurts.', 'Stop als de voorkant van je schouder pijn doet.'),
     sources: ['peak-swedish', 'rbwf-routine'],
     easier: 'dip_negative'
@@ -105,7 +105,7 @@ export const PUSH: Exercise[] = [
     cues: [
       t('Push-up position, fingers turned slightly out', 'Opdrukhouding, vingers iets naar buiten'),
       t('Lean the shoulders forward past the hands, arms locked', 'Leun met je schouders voorbij je handen, armen gestrekt'),
-      t('Upper back rounded, body hollow; hold 10–20 seconds', 'Bovenrug bol, lichaam hol; houd 10–20 seconden vast')
+      t('Upper back rounded, body hollow; hold 10–20 seconds', 'Bovenrug bol, lichaam bol; houd 10–20 seconden vast')
     ],
     why: t('Builds straight-arm strength for planche and press.', 'Bouwt kracht met gestrekte armen op voor planche en opdrukken.'),
     sources: ['antranik'],
@@ -122,6 +122,6 @@ export const PUSH: Exercise[] = [
     why: t('Balance on the hands, a step toward handstands and planche.', 'Balans op je handen, een stap naar handstand en planche.'),
     safety: t('A pillow in front of the head for the first tries.', 'Een kussen voor je hoofd bij de eerste pogingen.'),
     sources: ['antranik'],
-    easier: 'planche_lean'
+    easier: 'planche_lean', harder: 'tuck_planche'
   }
 ]

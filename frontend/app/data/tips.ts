@@ -11,7 +11,7 @@ const shape: TipSection = {
   title: t("The gymnast's shape", 'De turnhouding'),
   paragraphs: [
     t('Every bar exercise here uses a hollow body: legs squeezed together, toes pointed, belly tight, ribs pulled in. Strength and technique grow together.',
-      'Elke oefening aan de stang gebruikt de holle houding: benen tegen elkaar, tenen gestrekt, buik aangespannen, ribben naar binnen. Zo groeien kracht en techniek samen.')
+      'Elke oefening aan de stang gebruikt de schelphouding: benen tegen elkaar, tenen gestrekt, buik aangespannen, ribben naar binnen. Zo groeien kracht en techniek samen.')
   ]
 }
 

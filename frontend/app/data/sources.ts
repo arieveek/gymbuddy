@@ -47,7 +47,27 @@ export const SOURCES = {
   'shop-apotheke': { name: 'Shop Apotheke — Sprossenwand-Übungen', url: 'https://www.shop-apotheke.com/fitness-trends/sprossenwand-uebungen-fuer-zuhause/', kind: 'manufacturer' },
   'veiligheid': { name: 'VeiligheidNL — Val OK!', url: 'https://www.veiligheid.nl/sites/default/files/2022-04/Val%20OK%21%20Voorover%20vallen%20C%20School.pdf', kind: 'medical' },
   'rbwf-routine': { name: 'r/bodyweightfitness Recommended Routine', url: 'https://redditbwf.github.io/wiki/recommended_routine.html', kind: 'community' },
-  'rbwf-support': { name: 'r/bodyweightfitness — Support progression', url: 'https://asdjflk.github.io/r/bodyweightfitness/wiki/exercises/support', kind: 'community' }
+  'rbwf-support': { name: 'r/bodyweightfitness — Support progression', url: 'https://asdjflk.github.io/r/bodyweightfitness/wiki/exercises/support', kind: 'community' },
+  // Second research round
+  'gymbc-kickstart-l3': { name: 'Gymnastics BC — KICKSTART Level 3 tests', url: 'https://gymbc.org/media/d1jpzffn/kickstart-l3.pdf', kind: 'federation' },
+  'fig-mag-tests': { name: 'FIG men\'s age-group physical test battery (peer-reviewed)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC6358534', kind: 'academic' },
+  'usag-shoulder': { name: 'USA Gymnastics — Suggested shoulder exercises', url: 'https://static.usagym.org/PDFs/about/wellness/exercise/shoulder1.pdf', kind: 'federation' },
+  'gb-pommel-forum': { name: 'GymnasticBodies coaches — Pommel horse strength', url: 'https://gymnasticbodies.com/forum/topic/265-important-strenght-exercises-for-the-pommel-horse', kind: 'coach' },
+  'gb-seated-pike': { name: 'GymnasticBodies — Seated pike lift', url: 'https://www.gymnasticbodies.com/exercises/seated-pike-lift/', kind: 'coach' },
+  'precision-acro': { name: 'Precision Acrobatics (with a physio) — Balance and ankles', url: 'https://precisionacrobatics.blogspot.com/2017/08', kind: 'physio' },
+  'flo-conditioning': { name: 'FloGymnastics — Fun conditioning ideas', url: 'https://www.flogymnastics.com/articles/6519272-10-fun-gymnastics-conditioning-ideas-to-try', kind: 'coach' },
+  'youth-throwers-ten': { name: 'Youth Throwers Ten (Int J Sports Phys Ther 2021)', url: 'https://pmc.ncbi.nlm.nih.gov/articles/PMC8637265', kind: 'physio' },
+  'uf-throwers-ten': { name: 'University of Florida Orthopaedics — Throwers Ten', url: 'https://www.ortho.ufl.edu/throwers-ten', kind: 'physio' },
+  'fifa-11-kids': { name: 'FIFA 11+ Kids injury-prevention warm-up', url: 'https://projectplay.org/s/FIFA-11-Kids-1.pdf', kind: 'medical' },
+  'nsca-youth-coach': { name: 'NSCA Coach — Teaching youth athletes (squat progression)', url: 'https://nsca.com/education/articles/nsca-coach/teaching-and-motivating-youth-athletesa-personal-perspective', kind: 'academic' },
+  'nsca-carries': { name: 'NSCA Coach — Loaded carries', url: 'https://www.nsca.com/education/articles/nsca-coach/increase-hip-and-trunk-stability-with-loaded-carries/', kind: 'academic' },
+  'acsm-youth': { name: 'ACSM — Youth strength training', url: 'https://acsm.org/mythbusting-youth-resistance-training/', kind: 'academic' },
+  'eurofit': { name: 'Eurofit / FitnessGram flexed-arm hang test', url: 'https://www.topendsports.com/testing/tests/bent-arm-hang-eurofit.htm', kind: 'academic' },
+  'kidshealth': { name: 'KidsHealth (Nemours) — Strength training', url: 'https://kidshealth.org/en/parents/strength-training.html', kind: 'medical' },
+  'kngu-leerlijn': { name: 'KNGU — Technische Leerlijn Turnen Heren 2021', url: 'https://dutchgymnastics.nl/assets/Wedstrijdzaken-/Turnen-Heren/TECHNISCHE-LEERLIJN-TURNEN-HEREN-VOLLEDIG_DEF_-16-9-2021.pdf', kind: 'federation' },
+  'tno-turnen': { name: 'TNO / KNGU — Blessures turnen (2009)', url: 'https://publications.tno.nl/publication/34622976/554377/hespen-2009-turnen.pdf', kind: 'academic' },
+  'sportzorg-jeugd': { name: 'Sportzorg — Sportmedisch onderzoek bij jongeren', url: 'https://www.sportzorg.nl/_asset/_public/Files/SMNZ-Sportmedisch-onderzoek-bij-jongeren-210115.pdf', kind: 'medical' },
+  'kvlo-turnen': { name: 'KVLO — Werken met een methodiek, turnen', url: 'https://kvlo.nl/MagazineDownloads/Werken%20met%20een%20methodiek%20turnen%20(2)%20-%20Klein%20Lankhorst%20(praktijk).pdf', kind: 'coach' }
 } as const satisfies Record<string, Source>
 
 export type SourceId = keyof typeof SOURCES

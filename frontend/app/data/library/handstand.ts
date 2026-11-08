@@ -31,7 +31,7 @@ export const HANDSTAND: Exercise[] = [
     name: t('Open-shoulder plank', 'Plank met open schouders'),
     cues: [
       t('Plank on the hands, then move the hands forward past the head', 'Plank op je handen en zet je handen verder naar voren, voorbij je hoofd'),
-      t('Push the floor away, body hollow', 'Duw de grond weg, lichaam hol'),
+      t('Push the floor away, body hollow', 'Duw de grond weg, lichaam bol'),
       t('Hold 20–45 seconds', 'Houd 20–45 seconden vast')
     ],
     why: t('Trains the open shoulder angle of a straight handstand.', 'Traint de open schouderhoek van een rechte handstand.'),
@@ -62,7 +62,7 @@ export const HANDSTAND: Exercise[] = [
     ],
     why: t('Handstand line with the chest to the bars: the straight shape coaches want.', 'Handstandlijn met je buik naar het wandrek: de rechte houding die trainers willen zien.'),
     safety: t('A mat under the bars; an adult nearby the first times.', 'Een mat onder het wandrek; een volwassene erbij de eerste keren.'),
-    sources: ['mobilesport', 'usag-tops'],
+    sources: ['mobilesport', 'usag-tops', 'kngu-leerlijn', 'kvlo-turnen'],
     easier: 'handstand_back', harder: 'handstand_kick'
   },
   {

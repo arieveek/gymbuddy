@@ -10,44 +10,44 @@ export const CORE: Exercise[] = [
       t('Lower back pressed into the floor the whole time', 'Onderrug de hele tijd tegen de grond gedrukt'),
       t('Stretch one arm back and the opposite leg out, slowly; switch', 'Strek langzaam één arm naar achteren en het andere been uit; wissel')
     ],
-    why: t('The first step to a strong hollow body.', 'De eerste stap naar een sterke holle houding.'),
+    why: t('The first step to a strong hollow body.', 'De eerste stap naar een sterke schelphouding.'),
     sources: ['rbwf-routine', 'tilley-core'],
     harder: 'hollow'
   },
   {
     id: 'hollow', type: 'hold', category: 'core', equipment: ['floor', 'wallbars'], difficulty: 1,
-    name: t('Hollow hold', 'Holle houding'),
+    name: t('Hollow hold', 'Schelphouding (bolle houding)'),
     cues: [
       t('Lie on your back, lower back pressed into the floor', 'Lig op je rug, onderrug tegen de grond gedrukt'),
       t('Arms by your ears, legs straight and squeezed together', 'Armen langs je oren, benen gestrekt en tegen elkaar'),
       t('Lift shoulders and feet off the floor, toes pointed', 'Til schouders en voeten van de grond, tenen gestrekt'),
       t('If the back lifts, bend the knees or raise the legs higher', 'Komt je rug omhoog? Buig je knieën of houd je benen hoger')
     ],
-    why: t("The gymnast's body shape. A strong hollow stops kicking and swinging.", 'De basishouding van een turner. Een sterke holle houding voorkomt schoppen en zwaaien.'),
-    sources: ['gymbc-kickstart', 'gymmax', 'peak-stall'],
+    why: t("The gymnast's body shape. A strong hollow stops kicking and swinging.", 'De basishouding van een turner. Een sterke schelphouding voorkomt schoppen en zwaaien.'),
+    sources: ['gymbc-kickstart', 'gymmax', 'peak-stall', 'kngu-leerlijn'],
     easier: 'dead_bug', harder: 'hollow_rock'
   },
   {
     id: 'hollow_rock', type: 'reps', category: 'core', equipment: ['floor'], difficulty: 2,
-    name: t('Hollow rocks', 'Schommelen in holle houding'),
+    name: t('Hollow rocks', 'Schommelen in schelphouding'),
     cues: [
-      t('Get into the hollow hold', 'Ga in de holle houding liggen'),
+      t('Get into the hollow hold', 'Ga in de schelphouding liggen'),
       t('Rock gently from shoulders to hips like a banana', 'Schommel rustig van schouders naar heupen, als een banaan'),
       t('The shape must not change; 10–20 rocks', 'De houding mag niet veranderen; 10–20 keer')
     ],
-    why: t('Keeps the hollow shape while moving, like in swings.', 'Houdt de holle houding vast tijdens bewegen, zoals bij zwaaien.'),
+    why: t('Keeps the hollow shape while moving, like in swings.', 'Houdt de schelphouding vast tijdens bewegen, zoals bij zwaaien.'),
     sources: ['breaking-muscle'],
     easier: 'hollow'
   },
   {
     id: 'arch_hold', type: 'hold', category: 'core', equipment: ['floor', 'wallbars'], difficulty: 1,
-    name: t('Arch hold', 'Bolle houding (superman)'),
+    name: t('Arch hold', 'Overstrekte houding (superman)'),
     cues: [
       t('Lie face down, feet hooked under the lowest rung if you like', 'Lig op je buik, voeten eventueel onder de onderste sport'),
       t('Squeeze the glutes, lift arms and chest a little', 'Span je billen aan, til armen en borst een beetje op'),
       t('Long, not a deep bend in the lower back; 20 seconds', 'Lang maken, geen diepe knik in de onderrug; 20 seconden')
     ],
-    why: t('Back strength for the arch shape, the opposite of the hollow.', 'Rugkracht voor de bolle houding, het tegenovergestelde van de holle houding.'),
+    why: t('Back strength for the arch shape, the opposite of the hollow.', 'Rugkracht voor de overstrekte houding, het tegenovergestelde van de schelphouding.'),
     sources: ['peak-stall', 'breaking-muscle']
   },
   {
@@ -80,8 +80,8 @@ export const CORE: Exercise[] = [
       t('Hips up: a straight line from head to feet', 'Heupen omhoog: een rechte lijn van hoofd tot voeten'),
       t('20–30 seconds each side', '20–30 seconden per kant')
     ],
-    why: t('Side stability for landings and twists.', 'Zijwaartse stabiliteit voor landingen en draaien.'),
-    sources: ['tilley-core'], commonPractice: true
+    why: t('Side stability for landings and twists; part of the FIFA 11+ Kids injury-prevention warm-up.', 'Zijwaartse stabiliteit voor landingen en draaien; onderdeel van de FIFA 11+ Kids blessurepreventie-warming-up.'),
+    sources: ['tilley-core', 'fifa-11-kids']
   },
   {
     id: 'tuck', type: 'reps', category: 'core', equipment: ['pullupbar', 'wallbars'], difficulty: 1,
@@ -151,8 +151,8 @@ export const CORE: Exercise[] = [
       t('Straight legs together at horizontal, toes pointed', 'Gestrekte benen samen horizontaal, tenen gestrekt'),
       t('3 × 10 counts; one leg bent is fine at first', '3 × 10 tellen; in het begin mag één been gebogen')
     ],
-    why: t('The basic position on pommel horse and parallel bars.', 'De basishouding op voltige en brug.'),
-    sources: ['gymmax', 'rbwf-support', 'antranik'],
+    why: t('The basic position on pommel horse and parallel bars.', 'De basishouding op voltige en brug (toestel).'),
+    sources: ['gymmax', 'rbwf-support', 'antranik', 'kngu-leerlijn'],
     easier: 'l_sit_tuck', harder: 'straddle_l'
   },
   {
@@ -164,7 +164,7 @@ export const CORE: Exercise[] = [
       t('3 × 10 counts', '3 × 10 tellen')
     ],
     why: t('Prepares the straddle press to handstand.', 'Bereidt de handstand opdrukken met gespreide benen voor.'),
-    sources: ['gymmax'],
+    sources: ['gymmax', 'kngu-leerlijn'],
     easier: 'l_sit'
   },
   {
@@ -187,18 +187,6 @@ export const CORE: Exercise[] = [
       t('Hold 2 seconds, lower; 8–10 reps', 'Houd 2 tellen vast, zak terug; 8–10 keer')
     ],
     why: t('Active pike flexibility for the press handstand.', 'Actieve lenigheid in de pikhouding voor de handstand opdrukken.'),
-    sources: [], commonPractice: true
-  },
-  {
-    id: 'decline_situp', type: 'reps', category: 'core', equipment: ['bench', 'wallbars'], difficulty: 2,
-    name: t('Decline sit-ups on the bench', 'Sit-ups op de schuine bank'),
-    cues: [
-      t('Hook the bench on a low rung, feet under the top', 'Haak de bank aan een lage sport, voeten onder de bovenkant'),
-      t('Keep the back rounded (hollow), arms crossed', 'Houd je rug bol (hol), armen gekruist'),
-      t('Lower slowly, come up without pulling the head; 8–12 reps', 'Zak langzaam, kom omhoog zonder aan je hoofd te trekken; 8–12 keer')
-    ],
-    why: t('Core strength using the bench of the wall bars.', 'Rompkracht met de bank van het wandrek.'),
-    safety: t('Check the bench hooks sit fully on the rung.', 'Controleer dat de haken van de bank helemaal op de sport zitten.'),
-    sources: ['fitshop-benchk'], commonPractice: true
+    sources: ['gb-seated-pike']
   }
 ]
