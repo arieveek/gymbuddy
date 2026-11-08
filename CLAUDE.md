@@ -12,7 +12,8 @@ Pull-up training app for a young competition gymnast. One Nuxt codebase runs as 
 
 ## Where things live
 
-- Training content: `frontend/app/data/` (`exercises.ts`, `levels.ts`, `milestones.ts`, `tips.ts`, `poses.ts` for the animated drawings).
+- Training content: `frontend/app/data/` — the exercise library (`exercises.ts` merging one file per category in `library/`, with `sources.ts`; research and safety notes in `docs/exercise-library.md`), `levels.ts`, `milestones.ts`, `tips.ts`.
+- Animated drawings: `frontend/app/data/poses.ts` (index) with the solver in `poses/engine.ts` and one drawing per exercise in `poses/*.ts`. Check them on the `/poses` page (no login needed; `?cat=core` etc.).
 - Training rules: `frontend/app/utils/plan.ts` (today's workout, steps, light weeks) and `progress.ts` (levels from tests, streaks, goals, milestones, retest nudge). Pure functions, tested in `frontend/test/`.
 - Local state and the sync outbox: `frontend/app/stores/training.ts`; sync: `composables/useSync.ts` + `utils/sync.ts`; auth: `stores/auth.ts`, `plugins/api.ts` (`$api`).
 - UI text: `frontend/i18n/locales/{nl,en}.json`.
@@ -33,6 +34,7 @@ Pull-up training app for a young competition gymnast. One Nuxt codebase runs as 
 - "Keep me logged in" (default on) = 30-day refresh token that slides: the app refreshes on every open (`auth.touch()`), restarting the 30 days. Without it: 12 hours max, kept in sessionStorage/memory only.
 - An athlete profile is name, age group (`child`/`adult`), level and language. Keep personal data to that: no birth date or photos.
 - Exercise explanations are animated SVG key poses (`poses.ts`), real filmed clips later (`frontend/public/media/exercises/`). Never AI-generated video or images for showing form.
+- Every library exercise has a category, equipment, level, cues and safety in both languages, at least one source from `sources.ts` (or `commonPractice`), reciprocal `easier`/`harder` links and a drawing; `test/library.test.ts` enforces this. Keep the 15 ids the workout plan uses. Oversplits, walkovers at home, added weight for children and similar are left out on purpose (see `docs/exercise-library.md`).
 - Training has no finish line: level 5 scales from the latest test, and there is always a next goal.
 - Secrets (JWT signing key, DB password) go in `deploy/.env` on the server, never in the repo; only `.env.example` is committed.
 - Keep it simple: one repo, one Compose stack, no extra services without a reason.

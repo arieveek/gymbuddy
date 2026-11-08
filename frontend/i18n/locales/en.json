@@ -91,9 +91,51 @@
     "weekProgress": "That's {n} of {target} this week. Rest a day before the next one.",
     "back": "Back to Today"
   },
+  "poses": {
+    "title": "Key poses",
+    "intro": "Every exercise drawing with its key positions. Use this to check the drawings with the coach."
+  },
+  "library": {
+    "search": "Search exercises",
+    "all": "All",
+    "filterCategory": "Filter by type",
+    "filterEquipment": "Filter by equipment",
+    "filterLevel": "Filter by level",
+    "count": "no exercises | 1 exercise | {n} exercises",
+    "clear": "Clear filters",
+    "empty": "No exercises match these filters.",
+    "inPlan": "In your plan",
+    "coachFirst": "Learn at the club first",
+    "safety": "Watch out:",
+    "sources": "Sources",
+    "commonPractice": "Standard gymnastics conditioning; no source describes it in detail.",
+    "level": {
+      "1": "Beginner",
+      "2": "Intermediate",
+      "3": "Advanced"
+    },
+    "equipment": {
+      "floor": "Floor",
+      "wallbars": "Wall bars",
+      "pullupbar": "Pull-up bar",
+      "dipbar": "Dip bar",
+      "bench": "Bench",
+      "wall": "Wall",
+      "band": "Band or stick"
+    },
+    "category": {
+      "prehab": "Warm-up & prehab",
+      "pull": "Pull",
+      "push": "Push & support",
+      "core": "Core & body shape",
+      "handstand": "Handstand & balance",
+      "legs": "Legs & jumps",
+      "flexibility": "Flexibility"
+    }
+  },
   "moves": {
     "title": "All the moves",
-    "intro": "How to do each exercise. Tap a move to see it and read the coaching cues.",
+    "intro": "A library of gymnastics exercises for home: wall bars, pull-up bar, dip bar, bench and floor. Tap How to see each one.",
     "how": "How",
     "howTo": "How to do {name}",
     "gotIt": "Got it"

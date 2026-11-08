@@ -91,9 +91,51 @@
     "weekProgress": "Dat is {n} van {target} deze week. Neem een rustdag voor de volgende.",
     "back": "Terug naar Vandaag"
   },
+  "poses": {
+    "title": "Kernhoudingen",
+    "intro": "Elke oefentekening met de belangrijkste houdingen. Gebruik dit om de tekeningen met de trainer te controleren."
+  },
+  "library": {
+    "search": "Zoek oefeningen",
+    "all": "Alles",
+    "filterCategory": "Filter op soort",
+    "filterEquipment": "Filter op materiaal",
+    "filterLevel": "Filter op niveau",
+    "count": "geen oefeningen | 1 oefening | {n} oefeningen",
+    "clear": "Filters wissen",
+    "empty": "Geen oefeningen gevonden met deze filters.",
+    "inPlan": "In je plan",
+    "coachFirst": "Eerst bij de club leren",
+    "safety": "Let op:",
+    "sources": "Bronnen",
+    "commonPractice": "Standaard turnconditie; geen bron beschrijft het in detail.",
+    "level": {
+      "1": "Beginner",
+      "2": "Gevorderd",
+      "3": "Ver gevorderd"
+    },
+    "equipment": {
+      "floor": "Vloer",
+      "wallbars": "Wandrek",
+      "pullupbar": "Optrekstang",
+      "dipbar": "Dipbar",
+      "bench": "Bank",
+      "wall": "Muur",
+      "band": "Elastiek of stok"
+    },
+    "category": {
+      "prehab": "Warming-up & blessurepreventie",
+      "pull": "Trekken",
+      "push": "Duwen & steunen",
+      "core": "Romp & lichaamshouding",
+      "handstand": "Handstand & balans",
+      "legs": "Benen & sprongen",
+      "flexibility": "Lenigheid"
+    }
+  },
   "moves": {
     "title": "Alle oefeningen",
-    "intro": "Zo doe je elke oefening. Tik op een oefening om hem te zien en de aanwijzingen te lezen.",
+    "intro": "Een bibliotheek met turnoefeningen voor thuis: wandrek, optrekstang, dipbar, bank en vloer. Tik op Hoe om er een te bekijken.",
     "how": "Hoe",
     "howTo": "Zo doe je {name}",
     "gotIt": "Begrepen"
