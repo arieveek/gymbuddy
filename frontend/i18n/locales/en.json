@@ -1,0 +1,158 @@
+{
+  "common": {
+    "cancel": "Cancel",
+    "close": "Close",
+    "level": "Level {n}"
+  },
+  "nav": {
+    "label": "Sections",
+    "today": "Today",
+    "moves": "Moves",
+    "progress": "Progress",
+    "tips": "Tips"
+  },
+  "board": {
+    "openProfile": "Open profile",
+    "hi": "Hi, {name}",
+    "hiAnon": "Hi, gymnast",
+    "step": "Step {step} of {max}",
+    "ongoing": "Ongoing: grows with every test",
+    "week": "{n} of {target} workouts this week",
+    "extra": "(+{n} extra)"
+  },
+  "welcome": {
+    "tagline": "Pull-up training, 15 minutes, 3 times a week.",
+    "title": "Who is training?",
+    "start": "Start",
+    "private": "Saved on this device. You can add an account later to sync between devices.",
+    "haveAccount": "Already have an account?",
+    "login": "Log in"
+  },
+  "profile": {
+    "title": "Profile",
+    "name": "First name",
+    "namePlaceholder": "First name",
+    "nameHint": "Only a first name is stored.",
+    "ageGroup": "Age group",
+    "child": "Child",
+    "adult": "Adult",
+    "language": "Language",
+    "level": "Training level",
+    "levelHint": "Tests set the level automatically. Change it here only if the coach says so.",
+    "athletes": "Athletes",
+    "addAthlete": "Add an athlete",
+    "add": "Add"
+  },
+  "today": {
+    "title": "Today's workout",
+    "done": "Done today",
+    "minutes": "About {n} min",
+    "lightWeek": "Lighter week: one set less, to recover",
+    "setsSeconds": "sets × seconds",
+    "setsReps": "sets × reps",
+    "start": "Start workout",
+    "again": "Do it again",
+    "note": "Includes a 2-minute warm-up. Rest 60 seconds between sets.",
+    "nudge": {
+      "first": {
+        "title": "Find the right level",
+        "body": "Do a quick test so the app picks the right workout. It takes 2 minutes.",
+        "action": "Do the test"
+      },
+      "due": {
+        "title": "Test day!",
+        "body": "Six workouts done since the last test. Time to see how much stronger you are.",
+        "action": "Record a test"
+      },
+      "break": {
+        "title": "Welcome back",
+        "body": "It has been a while. A quick test makes sure the workout fits again. Going down a level after a break is normal.",
+        "action": "Do the test"
+      }
+    }
+  },
+  "workout": {
+    "label": "Workout",
+    "end": "End",
+    "finished": "Finished",
+    "position": "Exercise {n} of {total}",
+    "rest": "Rest",
+    "upNext": "Up next · set {n} of {total}",
+    "skipRest": "Skip rest",
+    "warmupDone": "Warm-up done",
+    "setOf": "Set {n} of {total}",
+    "holdTarget": "Set {n} of {total} · hold {s} seconds",
+    "startHold": "Start hold",
+    "stopEarly": "Stop early",
+    "reps": "reps",
+    "setDone": "Set done",
+    "how": "How to do it",
+    "doneTitle": "Workout done!",
+    "weekReached": "That's {n} this week. Weekly goal reached.",
+    "weekProgress": "That's {n} of {target} this week. Rest a day before the next one.",
+    "back": "Back to Today"
+  },
+  "moves": {
+    "title": "All the moves",
+    "intro": "How to do each exercise. Tap a move to see it and read the coaching cues.",
+    "how": "How",
+    "howTo": "How to do {name}",
+    "gotIt": "Got it"
+  },
+  "test": {
+    "title": "Test day",
+    "intro": "Warm up first. Do as many strict pull-ups as you can, rest 3 minutes, then time how long you can hold your chin over the bar.",
+    "pullups": "Strict pull-ups in a row",
+    "hang": "Chin-over-bar hold (seconds)",
+    "less": "One less",
+    "more": "One more",
+    "save": "Save test",
+    "resultTitle": "Test saved",
+    "levelUp": "Level up!",
+    "up": "Great work. New exercises are ready on the Today tab.",
+    "down": "The plan now matches today's test. Building back up is normal after a break.",
+    "same": "Keep going: the workout grows with you. {goal}",
+    "nice": "Nice"
+  },
+  "progress": {
+    "streakTitle": "Keep it going",
+    "streakWeeks": "week in a row | weeks in a row",
+    "streakBest": "Best: {n}",
+    "streakHint": "A week counts when it has 3 workouts.",
+    "gridLabel": "Workouts per week, last 12 weeks",
+    "gridWeek": "Week of {date}: {n} workouts",
+    "goalTitle": "Next goal",
+    "goal": {
+      "pullups": "{n} strict pull-ups",
+      "hang": "{n} s chin-over-bar hold"
+    },
+    "recordTest": "Record a test",
+    "testHint": "Every 2 weeks, with fresh arms after a warm-up. Only strict reps count.",
+    "bestsTitle": "Personal bests",
+    "bestPullups": "Best pull-ups",
+    "bestHang": "Best hold",
+    "workouts": "Workouts done",
+    "chartEmpty": "After two tests you'll see a progress line here.",
+    "chartOneMore": "Record one more test to see the progress line.",
+    "chartLabel": "Pull-ups per test, latest {n}",
+    "chartCaption": "Strict pull-ups at each test",
+    "milestonesTitle": "Milestones",
+    "milestone": {
+      "pullups": "Pull-ups in a row",
+      "workouts": "Workouts",
+      "streak": "Weeks in a row"
+    },
+    "milestoneNext": "Next: {n}",
+    "whereTitle": "Where you are",
+    "level5Dose": "Main sets now: {sets} × {reps} pull-ups. A better test makes them harder.",
+    "historyTitle": "History",
+    "historyTest": "Test: {p} pull-ups, {h}s hold",
+    "historyWorkout": "Workout, level {n}",
+    "light": "light week",
+    "historyEmpty": "Finished workouts and tests show up here."
+  },
+  "account": {
+    "title": "Account",
+    "local": "Saved on this device."
+  }
+}

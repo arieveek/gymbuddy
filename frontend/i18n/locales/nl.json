@@ -1,0 +1,158 @@
+{
+  "common": {
+    "cancel": "Annuleren",
+    "close": "Sluiten",
+    "level": "Niveau {n}"
+  },
+  "nav": {
+    "label": "Onderdelen",
+    "today": "Vandaag",
+    "moves": "Oefeningen",
+    "progress": "Voortgang",
+    "tips": "Tips"
+  },
+  "board": {
+    "openProfile": "Profiel openen",
+    "hi": "Hoi, {name}",
+    "hiAnon": "Hoi, turner",
+    "step": "Stap {step} van {max}",
+    "ongoing": "Doorlopend: groeit mee met elke test",
+    "week": "{n} van {target} trainingen deze week",
+    "extra": "(+{n} extra)"
+  },
+  "welcome": {
+    "tagline": "Pull-uptraining, 15 minuten, 3 keer per week.",
+    "title": "Wie gaat er trainen?",
+    "start": "Beginnen",
+    "private": "Opgeslagen op dit apparaat. Je kunt later een account toevoegen om tussen apparaten te synchroniseren.",
+    "haveAccount": "Heb je al een account?",
+    "login": "Inloggen"
+  },
+  "profile": {
+    "title": "Profiel",
+    "name": "Voornaam",
+    "namePlaceholder": "Voornaam",
+    "nameHint": "Alleen een voornaam wordt opgeslagen.",
+    "ageGroup": "Leeftijdsgroep",
+    "child": "Kind",
+    "adult": "Volwassene",
+    "language": "Taal",
+    "level": "Trainingsniveau",
+    "levelHint": "Tests bepalen het niveau automatisch. Verander het hier alleen als de trainer dat zegt.",
+    "athletes": "Sporters",
+    "addAthlete": "Sporter toevoegen",
+    "add": "Toevoegen"
+  },
+  "today": {
+    "title": "Training van vandaag",
+    "done": "Vandaag gedaan",
+    "minutes": "Ongeveer {n} min",
+    "lightWeek": "Lichtere week: één set minder, om te herstellen",
+    "setsSeconds": "sets × seconden",
+    "setsReps": "sets × herhalingen",
+    "start": "Training starten",
+    "again": "Nog een keer",
+    "note": "Inclusief 2 minuten warming-up. 60 seconden rust tussen de sets.",
+    "nudge": {
+      "first": {
+        "title": "Vind het juiste niveau",
+        "body": "Doe een korte test zodat de app de juiste training kiest. Het duurt 2 minuten.",
+        "action": "Test doen"
+      },
+      "due": {
+        "title": "Testdag!",
+        "body": "Zes trainingen gedaan sinds de vorige test. Tijd om te kijken hoeveel sterker je bent.",
+        "action": "Test invullen"
+      },
+      "break": {
+        "title": "Welkom terug",
+        "body": "Het is even geleden. Met een korte test past de training weer. Na een pauze een niveau lager gaan is normaal.",
+        "action": "Test doen"
+      }
+    }
+  },
+  "workout": {
+    "label": "Training",
+    "end": "Stoppen",
+    "finished": "Klaar",
+    "position": "Oefening {n} van {total}",
+    "rest": "Rust",
+    "upNext": "Hierna · set {n} van {total}",
+    "skipRest": "Rust overslaan",
+    "warmupDone": "Warming-up klaar",
+    "setOf": "Set {n} van {total}",
+    "holdTarget": "Set {n} van {total} · {s} seconden vasthouden",
+    "startHold": "Start",
+    "stopEarly": "Eerder stoppen",
+    "reps": "herhalingen",
+    "setDone": "Set klaar",
+    "how": "Zo doe je het",
+    "doneTitle": "Training klaar!",
+    "weekReached": "Dat is er {n} deze week. Weekdoel gehaald.",
+    "weekProgress": "Dat is {n} van {target} deze week. Neem een rustdag voor de volgende.",
+    "back": "Terug naar Vandaag"
+  },
+  "moves": {
+    "title": "Alle oefeningen",
+    "intro": "Zo doe je elke oefening. Tik op een oefening om hem te zien en de aanwijzingen te lezen.",
+    "how": "Hoe",
+    "howTo": "Zo doe je {name}",
+    "gotIt": "Begrepen"
+  },
+  "test": {
+    "title": "Testdag",
+    "intro": "Eerst opwarmen. Doe zoveel mogelijk strikte pull-ups, rust 3 minuten en houd daarna zo lang mogelijk je kin boven de stang.",
+    "pullups": "Strikte pull-ups achter elkaar",
+    "hang": "Kin boven de stang (seconden)",
+    "less": "Eén minder",
+    "more": "Eén meer",
+    "save": "Test opslaan",
+    "resultTitle": "Test opgeslagen",
+    "levelUp": "Niveau omhoog!",
+    "up": "Goed gedaan. Nieuwe oefeningen staan klaar op Vandaag.",
+    "down": "Het plan past nu bij de test van vandaag. Na een pauze weer opbouwen is normaal.",
+    "same": "Ga zo door: de training groeit met je mee. {goal}",
+    "nice": "Top"
+  },
+  "progress": {
+    "streakTitle": "Volhouden",
+    "streakWeeks": "week achter elkaar | weken achter elkaar",
+    "streakBest": "Record: {n}",
+    "streakHint": "Een week telt als er 3 trainingen in zitten.",
+    "gridLabel": "Trainingen per week, laatste 12 weken",
+    "gridWeek": "Week van {date}: {n} trainingen",
+    "goalTitle": "Volgend doel",
+    "goal": {
+      "pullups": "{n} strikte pull-ups",
+      "hang": "{n} s kin boven de stang"
+    },
+    "recordTest": "Test invullen",
+    "testHint": "Elke 2 weken, met uitgeruste armen na een warming-up. Alleen strikte herhalingen tellen.",
+    "bestsTitle": "Persoonlijke records",
+    "bestPullups": "Meeste pull-ups",
+    "bestHang": "Langste hang",
+    "workouts": "Trainingen gedaan",
+    "chartEmpty": "Na twee tests zie je hier een voortgangslijn.",
+    "chartOneMore": "Doe nog één test om de voortgangslijn te zien.",
+    "chartLabel": "Pull-ups per test, laatste {n}",
+    "chartCaption": "Strikte pull-ups bij elke test",
+    "milestonesTitle": "Mijlpalen",
+    "milestone": {
+      "pullups": "Pull-ups achter elkaar",
+      "workouts": "Trainingen",
+      "streak": "Weken achter elkaar"
+    },
+    "milestoneNext": "Volgende: {n}",
+    "whereTitle": "Waar je staat",
+    "level5Dose": "Hoofdsets nu: {sets} × {reps} pull-ups. Een betere test maakt ze zwaarder.",
+    "historyTitle": "Geschiedenis",
+    "historyTest": "Test: {p} pull-ups, {h}s hang",
+    "historyWorkout": "Training, niveau {n}",
+    "light": "lichte week",
+    "historyEmpty": "Afgeronde trainingen en tests verschijnen hier."
+  },
+  "account": {
+    "title": "Account",
+    "local": "Opgeslagen op dit apparaat."
+  }
+}
