@@ -52,6 +52,10 @@ export type Equipment = typeof EQUIPMENT[number]
 /** 1 beginner, 2 intermediate, 3 advanced. */
 export type Difficulty = 1 | 2 | 3
 
+/** Body areas an injury can affect; each exercise lists the areas it loads (data/loads.ts). */
+export const BODY_AREAS = ['hands', 'wrist', 'elbow', 'shoulder', 'back', 'hip', 'knee', 'ankle'] as const
+export type BodyArea = typeof BODY_AREAS[number]
+
 export interface Exercise {
   id: ExerciseId
   name: Text
@@ -83,6 +87,8 @@ export interface Athlete {
   ageGroup: AgeGroup
   level: Level
   language: Locale
+  /** Current injuries: exercises loading these areas are left out. Older profiles may not have it yet. */
+  injuries?: BodyArea[]
   /** ISO timestamp; profiles merge last-write-wins on this. */
   updatedAt: string
 }

@@ -1,6 +1,7 @@
 package nl.gymbuddy.athlete;
 
 import java.time.Instant;
+import java.util.List;
 import java.util.UUID;
 
 import jakarta.persistence.Column;
@@ -34,6 +35,10 @@ public class Athlete {
 	@Column(name = "updated_at", nullable = false)
 	private Instant updatedAt;
 
+	/** Comma-separated body areas, e.g. "wrist,knee"; empty when not injured. */
+	@Column(nullable = false)
+	private String injuries = "";
+
 	protected Athlete() {
 	}
 
@@ -42,12 +47,17 @@ public class Athlete {
 		this.userId = userId;
 	}
 
-	public void apply(String name, String ageGroup, int level, String language, Instant updatedAt) {
+	public void apply(String name, String ageGroup, int level, String language, List<String> injuries, Instant updatedAt) {
 		this.name = name;
 		this.ageGroup = ageGroup;
 		this.level = level;
 		this.language = language;
+		this.injuries = String.join(",", injuries);
 		this.updatedAt = updatedAt;
+	}
+
+	public List<String> getInjuries() {
+		return injuries.isEmpty() ? List.of() : List.of(injuries.split(","));
 	}
 
 	public UUID getId() {

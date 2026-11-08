@@ -1,7 +1,7 @@
-import { buildWorkout, currentStep, estimateMinutes, isLightWeek } from '~/utils/plan'
+import { buildWorkout, currentStep, estimateMinutes, isLightWeek, skippedForInjury, type WorkoutInput } from '~/utils/plan'
 import { todayISO } from '~/utils/date'
 import { levelDef } from '~/data/levels'
-import type { Level } from '~/data/types'
+import type { BodyArea, Level } from '~/data/types'
 
 /** Today's plan for the active athlete, derived from the store. */
 export function useTraining() {
@@ -11,15 +11,20 @@ export function useTraining() {
   const def = computed(() => levelDef(level.value))
   const step = computed(() => currentStep(store.activeSessions, level.value))
   const lightWeek = computed(() => isLightWeek(store.activeSessions[0]?.date, todayISO()))
-  const workout = computed(() => buildWorkout({
+  const injuries = computed<BodyArea[]>(() => store.active?.injuries ?? [])
+  const input = computed<WorkoutInput>(() => ({
     level: level.value,
     step: step.value,
     ageGroup: store.active?.ageGroup ?? 'child',
     testPullups: store.latestTest?.pullups ?? 0,
-    lightWeek: lightWeek.value
+    lightWeek: lightWeek.value,
+    injuries: injuries.value
   }))
+  const workout = computed(() => buildWorkout(input.value))
+  /** Exercises left out today because of an injury. */
+  const skipped = computed(() => skippedForInjury(input.value))
   const minutes = computed(() => estimateMinutes(workout.value))
   const doneToday = computed(() => store.activeSessions.some(s => s.date === todayISO()))
 
-  return { store, level, def, step, lightWeek, workout, minutes, doneToday }
+  return { store, level, def, step, lightWeek, injuries, workout, skipped, minutes, doneToday }
 }

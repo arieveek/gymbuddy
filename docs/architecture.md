@@ -179,7 +179,7 @@ Five PostgreSQL tables, created by Flyway; exercises and levels are not stored h
 |---|---|---|
 | `users` | id uuid, email unique, password_hash, role (`user`/`admin`), status (`pending`/`approved`/`blocked`), approved_at, created_at | The parent account; only approved ones can use the app |
 | `refresh_tokens` | id, user_id → users, token_hash, expires_at, revoked_at, remember | One live row per signed-in device; `remember` keeps the long, sliding lifetime |
-| `athletes` | id uuid, user_id → users, name, age_group (`child`/`adult`), level 1–5, language (`nl`/`en`), updated_at | The profile; a family can have more than one |
+| `athletes` | id uuid, user_id → users, name, age_group (`child`/`adult`), level 1–5, language (`nl`/`en`), injuries (comma-separated body areas), updated_at | The profile; a family can have more than one |
 | `sessions` | id uuid (client-made), athlete_id → athletes, date, level, step, light_week, reps_total, hold_seconds_total, created_at | One completed workout; the totals keep history right when plans change |
 | `tests` | id uuid (client-made), athlete_id → athletes, date, pullups, hang_seconds, created_at | One test result; the frontend derives the level from it |
 

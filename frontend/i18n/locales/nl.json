@@ -91,6 +91,28 @@
     "weekProgress": "Dat is {n} van {target} deze week. Neem een rustdag voor de volgende.",
     "back": "Terug naar Vandaag"
   },
+  "injury": {
+    "title": "Blessures",
+    "intro": "Tik op een plek die pijn doet of geblesseerd is. Oefeningen die die plek belasten worden overgeslagen in de training van vandaag en gemarkeerd in de bibliotheek.",
+    "advice": "Dit is geen medisch advies. Bij pijn, zwelling of een blessure die niet overgaat: ga naar een dokter of fysiotherapeut en vraag wanneer je weer mag trainen.",
+    "area": {
+      "hands": "Handen (scheurtjes, blaren)",
+      "wrist": "Pols",
+      "elbow": "Elleboog",
+      "shoulder": "Schouder",
+      "back": "Onderrug",
+      "hip": "Heup",
+      "knee": "Knie",
+      "ankle": "Enkel of voet"
+    },
+    "todayTitle": "Vandaag overgeslagen",
+    "todayBody": "Vanwege: {areas}. Deze oefeningen uit je plan worden overgeslagen:",
+    "change": "Blessures aanpassen",
+    "notNow": "Nu niet: {areas}",
+    "detail": "Deze oefening belast een geblesseerde plek. Sla hem over tot het genezen is of een dokter of fysiotherapeut zegt dat het mag.",
+    "hide": "Verberg oefeningen die dit belasten: {areas}",
+    "testWarning": "Wacht liever met de test: die gebruikt pull-ups en een hang, en die belasten: {areas}. Een test met een blessure geeft het verkeerde niveau."
+  },
   "poses": {
     "title": "Kernhoudingen",
     "intro": "Elke oefentekening met de belangrijkste houdingen. Gebruik dit om de tekeningen met de trainer te controleren."

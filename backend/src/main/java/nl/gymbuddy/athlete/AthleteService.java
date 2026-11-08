@@ -44,7 +44,7 @@ public class AthleteService {
 		else if (!in.updatedAt().isAfter(athlete.getUpdatedAt())) {
 			return AthleteDto.of(athlete);
 		}
-		athlete.apply(in.name().trim(), in.ageGroup(), in.level(), in.language(), in.updatedAt());
+		athlete.apply(in.name().trim(), in.ageGroup(), in.level(), in.language(), in.injuriesOrEmpty(), in.updatedAt());
 		return AthleteDto.of(athletes.save(athlete));
 	}
 

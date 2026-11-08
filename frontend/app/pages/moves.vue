@@ -1,13 +1,17 @@
 <script setup lang="ts">
 import { EXERCISES, MOVE_ORDER } from '~/data/exercises'
 import { SOURCES } from '~/data/sources'
-import { CATEGORIES, EQUIPMENT, type Category, type Difficulty, type Equipment, type Exercise, type ExerciseId } from '~/data/types'
+import { CATEGORIES, EQUIPMENT, type BodyArea, type Category, type Difficulty, type Equipment, type Exercise, type ExerciseId } from '~/data/types'
+import { blockedBy } from '~/data/loads'
 
 const { t } = useI18n()
 const text = useText()
 const store = useTrainingStore()
-const { workout } = useTraining()
 
+const { workout, injuries } = useTraining()
+const hideBlocked = ref(false)
+const blocked = (id: ExerciseId) => blockedBy(id, injuries.value)
+const areaNames = (areas: BodyArea[]) => areas.map(a => t(`injury.area.${a}`).toLowerCase()).join(', ')
 const query = ref('')
 const category = ref<Category | null>(null)
 const equipment = ref<Equipment[]>([])
@@ -23,7 +27,8 @@ const filtered = computed(() => {
     (!category.value || e.category === category.value)
     && (!level.value || e.difficulty === level.value)
     && (!equipment.value.length || e.equipment.some(x => equipment.value.includes(x)))
-    && (!q || normalize(e.name.en).includes(q) || normalize(e.name.nl).includes(q)))
+    && (!q || normalize(e.name.en).includes(q) || normalize(e.name.nl).includes(q))
+    && (!hideBlocked.value || !blocked(e.id).length))
 })
 const groups = computed(() => CATEGORIES
   .map(c => ({ category: c, items: filtered.value.filter(e => e.category === c) }))
@@ -72,6 +77,10 @@ const ex = computed<Exercise | null>(() => (openId.value ? EXERCISES[openId.valu
           {{ t(`library.level.${n}`) }}
         </button>
       </div>
+      <label v-if="injuries.length" class="toggle">
+        <input v-model="hideBlocked" type="checkbox">
+        <span>{{ t('injury.hide', { areas: areaNames(injuries) }) }}</span>
+      </label>
       <div class="row between">
         <span class="sub" aria-live="polite">{{ t('library.count', { n: filtered.length }) }}</span>
         <button v-if="query || category || equipment.length || level" type="button" class="btn ghost small" @click="clearFilters">{{ t('library.clear') }}</button>
@@ -90,6 +99,7 @@ const ex = computed<Exercise | null>(() => (openId.value ? EXERCISES[openId.valu
             </span>
             <span v-if="inPlan.has(e.id)" class="chip good">{{ t('library.inPlan') }}</span>
             <span v-if="e.coachFirst" class="chip">{{ t('library.coachFirst') }}</span>
+            <span v-if="blocked(e.id).length" class="chip warn">{{ t('injury.notNow', { areas: areaNames(blocked(e.id)) }) }}</span>
           </template>
           <button class="btn ghost small" :aria-label="t('moves.howTo', { name: text(e.name) })" @click="openId = e.id">
             {{ t('moves.how') }}
@@ -101,6 +111,9 @@ const ex = computed<Exercise | null>(() => (openId.value ? EXERCISES[openId.valu
     <UModal v-model:open="open" :title="ex ? text(ex.name) : ''" :description="ex?.why ? text(ex.why) : undefined">
       <template #body>
         <div v-if="openId && ex" class="stack">
+          <p v-if="blocked(openId).length" class="safety" role="alert">
+            <b>{{ t('injury.notNow', { areas: areaNames(blocked(openId)) }) }}</b> {{ t('injury.detail') }}
+          </p>
           <ExerciseAnimation :id="openId" @caption="caption = $event" />
           <p class="target" aria-live="off">{{ caption }}</p>
           <div class="badges">
@@ -143,5 +156,8 @@ const ex = computed<Exercise | null>(() => (openId.value ? EXERCISES[openId.valu
 .safety { margin: 0; padding: 10px 12px; border-radius: 10px; background: var(--accent-soft); font-size: 15px; }
 .sources { margin: 0; padding-left: 18px; font-size: 14px; display: flex; flex-direction: column; gap: 4px; }
 .sources a { color: var(--accent); }
+.chip.warn { background: var(--warn); color: var(--bg); }
+.toggle { display: flex; gap: 10px; align-items: center; font-weight: 600; font-size: 15px; min-height: 40px; }
+.toggle input { width: 22px; height: 22px; accent-color: var(--accent); }
 .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
 </style>

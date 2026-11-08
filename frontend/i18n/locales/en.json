@@ -91,6 +91,28 @@
     "weekProgress": "That's {n} of {target} this week. Rest a day before the next one.",
     "back": "Back to Today"
   },
+  "injury": {
+    "title": "Injuries",
+    "intro": "Tap a sore or injured area. Exercises that load it are left out of today's workout and marked in the library.",
+    "advice": "This is not medical advice. With pain, swelling or an injury that doesn't get better, see a doctor or physio, and ask them when to train again.",
+    "area": {
+      "hands": "Hands (rips, blisters)",
+      "wrist": "Wrist",
+      "elbow": "Elbow",
+      "shoulder": "Shoulder",
+      "back": "Lower back",
+      "hip": "Hip",
+      "knee": "Knee",
+      "ankle": "Ankle or foot"
+    },
+    "todayTitle": "Left out today",
+    "todayBody": "Because of: {areas}. These exercises from your plan are skipped:",
+    "change": "Change injuries",
+    "notNow": "Not now: {areas}",
+    "detail": "This exercise loads an injured area. Skip it until it has healed or a doctor or physio says it's fine.",
+    "hide": "Hide exercises that load: {areas}",
+    "testWarning": "Better wait with the test: it uses pull-ups and a hang, which load: {areas}. A test while injured gives the wrong level."
+  },
   "poses": {
     "title": "Key poses",
     "intro": "Every exercise drawing with its key positions. Use this to check the drawings with the coach."

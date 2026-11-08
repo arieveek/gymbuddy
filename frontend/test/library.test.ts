@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 import { EXERCISES, LIBRARY, MOVE_ORDER } from '../app/data/exercises'
-import { EXERCISE_IDS, LOCALES, type Text } from '../app/data/types'
+import { BODY_AREAS, EXERCISE_IDS, LOCALES, type Text } from '../app/data/types'
+import { LOADS } from '../app/data/loads'
 import { SOURCES } from '../app/data/sources'
 import { POSES } from '../app/data/poses'
 import { LEVELS } from '../app/data/levels'
@@ -39,6 +40,18 @@ describe('exercise library', () => {
 
   it('has a drawing for every exercise', () => {
     for (const id of EXERCISE_IDS) expect(POSES[id], id).toBeDefined()
+  })
+
+  it('says which body areas every exercise loads', () => {
+    for (const id of EXERCISE_IDS) {
+      expect(LOADS[id], id).toBeDefined()
+      for (const area of LOADS[id]) expect(BODY_AREAS, `${id} → ${area}`).toContain(area)
+    }
+    // Hanging always loads the hands; weight on the hands always loads the wrists.
+    for (const e of LIBRARY) {
+      if (e.equipment.includes('pullupbar') && e.category === 'pull') expect(LOADS[e.id], e.id).toContain('hands')
+      if (e.equipment.includes('dipbar')) expect(LOADS[e.id], e.id).toContain('wrist')
+    }
   })
 
   it('still contains every exercise the workout plan uses', () => {

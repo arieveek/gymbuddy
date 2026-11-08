@@ -5,7 +5,8 @@ import { retestNudge } from '~/utils/progress'
 
 const { t } = useI18n()
 const text = useText()
-const { store, def, workout, minutes, doneToday, lightWeek, level } = useTraining()
+const { store, def, workout, minutes, doneToday, lightWeek, level, skipped, injuries } = useTraining()
+const injuryAreas = computed(() => injuries.value.map(a => t(`injury.area.${a}`).toLowerCase()).join(', '))
 const testOpen = ref(false)
 
 const nudge = computed(() => retestNudge(store.activeSessions, store.activeTests, level.value, todayISO()))
@@ -40,6 +41,15 @@ const doseLabel = (ex: (typeof items.value)[number]) => EXERCISES[ex.ex].type ==
       </ul>
       <NuxtLink to="/workout" class="btn big">{{ doneToday ? t('today.again') : t('today.start') }}</NuxtLink>
       <p class="note">{{ t('today.note') }}</p>
+    </div>
+
+    <div v-if="skipped.length" class="card stack" role="note">
+      <h2>{{ t('injury.todayTitle') }}</h2>
+      <p class="sub">{{ t('injury.todayBody', { areas: injuryAreas }) }}</p>
+      <ul class="cues">
+        <li v-for="s in skipped" :key="s.ex">{{ text(EXERCISES[s.ex].name) }}</li>
+      </ul>
+      <NuxtLink to="/profile" class="btn ghost small" style="align-self: flex-start">{{ t('injury.change') }}</NuxtLink>
     </div>
 
     <TestDialog v-model:open="testOpen" />

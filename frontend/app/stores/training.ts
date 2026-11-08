@@ -35,6 +35,7 @@ export const useTrainingStore = defineStore('training', () => {
       ageGroup: input.ageGroup,
       language: input.language,
       level: 1,
+      injuries: [],
       updatedAt: new Date().toISOString()
     }
     athletes.value.push(athlete)
@@ -43,7 +44,7 @@ export const useTrainingStore = defineStore('training', () => {
     return athlete
   }
 
-  function updateAthlete(patch: Partial<Pick<Athlete, 'name' | 'ageGroup' | 'level' | 'language'>>) {
+  function updateAthlete(patch: Partial<Pick<Athlete, 'name' | 'ageGroup' | 'level' | 'language' | 'injuries'>>) {
     const a = active.value
     if (!a) return
     Object.assign(a, patch, { updatedAt: new Date().toISOString() })

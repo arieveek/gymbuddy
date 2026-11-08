@@ -34,6 +34,28 @@ class TrainingIntegrationTest extends ApiTestSupport {
 	}
 
 	@Test
+	void injuriesAreStoredWithTheProfile() throws Exception {
+		Tokens t = register(uniqueEmail());
+		UUID id = createAthlete(t.access());
+		getWith("/api/athletes", t.access()).andExpect(jsonPath("$[0].injuries", hasSize(0)));
+		putJson("/api/athletes/" + id, """
+				{"id":"%s","name":"Daan","ageGroup":"child","level":2,"language":"nl","injuries":["wrist","knee"],"updatedAt":"2026-11-06T10:00:00Z"}
+				""".formatted(id), t.access())
+				.andExpect(status().isOk()).andExpect(jsonPath("$.injuries", hasSize(2))).andExpect(jsonPath("$.injuries[0]").value("wrist"));
+		getWith("/api/athletes", t.access()).andExpect(jsonPath("$[0].injuries[1]").value("knee"));
+		// Healed: an empty list clears them.
+		putJson("/api/athletes/" + id, """
+				{"id":"%s","name":"Daan","ageGroup":"child","level":2,"language":"nl","injuries":[],"updatedAt":"2026-11-07T10:00:00Z"}
+				""".formatted(id), t.access())
+				.andExpect(jsonPath("$.injuries", hasSize(0)));
+		// Unknown body areas are rejected.
+		putJson("/api/athletes/" + id, """
+				{"id":"%s","name":"Daan","ageGroup":"child","level":2,"language":"nl","injuries":["nose"],"updatedAt":"2026-11-08T10:00:00Z"}
+				""".formatted(id), t.access())
+				.andExpect(status().isBadRequest()).andExpect(jsonPath("$.code").value("VALIDATION_FAILED"));
+	}
+
+	@Test
 	void newerProfileWinsAndOlderIsIgnored() throws Exception {
 		Tokens t = register(uniqueEmail());
 		UUID id = createAthlete(t.access());

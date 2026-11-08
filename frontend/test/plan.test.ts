@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { buildWorkout, currentStep, isLightWeek } from '../app/utils/plan'
+import { buildWorkout, currentStep, isLightWeek, skippedForInjury } from '../app/utils/plan'
 import type { Level, Session } from '../app/data/types'
 
 let seq = 0
@@ -73,6 +73,17 @@ describe('buildWorkout', () => {
     expect(at10.value).toBe(6)
     expect(at20.value).toBe(12)
     expect(at40.value).toBe(24)
+  })
+
+  it('leaves out exercises that load an injured area, and says which', () => {
+    const healthy = buildWorkout({ ...base, level: 2, step: 1 }).map(s => s.ex)
+    expect(healthy).toEqual(['warmup', 'flexed', 'neg', 'box', 'row', 'tuck', 'hollow'])
+    const hands = buildWorkout({ ...base, level: 2, step: 1, injuries: ['hands'] }).map(s => s.ex)
+    expect(hands).toEqual(['warmup', 'hollow'])
+    expect(skippedForInjury({ ...base, level: 2, step: 1, injuries: ['hands'] }).map(s => s.ex))
+      .toEqual(['flexed', 'neg', 'box', 'row', 'tuck'])
+    // A knee injury does not touch this pull-up plan.
+    expect(buildWorkout({ ...base, level: 2, step: 1, injuries: ['knee'] }).map(s => s.ex)).toEqual(healthy)
   })
 
   it('offers weighted pull-ups only to adults with 12+ reps', () => {

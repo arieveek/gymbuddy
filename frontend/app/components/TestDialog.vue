@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { levelDef } from '~/data/levels'
+import { blockedBy } from '~/data/loads'
 import type { Level } from '~/data/types'
 
 const open = defineModel<boolean>('open', { default: false })
@@ -19,6 +20,8 @@ watch(open, (o) => {
 })
 
 const clamp = (v: number, max: number) => Math.max(0, Math.min(max, v))
+/** The test is pull-ups and a chin-over-bar hold; with an injury there the result would set the wrong level. */
+const testBlocked = computed(() => [...new Set([...blockedBy('pullup', store.active?.injuries), ...blockedBy('flexed', store.active?.injuries)])])
 
 function save() {
   const r = store.addTest(pullups.value, hang.value)
@@ -38,6 +41,9 @@ const message = computed(() => {
   <UModal v-model:open="open" :title="result ? t('test.resultTitle') : t('test.title')" :description="result ? undefined : t('test.intro')">
     <template #body>
       <div v-if="!result" class="stack">
+        <p v-if="testBlocked.length" class="injury-warning" role="alert">
+          {{ t('injury.testWarning', { areas: testBlocked.map(a => t(`injury.area.${a}`).toLowerCase()).join(', ') }) }}
+        </p>
         <div class="field">
           <label id="lbl-p">{{ t('test.pullups') }}</label>
           <div class="stepper" role="group" aria-labelledby="lbl-p">
@@ -70,3 +76,7 @@ const message = computed(() => {
     </template>
   </UModal>
 </template>
+
+<style scoped>
+.injury-warning { margin: 0; padding: 10px 12px; border-radius: 10px; background: var(--accent-soft); font-size: 15px; font-weight: 600; }
+</style>
