@@ -3,6 +3,8 @@
  * The admin page is for the admin (the API checks that too). Works offline: only stored tokens are checked.
  */
 export default defineNuxtRouteMiddleware(async (to) => {
+  // The key-poses review page holds no personal data, so the coach can open it without an account.
+  if (to.path === '/poses') return
   const auth = useAuthStore()
   await auth.init()
   if (!auth.signedIn) return to.path === '/login' ? undefined : navigateTo('/login')
