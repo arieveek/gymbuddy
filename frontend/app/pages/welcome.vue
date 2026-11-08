@@ -5,6 +5,7 @@ import { deviceLocale } from '~/utils/locale'
 definePageMeta({ layout: 'bare' })
 const { t, setLocale } = useI18n()
 const store = useTrainingStore()
+const logout = useLogout()
 
 const name = ref('')
 const ageGroup = ref<AgeGroup>('child')
@@ -30,9 +31,7 @@ function create() {
       <button class="btn big" type="submit" :disabled="!name.trim()">{{ t('welcome.start') }}</button>
       <p class="note">{{ t('welcome.private') }}</p>
     </form>
-    <p class="note">
-      {{ t('welcome.haveAccount') }} <NuxtLink to="/login" class="link">{{ t('welcome.login') }}</NuxtLink>
-    </p>
+    <button type="button" class="btn ghost" @click="logout()">{{ t('account.logout') }}</button>
   </div>
 </template>
 
@@ -41,5 +40,4 @@ function create() {
 .hero::after { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 5px; background: var(--accent); }
 .hero h1 { font-family: var(--display); font-weight: 900; font-size: 56px; line-height: 1; text-transform: uppercase; }
 .hero p { margin: 6px 0 0; opacity: .8; }
-.link { color: var(--accent); font-weight: 700; }
 </style>

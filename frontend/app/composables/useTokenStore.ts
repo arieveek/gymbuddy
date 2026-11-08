@@ -4,6 +4,8 @@ export interface StoredTokens {
   access: string
   refresh: string
   email: string
+  /** Only decides whether the admin link shows; the API enforces the real check. */
+  role: 'user' | 'admin'
 }
 
 const KEY = 'gymbuddy.auth'

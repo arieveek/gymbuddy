@@ -1,6 +1,6 @@
 # GymBuddy
 
-Pull-up training app for a young competition gymnast. One Nuxt codebase runs as the website and the iPhone/iPad app; a Spring Boot API syncs progress behind an optional parent login.
+Pull-up training app for a young competition gymnast. One Nuxt codebase runs as the website and the iPhone/iPad app; a Spring Boot API stores progress behind a parent login that the admin must approve.
 
 **Read [docs/architecture.md](docs/architecture.md) before making structural changes.** It is the source of truth for the stack, API, data model, deployment and build order.
 
@@ -25,7 +25,8 @@ Pull-up training app for a young competition gymnast. One Nuxt codebase runs as 
 
 - Training content (exercises, levels) lives in `frontend/app/data/` as TypeScript. Do not move it to the database.
 - The app is bilingual, Dutch (`nl`) and English (`en`). UI text goes in the locale files via `@nuxtjs/i18n`; never hard-code user-facing strings. Text in `frontend/app/data/` is `{ nl, en }` objects. Every change adds both languages. The backend returns error codes, not display text.
-- The app is local-first: it works fully without an account; signing in adds sync. Every local change goes through the training store so it is queued in the outbox.
+- Login is required and the app is invite-only: accounts start `pending` and only `approved` ones get tokens or pass the API (checked on every request, so blocking is immediate). The admin is created from `GYMBUDDY_ADMIN_EMAIL`/`_PASSWORD` at startup, never by registering. Admin endpoints live under `/api/admin` (ROLE_ADMIN); the web page is `/admin`.
+- After login the app works offline. Every local change goes through the training store so it is queued in the outbox. Logout clears the device's training data; a different account logging in starts clean.
 - Every athlete query is scoped to the signed-in user. Never load an athlete, session or test by id alone.
 - Athlete, session and test ids are client-made UUIDs; posts must stay idempotent so offline syncs never duplicate. Profiles merge last-write-wins on `updatedAt`.
 - Auth uses bearer tokens, not cookies (Capacitor runs from `capacitor://localhost`). Refresh tokens are stored hashed and rotate on every refresh; reusing one revokes all of that account's tokens.
@@ -37,7 +38,7 @@ Pull-up training app for a young competition gymnast. One Nuxt codebase runs as 
 
 ## Running locally
 
-- API: `cd backend && ./mvnw spring-boot:test-run` starts it on 8080 with a throwaway PostgreSQL in Docker.
+- API: `cd backend && ./mvnw spring-boot:test-run` starts it on 8080 with a throwaway PostgreSQL in Docker; log in as `admin@example.com` / `admin-password-for-tests` (from `src/test/resources/application.properties`) to approve test accounts.
 - Web: `cd frontend && npm run dev` proxies `/api` to `http://localhost:8080` (set `API_TARGET` if that port is taken).
 
 ## Before opening a PR

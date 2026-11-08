@@ -10,9 +10,11 @@ import org.junit.jupiter.api.Test;
 class AuthIntegrationTest extends ApiTestSupport {
 
 	@Test
-	void registerReturnsTokensThatOpenTheApi() throws Exception {
+	void approvedAccountGetsIntoTheApi() throws Exception {
 		Tokens t = register(uniqueEmail());
 		getWith("/api/athletes", t.access()).andExpect(status().isOk()).andExpect(jsonPath("$").isArray());
+		getWith("/api/me", t.access()).andExpect(status().isOk()).andExpect(jsonPath("$.role").value("user"))
+				.andExpect(jsonPath("$.status").value("approved"));
 	}
 
 	@Test

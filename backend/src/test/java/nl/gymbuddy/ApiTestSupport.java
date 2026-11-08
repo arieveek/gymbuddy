@@ -48,10 +48,32 @@ abstract class ApiTestSupport {
 		return mvc.perform(get(url).header("Authorization", "Bearer " + token));
 	}
 
+	protected static final String ADMIN_EMAIL = "admin@example.com";
+	protected static final String ADMIN_PASSWORD = "admin-password-for-tests";
+	protected static final String PASSWORD = "correct horse";
+
+	protected Tokens login(String email, String password) throws Exception {
+		return tokens(postJson("/api/auth/login", "{\"email\":\"%s\",\"password\":\"%s\"}".formatted(email, password))
+				.andReturn().getResponse().getContentAsString());
+	}
+
+	protected Tokens admin() throws Exception {
+		return login(ADMIN_EMAIL, ADMIN_PASSWORD);
+	}
+
+	/** Registers a pending account and returns its id (looked up through the admin list). */
+	protected String registerPending(String email) throws Exception {
+		postJson("/api/auth/register", "{\"email\":\"%s\",\"password\":\"%s\"}".formatted(email, PASSWORD));
+		String list = getWith("/api/admin/users", admin().access()).andReturn().getResponse().getContentAsString();
+		java.util.List<String> ids = JsonPath.read(list, "$[?(@.email == '" + email.toLowerCase() + "')].id");
+		return ids.get(0);
+	}
+
+	/** Registers, has the admin approve, and logs in: an ordinary usable account. */
 	protected Tokens register(String email) throws Exception {
-		String body = postJson("/api/auth/register", "{\"email\":\"%s\",\"password\":\"correct horse\"}".formatted(email))
-				.andReturn().getResponse().getContentAsString();
-		return tokens(body);
+		String id = registerPending(email);
+		postJson("/api/admin/users/" + id + "/approve", "", admin().access());
+		return login(email, PASSWORD);
 	}
 
 	protected static Tokens tokens(String body) {

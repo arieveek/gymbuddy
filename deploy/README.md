@@ -18,10 +18,24 @@ with a personal access token that has `read:packages`.
 2. On the NAS, create a folder (for example `/volume1/docker/gymbuddy`) and copy into it
    `docker-compose.yml`, `backup.sh` and `.env.example` (renamed to `.env`).
 3. Fill in `.env`: `POSTGRES_PASSWORD`, `GYMBUDDY_JWT_SECRET` (`openssl rand -base64 48`),
-   `GYMBUDDY_WEB_ORIGIN=https://gymbuddy.example.nl` and `TUNNEL_TOKEN`.
+   `GYMBUDDY_WEB_ORIGIN=https://gymbuddy.example.nl`, `TUNNEL_TOKEN`, and your admin login
+   `GYMBUDDY_ADMIN_EMAIL` / `GYMBUDDY_ADMIN_PASSWORD`.
 4. Start it over SSH: `docker compose --profile synology up -d`
    (or create a Project in Container Manager from this folder and enable the `synology` profile).
+   `docker compose logs api | grep -i admin` should say "Created admin account".
 5. Point Hyper Backup at the `backups/` folder so the nightly dumps leave the NAS.
+
+## Approving accounts
+
+GymBuddy is invite-only. Someone taps "Request an account" in the app; the account waits until you approve it.
+Log in with the admin email, open Profile → **Manage accounts** (or go to `/admin`), and approve, reject, block
+or delete. Blocking logs that person out on every device at once. There is no email notification yet, so tell
+people to let you know when they have signed up.
+
+The admin password from `.env` is only used to create the account. There is no password reset yet: to reset the admin,
+delete that row in the database (`docker compose exec db psql -U gymbuddy -c "delete from users where email='you@example.com'"`)
+and restart the `api` service; it is created again from `.env`. This also deletes any athletes on the admin account,
+so keep your own family's training on a separate, ordinary account.
 
 Update to a new release: `docker compose pull && docker compose --profile synology up -d`.
 Roll back: set `IMAGE_TAG` in `.env` to an earlier commit SHA and run the same command.

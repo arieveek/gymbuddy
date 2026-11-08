@@ -1,5 +1,7 @@
 package nl.gymbuddy.auth;
 
+import java.util.Map;
+
 import jakarta.validation.Valid;
 import nl.gymbuddy.auth.AuthDtos.LoginRequest;
 import nl.gymbuddy.auth.AuthDtos.RefreshRequest;
@@ -23,10 +25,12 @@ public class AuthController {
 		this.auth = auth;
 	}
 
+	/** 202: the account exists but waits for the admin; there are no tokens until it is approved. */
 	@PostMapping("/register")
-	@ResponseStatus(HttpStatus.CREATED)
-	public TokenResponse register(@Valid @RequestBody RegisterRequest body) {
-		return auth.register(body.email(), body.password());
+	@ResponseStatus(HttpStatus.ACCEPTED)
+	public Map<String, String> register(@Valid @RequestBody RegisterRequest body) {
+		auth.register(body.email(), body.password());
+		return Map.of("status", UserStatus.pending.name());
 	}
 
 	@PostMapping("/login")

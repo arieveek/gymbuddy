@@ -25,9 +25,7 @@
     "tagline": "Pull-up training, 15 minutes, 3 times a week.",
     "title": "Who is training?",
     "start": "Start",
-    "private": "Saved on this device. You can add an account later to sync between devices.",
-    "haveAccount": "Already have an account?",
-    "login": "Log in"
+    "private": "Only a first name and age group are stored. Add more athletes later under Profile."
   },
   "profile": {
     "title": "Profile",
@@ -154,10 +152,8 @@
   },
   "account": {
     "title": "Account",
-    "local": "Saved on this device. With an account, progress syncs between iPhone, iPad and computer.",
-    "login": "Log in",
-    "register": "Create account",
     "logout": "Log out",
+    "logoutUnsynced": "{n} change(s) could not be synced yet and will be lost if you log out now. Log out anyway?",
     "syncNow": "Sync now",
     "syncing": "Syncing…",
     "pending": "{n} change(s) waiting to sync",
@@ -165,21 +161,62 @@
   },
   "login": {
     "title": "Log in",
-    "registerTitle": "Create an account",
-    "intro": "One account per family. A parent signs in; the profiles and progress sync to every device.",
+    "registerTitle": "Request an account",
+    "intro": "One account per family. A parent logs in; the profiles and progress are on every device.",
+    "registerIntro": "GymBuddy is invite-only. After you sign up, the admin approves your account before you can log in.",
     "email": "Email",
     "password": "Password",
     "passwordHint": "At least 8 characters.",
     "submit": "Log in",
-    "registerSubmit": "Create account",
+    "registerSubmit": "Request account",
     "busy": "One moment…",
-    "toRegister": "No account yet? Create one",
-    "toLogin": "Already have an account? Log in"
+    "toRegister": "No account yet? Request one",
+    "toLogin": "Already approved? Log in",
+    "toLoginShort": "Back to log in",
+    "pendingTitle": "Request sent",
+    "pendingBody": "Your account is waiting for approval. You can log in as soon as the admin has approved it.",
+    "reason": {
+      "not-approved": "Your account is not approved (any more). Ask the admin if you think this is a mistake.",
+      "expired": "You have been logged out. Please log in again."
+    }
+  },
+  "admin": {
+    "open": "Manage accounts",
+    "title": "Accounts",
+    "intro": "Only approved accounts can use GymBuddy. New sign-ups wait here until you approve them.",
+    "refresh": "Refresh",
+    "loading": "Loading…",
+    "group": {
+      "pending": "Waiting for approval",
+      "approved": "Approved",
+      "blocked": "Blocked"
+    },
+    "empty": {
+      "pending": "No one is waiting.",
+      "approved": "No approved accounts yet.",
+      "blocked": "No blocked accounts."
+    },
+    "registered": "Signed up {date}",
+    "athletes": "no athletes | 1 athlete | {n} athletes",
+    "adminBadge": "Admin",
+    "approve": "Approve",
+    "block": "Block",
+    "reject": "Reject",
+    "delete": "Delete",
+    "confirmBlock": "Block {email}? They are logged out on every device right away. You can approve them again later.",
+    "confirmReject": "Reject the request from {email}? The request is removed.",
+    "confirmDelete": "Delete {email} with all their athletes, workouts and tests? This cannot be undone."
   },
   "errors": {
     "EMAIL_TAKEN": "There is already an account with this email.",
     "INVALID_CREDENTIALS": "Email or password is not right.",
     "VALIDATION_FAILED": "Check the email address and use a password of at least 8 characters.",
+    "ACCOUNT_PENDING": "Your account is still waiting for approval.",
+    "ACCOUNT_BLOCKED": "This account has been blocked. Ask the admin if you think this is a mistake.",
+    "ACCOUNT_NOT_APPROVED": "Your account is not approved (any more).",
+    "CANNOT_CHANGE_SELF": "You cannot block or delete your own account.",
+    "FORBIDDEN": "Only the admin can do this.",
+    "NOT_FOUND": "That account no longer exists.",
     "NETWORK": "Can't reach the server. Your progress is saved on this device and syncs later.",
     "UNAUTHORIZED": "Please log in again to keep syncing.",
     "UNKNOWN": "Something went wrong. Try again later."

@@ -18,6 +18,8 @@ export const useTrainingStore = defineStore('training', () => {
   const tests = ref<TestResult[]>([])
   const outbox = ref<OutboxOp[]>([])
   const lastSyncAt = ref<string | null>(null)
+  /** Email of the account this data belongs to, so the next person logging in on a shared device never sees it. */
+  const owner = ref<string | null>(null)
 
   const active = computed(() => athletes.value.find(a => a.id === activeId.value) ?? athletes.value[0] ?? null)
   const activeSessions = computed(() => sessions.value.filter(s => s.athleteId === active.value?.id).sort(byDate))
@@ -86,6 +88,23 @@ export const useTrainingStore = defineStore('training', () => {
     outbox.value = outbox.value.filter(o => !(o.kind === op.kind && o.id === op.id))
   }
 
+  /** Empties this device's training data (logout, or a different account logging in). */
+  function reset() {
+    athletes.value = []
+    activeId.value = null
+    sessions.value = []
+    tests.value = []
+    outbox.value = []
+    lastSyncAt.value = null
+    owner.value = null
+  }
+
+  /** Called after login: keeps the data if it is this account's, otherwise starts clean. */
+  function claimFor(email: string) {
+    if (owner.value !== email) reset()
+    owner.value = email
+  }
+
   /** Merges what the server has into this device. */
   function applyRemote(remote: { athletes: Athlete[], sessions: Session[], tests: TestResult[] }) {
     athletes.value = mergeAthletes(athletes.value, remote.athletes)
@@ -96,10 +115,10 @@ export const useTrainingStore = defineStore('training', () => {
   }
 
   return {
-    athletes, activeId, sessions, tests, outbox, lastSyncAt,
+    athletes, activeId, sessions, tests, outbox, lastSyncAt, owner,
     active, activeSessions, activeTests, latestTest,
-    createAthlete, updateAthlete, setActive, addSession, addTest, queueAll, dequeue, applyRemote
+    createAthlete, updateAthlete, setActive, addSession, addTest, queueAll, dequeue, applyRemote, reset, claimFor
   }
 }, {
-  persist: { pick: ['athletes', 'activeId', 'sessions', 'tests', 'outbox', 'lastSyncAt'] }
+  persist: { pick: ['athletes', 'activeId', 'sessions', 'tests', 'outbox', 'lastSyncAt', 'owner'] }
 })

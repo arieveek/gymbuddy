@@ -3,6 +3,7 @@ const { t, te, locale } = useI18n()
 const auth = useAuthStore()
 const store = useTrainingStore()
 const { sync, syncing, lastError } = useSync()
+const logout = useLogout()
 
 const status = computed(() => {
   if (syncing.value) return t('account.syncing')
@@ -16,20 +17,12 @@ const status = computed(() => {
 <template>
   <div class="card stack">
     <h2>{{ t('account.title') }}</h2>
-    <template v-if="auth.signedIn">
-      <p class="exname">{{ auth.email }}</p>
-      <p class="sub" aria-live="polite">{{ status }}</p>
-      <div class="btnrow">
-        <button type="button" class="btn ghost" @click="auth.logout()">{{ t('account.logout') }}</button>
-        <button type="button" class="btn" :disabled="syncing" @click="sync()">{{ t('account.syncNow') }}</button>
-      </div>
-    </template>
-    <template v-else>
-      <p class="sub">{{ t('account.local') }}</p>
-      <div class="btnrow">
-        <NuxtLink to="/login" class="btn ghost">{{ t('account.login') }}</NuxtLink>
-        <NuxtLink to="/login?mode=register" class="btn">{{ t('account.register') }}</NuxtLink>
-      </div>
-    </template>
+    <p class="exname">{{ auth.email }}</p>
+    <p class="sub" aria-live="polite">{{ status }}</p>
+    <div class="btnrow">
+      <button type="button" class="btn ghost" @click="logout()">{{ t('account.logout') }}</button>
+      <button type="button" class="btn" :disabled="syncing" @click="sync()">{{ t('account.syncNow') }}</button>
+    </div>
+    <NuxtLink v-if="auth.isAdmin" to="/admin" class="btn ghost">{{ t('admin.open') }}</NuxtLink>
   </div>
 </template>

@@ -13,4 +13,6 @@ public interface AthleteRepository extends JpaRepository<Athlete, UUID> {
 
 	List<Athlete> findAllByUserIdOrderByName(UUID userId);
 
+	long countByUserId(UUID userId);
+
 }

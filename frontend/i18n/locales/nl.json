@@ -25,9 +25,7 @@
     "tagline": "Pull-uptraining, 15 minuten, 3 keer per week.",
     "title": "Wie gaat er trainen?",
     "start": "Beginnen",
-    "private": "Opgeslagen op dit apparaat. Je kunt later een account toevoegen om tussen apparaten te synchroniseren.",
-    "haveAccount": "Heb je al een account?",
-    "login": "Inloggen"
+    "private": "Alleen een voornaam en leeftijdsgroep worden opgeslagen. Voeg later meer sporters toe onder Profiel."
   },
   "profile": {
     "title": "Profiel",
@@ -154,10 +152,8 @@
   },
   "account": {
     "title": "Account",
-    "local": "Opgeslagen op dit apparaat. Met een account synchroniseert de voortgang tussen iPhone, iPad en computer.",
-    "login": "Inloggen",
-    "register": "Account maken",
     "logout": "Uitloggen",
+    "logoutUnsynced": "{n} wijziging(en) zijn nog niet gesynchroniseerd en gaan verloren als je nu uitlogt. Toch uitloggen?",
     "syncNow": "Nu synchroniseren",
     "syncing": "Bezig met synchroniseren…",
     "pending": "{n} wijziging(en) wachten op synchronisatie",
@@ -165,21 +161,62 @@
   },
   "login": {
     "title": "Inloggen",
-    "registerTitle": "Account maken",
-    "intro": "Eén account per gezin. Een ouder logt in; de profielen en voortgang komen op elk apparaat.",
+    "registerTitle": "Account aanvragen",
+    "intro": "Eén account per gezin. Een ouder logt in; de profielen en voortgang staan op elk apparaat.",
+    "registerIntro": "GymBuddy is alleen op uitnodiging. Na je aanmelding keurt de beheerder je account goed voordat je kunt inloggen.",
     "email": "E-mailadres",
     "password": "Wachtwoord",
     "passwordHint": "Minstens 8 tekens.",
     "submit": "Inloggen",
-    "registerSubmit": "Account maken",
+    "registerSubmit": "Account aanvragen",
     "busy": "Even geduld…",
-    "toRegister": "Nog geen account? Maak er een",
-    "toLogin": "Heb je al een account? Log in"
+    "toRegister": "Nog geen account? Vraag er een aan",
+    "toLogin": "Al goedgekeurd? Log in",
+    "toLoginShort": "Terug naar inloggen",
+    "pendingTitle": "Aanvraag verstuurd",
+    "pendingBody": "Je account wacht op goedkeuring. Je kunt inloggen zodra de beheerder het heeft goedgekeurd.",
+    "reason": {
+      "not-approved": "Je account is (niet meer) goedgekeurd. Vraag het de beheerder als je denkt dat dit niet klopt.",
+      "expired": "Je bent uitgelogd. Log opnieuw in."
+    }
+  },
+  "admin": {
+    "open": "Accounts beheren",
+    "title": "Accounts",
+    "intro": "Alleen goedgekeurde accounts kunnen GymBuddy gebruiken. Nieuwe aanmeldingen wachten hier tot je ze goedkeurt.",
+    "refresh": "Vernieuwen",
+    "loading": "Laden…",
+    "group": {
+      "pending": "Wacht op goedkeuring",
+      "approved": "Goedgekeurd",
+      "blocked": "Geblokkeerd"
+    },
+    "empty": {
+      "pending": "Er wacht niemand.",
+      "approved": "Nog geen goedgekeurde accounts.",
+      "blocked": "Geen geblokkeerde accounts."
+    },
+    "registered": "Aangemeld {date}",
+    "athletes": "geen sporters | 1 sporter | {n} sporters",
+    "adminBadge": "Beheerder",
+    "approve": "Goedkeuren",
+    "block": "Blokkeren",
+    "reject": "Afwijzen",
+    "delete": "Verwijderen",
+    "confirmBlock": "{email} blokkeren? Diegene wordt meteen op elk apparaat uitgelogd. Je kunt later weer goedkeuren.",
+    "confirmReject": "De aanvraag van {email} afwijzen? De aanvraag wordt verwijderd.",
+    "confirmDelete": "{email} verwijderen, met alle sporters, trainingen en tests? Dit kan niet ongedaan worden gemaakt."
   },
   "errors": {
     "EMAIL_TAKEN": "Er bestaat al een account met dit e-mailadres.",
     "INVALID_CREDENTIALS": "E-mailadres of wachtwoord klopt niet.",
     "VALIDATION_FAILED": "Controleer het e-mailadres en gebruik een wachtwoord van minstens 8 tekens.",
+    "ACCOUNT_PENDING": "Je account wacht nog op goedkeuring.",
+    "ACCOUNT_BLOCKED": "Dit account is geblokkeerd. Vraag het de beheerder als je denkt dat dit niet klopt.",
+    "ACCOUNT_NOT_APPROVED": "Je account is (niet meer) goedgekeurd.",
+    "CANNOT_CHANGE_SELF": "Je kunt je eigen account niet blokkeren of verwijderen.",
+    "FORBIDDEN": "Alleen de beheerder kan dit doen.",
+    "NOT_FOUND": "Dat account bestaat niet meer.",
     "NETWORK": "De server is niet bereikbaar. Je voortgang staat op dit apparaat en wordt later gesynchroniseerd.",
     "UNAUTHORIZED": "Log opnieuw in om te blijven synchroniseren.",
     "UNKNOWN": "Er ging iets mis. Probeer het later opnieuw."

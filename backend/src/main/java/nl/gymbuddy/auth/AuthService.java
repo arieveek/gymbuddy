@@ -53,20 +53,19 @@ public class AuthService {
 		this.dummyHash = passwordEncoder.encode("not-a-real-password");
 	}
 
+	/** Creates a pending account. It gets no tokens until the admin approves it. */
 	@Transactional
-	public TokenResponse register(String email, String password) {
+	public void register(String email, String password) {
 		String normalized = normalize(email);
 		if (users.existsByEmail(normalized)) {
 			throw new ApiException(HttpStatus.CONFLICT, "EMAIL_TAKEN");
 		}
-		User user;
 		try {
-			user = users.saveAndFlush(new User(normalized, passwordEncoder.encode(password)));
+			users.saveAndFlush(new User(normalized, passwordEncoder.encode(password)));
 		}
 		catch (DataIntegrityViolationException e) {
 			throw new ApiException(HttpStatus.CONFLICT, "EMAIL_TAKEN");
 		}
-		return issue(user.getId());
 	}
 
 	@Transactional
@@ -76,6 +75,7 @@ public class AuthService {
 		if (user == null || !ok) {
 			throw new ApiException(HttpStatus.UNAUTHORIZED, "INVALID_CREDENTIALS");
 		}
+		requireApproved(user);
 		return issue(user.getId());
 	}
 
@@ -91,8 +91,22 @@ public class AuthService {
 		if (stored.isExpired(now)) {
 			throw invalidRefresh();
 		}
+		User user = users.findById(stored.getUserId()).orElseThrow(AuthService::invalidRefresh);
+		if (!user.isApproved()) {
+			tokens.revokeAllForUser(user.getId(), now);
+		}
+		requireApproved(user);
 		stored.revoke(now);
 		return issue(stored.getUserId());
+	}
+
+	/** Pending and blocked accounts get a code the app can explain, only after the password was right. */
+	private static void requireApproved(User user) {
+		switch (user.getStatus()) {
+			case approved -> { }
+			case pending -> throw new ApiException(HttpStatus.FORBIDDEN, "ACCOUNT_PENDING");
+			case blocked -> throw new ApiException(HttpStatus.FORBIDDEN, "ACCOUNT_BLOCKED");
+		}
 	}
 
 	@Transactional

@@ -4,12 +4,12 @@
 
 ## Overview
 
-GymBuddy is a pull-up training app for a young competition gymnast: one Nuxt codebase runs as the website and the iPhone/iPad app, and a Spring Boot API syncs progress behind a login. The app is local-first: it works fully on the device without an account, and signing in adds sync between devices.
+GymBuddy is a pull-up training app for a young competition gymnast: one Nuxt codebase runs as the website and the iPhone/iPad app, and a Spring Boot API stores progress behind a login. Login is required and the app is invite-only: new accounts wait until the admin approves them. Once logged in, the app keeps working offline and syncs when back online.
 
 - **What it does:** a level test places him on one of 5 levels; he follows a 15-minute workout 3 times a week; a retest every 2 weeks moves him up. Training never ends: the workout keeps growing with every test, also after the top level (see [Training model](#training-model)).
 - **Profiles:** each athlete has a profile with first name, age group (child or adult), level and language. The app is built for a child but works for an adult too.
 - **Platforms:** iPhone, iPad (native app via Capacitor) and any web browser.
-- **Users:** one parent account per family; the child does not get his own login.
+- **Users:** one parent account per family; the child does not get his own login. Only accounts the admin approves can use the app.
 - **Languages:** Dutch and English, everywhere in the app including the training content.
 - **Principles:** keep it simple, one repo, one Docker Compose stack, works offline at the gym and syncs when online.
 - **Reference:** the clickable prototype [`docs/bar-strong.html`](bar-strong.html) shows the screens and the exercise content.
@@ -95,7 +95,7 @@ Nuxt in single-page mode, built once as static files and shipped two ways: to th
 
 Under `frontend/app/`:
 
-- `pages/` — `index.vue` (Today), `workout.vue` (player), `moves.vue`, `progress.vue`, `profile.vue`, `tips.vue`, `welcome.vue` (first start), `login.vue`
+- `pages/` — `index.vue` (Today), `workout.vue` (player), `moves.vue`, `progress.vue`, `profile.vue`, `tips.vue`, `welcome.vue` (first profile), `login.vue` (log in or request an account), `admin.vue` (approve accounts; admin only)
 - `data/` — `exercises.ts`, `levels.ts`, `milestones.ts`, `tips.ts`, `poses.ts`: the training content as plain TypeScript, edited in code, with Dutch and English text side by side
 - `utils/` — `plan.ts` (today's workout from level, step, age group and latest test), `progress.ts` (streaks, personal bests, goals, milestones), `sync.ts` (outbox and merge): pure functions with unit tests in `frontend/test/`
 - `composables/` — `useTimer.ts` (hold and rest countdowns), `useFeedback.ts` (beeps, haptics, keep awake), `useSync.ts`, `useTokenStore.ts`
@@ -140,21 +140,28 @@ A single Spring Boot service owns authentication and progress data; it issues it
 
 ### Authentication
 
-1. Parent registers with email and password; password hashed with BCrypt.
-2. Login returns a short-lived access token (JWT, ~15 minutes) and a refresh token (~30 days).
-3. Access tokens are signed by Spring's `JwtEncoder` and validated by the resource server config.
-4. Refresh tokens are random strings stored hashed in the database, so they can be revoked; each refresh rotates the token.
-5. Bearer tokens, not cookies: the Capacitor app runs from `capacitor://localhost`, where cookies are unreliable.
-6. CORS allows the web domain and `capacitor://localhost`.
+1. A parent requests an account with email and password (hashed with BCrypt). The account starts as `pending` and gets no tokens.
+2. The admin approves it on the admin page (`/admin` in the web app). The admin account itself is created at startup from `GYMBUDDY_ADMIN_EMAIL` / `GYMBUDDY_ADMIN_PASSWORD`; registering can never make someone admin.
+3. Login (approved accounts only; pending and blocked get `ACCOUNT_PENDING` / `ACCOUNT_BLOCKED`) returns a short-lived access token (JWT, ~15 minutes) and a refresh token (~30 days).
+4. Every API request looks the account up: only approved accounts get through, so blocking or deleting someone works immediately, not after their token expires.
+5. Access tokens are signed by Spring's `JwtEncoder` and validated by the resource server config.
+6. Refresh tokens are random strings stored hashed in the database, so they can be revoked; each refresh rotates the token.
+7. Bearer tokens, not cookies: the Capacitor app runs from `capacitor://localhost`, where cookies are unreliable.
+8. CORS allows the web domain and `capacitor://localhost`.
+9. Devices can be shared: logging out removes the training data from the device (after syncing), and when a different account logs in the previous account's data is cleared first.
 
 ### API
 
 | Method | Path | Purpose |
 |---|---|---|
-| POST | `/api/auth/register` | Create parent account |
-| POST | `/api/auth/login` | Get access + refresh token |
+| POST | `/api/auth/register` | Request a parent account (202, pending) |
+| POST | `/api/auth/login` | Get access + refresh token (approved accounts only) |
 | POST | `/api/auth/refresh` | Rotate tokens |
 | POST | `/api/auth/logout` | Revoke refresh token |
+| GET | `/api/me` | The signed-in account: email, role, status |
+| GET | `/api/admin/users` | Admin: all accounts, pending first |
+| POST | `/api/admin/users/{id}/approve`, `/block` | Admin: approve or block an account |
+| DELETE | `/api/admin/users/{id}` | Admin: delete an account with all its data |
 | GET | `/api/athletes` | List athletes for this account |
 | POST / PUT | `/api/athletes`, `/api/athletes/{id}` | Create or update the profile: name, age group, level, language |
 | GET / POST | `/api/athletes/{id}/sessions` | Workout history / log a workout |
@@ -168,7 +175,7 @@ Five PostgreSQL tables, created by Flyway; exercises and levels are not stored h
 
 | Table | Columns | Notes |
 |---|---|---|
-| `users` | id uuid, email unique, password_hash, created_at | The parent account |
+| `users` | id uuid, email unique, password_hash, role (`user`/`admin`), status (`pending`/`approved`/`blocked`), approved_at, created_at | The parent account; only approved ones can use the app |
 | `refresh_tokens` | id, user_id → users, token_hash, expires_at, revoked_at | One row per signed-in device |
 | `athletes` | id uuid, user_id → users, name, age_group (`child`/`adult`), level 1–5, language (`nl`/`en`), updated_at | The profile; a family can have more than one |
 | `sessions` | id uuid (client-made), athlete_id → athletes, date, level, step, light_week, reps_total, hold_seconds_total, created_at | One completed workout; the totals keep history right when plans change |

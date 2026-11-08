@@ -12,6 +12,8 @@ export default defineNuxtPlugin({
     await auth.init()
     const { sync } = useSync()
 
+    // Refresh the role (admin link) when online; failures are fine, the next sync refreshes the token.
+    if (auth.signedIn) auth.loadMe().catch(() => {})
     void sync()
     window.addEventListener('online', () => void sync())
     document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') void sync() })
