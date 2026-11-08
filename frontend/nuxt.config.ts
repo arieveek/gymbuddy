@@ -71,9 +71,10 @@ export default defineNuxtConfig({
     devOptions: { enabled: false }
   },
 
+  // `npm run dev` forwards /api to the local API; set API_TARGET if 8080 is taken on your machine.
   nitro: {
     devProxy: {
-      '/api': { target: 'http://localhost:8080/api', changeOrigin: true }
+      '/api': { target: `${process.env.API_TARGET ?? 'http://localhost:8080'}/api`, changeOrigin: true }
     }
   },
 

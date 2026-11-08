@@ -1,6 +1,7 @@
 {
   "common": {
     "cancel": "Annuleren",
+    "back": "Terug",
     "close": "Sluiten",
     "level": "Niveau {n}"
   },
@@ -153,6 +154,34 @@
   },
   "account": {
     "title": "Account",
-    "local": "Opgeslagen op dit apparaat."
+    "local": "Opgeslagen op dit apparaat. Met een account synchroniseert de voortgang tussen iPhone, iPad en computer.",
+    "login": "Inloggen",
+    "register": "Account maken",
+    "logout": "Uitloggen",
+    "syncNow": "Nu synchroniseren",
+    "syncing": "Bezig met synchroniseren…",
+    "pending": "{n} wijziging(en) wachten op synchronisatie",
+    "synced": "Gesynchroniseerd {time}"
+  },
+  "login": {
+    "title": "Inloggen",
+    "registerTitle": "Account maken",
+    "intro": "Eén account per gezin. Een ouder logt in; de profielen en voortgang komen op elk apparaat.",
+    "email": "E-mailadres",
+    "password": "Wachtwoord",
+    "passwordHint": "Minstens 8 tekens.",
+    "submit": "Inloggen",
+    "registerSubmit": "Account maken",
+    "busy": "Even geduld…",
+    "toRegister": "Nog geen account? Maak er een",
+    "toLogin": "Heb je al een account? Log in"
+  },
+  "errors": {
+    "EMAIL_TAKEN": "Er bestaat al een account met dit e-mailadres.",
+    "INVALID_CREDENTIALS": "E-mailadres of wachtwoord klopt niet.",
+    "VALIDATION_FAILED": "Controleer het e-mailadres en gebruik een wachtwoord van minstens 8 tekens.",
+    "NETWORK": "De server is niet bereikbaar. Je voortgang staat op dit apparaat en wordt later gesynchroniseerd.",
+    "UNAUTHORIZED": "Log opnieuw in om te blijven synchroniseren.",
+    "UNKNOWN": "Er ging iets mis. Probeer het later opnieuw."
   }
 }

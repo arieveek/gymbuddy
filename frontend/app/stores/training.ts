@@ -2,21 +2,29 @@ import { defineStore } from 'pinia'
 import type { AgeGroup, Athlete, Level, Locale, Session, TestResult } from '~/data/types'
 import { todayISO } from '~/utils/date'
 import { levelFromTest } from '~/utils/progress'
+import { enqueue, mergeAthletes, mergeById, type OutboxOp } from '~/utils/sync'
 
 const byDate = <T extends { date: string, createdAt: string }>(a: T, b: T) =>
   a.date.localeCompare(b.date) || a.createdAt.localeCompare(b.createdAt)
 
-/** Athletes, workouts and tests, kept on the device so the app works offline at the gym. */
+/**
+ * Athletes, workouts and tests, kept on the device so the app works offline at the gym.
+ * Every change is also queued in the outbox, which the sync uploads once signed in and online.
+ */
 export const useTrainingStore = defineStore('training', () => {
   const athletes = ref<Athlete[]>([])
   const activeId = ref<string | null>(null)
   const sessions = ref<Session[]>([])
   const tests = ref<TestResult[]>([])
+  const outbox = ref<OutboxOp[]>([])
+  const lastSyncAt = ref<string | null>(null)
 
   const active = computed(() => athletes.value.find(a => a.id === activeId.value) ?? athletes.value[0] ?? null)
   const activeSessions = computed(() => sessions.value.filter(s => s.athleteId === active.value?.id).sort(byDate))
   const activeTests = computed(() => tests.value.filter(t => t.athleteId === active.value?.id).sort(byDate))
   const latestTest = computed(() => activeTests.value.at(-1) ?? null)
+
+  const queue = (op: OutboxOp) => { outbox.value = enqueue(outbox.value, op) }
 
   function createAthlete(input: { name: string, ageGroup: AgeGroup, language: Locale }): Athlete {
     const athlete: Athlete = {
@@ -29,6 +37,7 @@ export const useTrainingStore = defineStore('training', () => {
     }
     athletes.value.push(athlete)
     activeId.value = athlete.id
+    queue({ kind: 'athlete', id: athlete.id })
     return athlete
   }
 
@@ -37,6 +46,7 @@ export const useTrainingStore = defineStore('training', () => {
     if (!a) return
     Object.assign(a, patch, { updatedAt: new Date().toISOString() })
     if (patch.name !== undefined) a.name = patch.name.trim().slice(0, 30)
+    queue({ kind: 'athlete', id: a.id })
   }
 
   function setActive(id: string) {
@@ -48,6 +58,7 @@ export const useTrainingStore = defineStore('training', () => {
     if (!a) return null
     const session: Session = { id: crypto.randomUUID(), athleteId: a.id, date: todayISO(), createdAt: new Date().toISOString(), ...input }
     sessions.value.push(session)
+    queue({ kind: 'session', id: session.id })
     return session
   }
 
@@ -57,13 +68,38 @@ export const useTrainingStore = defineStore('training', () => {
     if (!a) return null
     const result: TestResult = { id: crypto.randomUUID(), athleteId: a.id, date: todayISO(), pullups, hangSeconds, createdAt: new Date().toISOString() }
     tests.value.push(result)
+    queue({ kind: 'test', id: result.id })
     const from = a.level
     const to = levelFromTest(pullups, hangSeconds)
     if (to !== from) updateAthlete({ level: to })
     return { result, from, to }
   }
 
-  return { athletes, activeId, sessions, tests, active, activeSessions, activeTests, latestTest, createAthlete, updateAthlete, setActive, addSession, addTest }
+  /** Queues everything on this device, for the first sync after signing in. */
+  function queueAll() {
+    athletes.value.forEach(a => queue({ kind: 'athlete', id: a.id }))
+    sessions.value.forEach(s => queue({ kind: 'session', id: s.id }))
+    tests.value.forEach(t => queue({ kind: 'test', id: t.id }))
+  }
+
+  function dequeue(op: OutboxOp) {
+    outbox.value = outbox.value.filter(o => !(o.kind === op.kind && o.id === op.id))
+  }
+
+  /** Merges what the server has into this device. */
+  function applyRemote(remote: { athletes: Athlete[], sessions: Session[], tests: TestResult[] }) {
+    athletes.value = mergeAthletes(athletes.value, remote.athletes)
+    sessions.value = mergeById(sessions.value, remote.sessions)
+    tests.value = mergeById(tests.value, remote.tests)
+    if (!activeId.value || !athletes.value.some(a => a.id === activeId.value)) activeId.value = athletes.value[0]?.id ?? null
+    lastSyncAt.value = new Date().toISOString()
+  }
+
+  return {
+    athletes, activeId, sessions, tests, outbox, lastSyncAt,
+    active, activeSessions, activeTests, latestTest,
+    createAthlete, updateAthlete, setActive, addSession, addTest, queueAll, dequeue, applyRemote
+  }
 }, {
-  persist: { pick: ['athletes', 'activeId', 'sessions', 'tests'] }
+  persist: { pick: ['athletes', 'activeId', 'sessions', 'tests', 'outbox', 'lastSyncAt'] }
 })

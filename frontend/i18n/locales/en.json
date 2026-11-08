@@ -1,6 +1,7 @@
 {
   "common": {
     "cancel": "Cancel",
+    "back": "Back",
     "close": "Close",
     "level": "Level {n}"
   },
@@ -153,6 +154,34 @@
   },
   "account": {
     "title": "Account",
-    "local": "Saved on this device."
+    "local": "Saved on this device. With an account, progress syncs between iPhone, iPad and computer.",
+    "login": "Log in",
+    "register": "Create account",
+    "logout": "Log out",
+    "syncNow": "Sync now",
+    "syncing": "Syncing…",
+    "pending": "{n} change(s) waiting to sync",
+    "synced": "Synced {time}"
+  },
+  "login": {
+    "title": "Log in",
+    "registerTitle": "Create an account",
+    "intro": "One account per family. A parent signs in; the profiles and progress sync to every device.",
+    "email": "Email",
+    "password": "Password",
+    "passwordHint": "At least 8 characters.",
+    "submit": "Log in",
+    "registerSubmit": "Create account",
+    "busy": "One moment…",
+    "toRegister": "No account yet? Create one",
+    "toLogin": "Already have an account? Log in"
+  },
+  "errors": {
+    "EMAIL_TAKEN": "There is already an account with this email.",
+    "INVALID_CREDENTIALS": "Email or password is not right.",
+    "VALIDATION_FAILED": "Check the email address and use a password of at least 8 characters.",
+    "NETWORK": "Can't reach the server. Your progress is saved on this device and syncs later.",
+    "UNAUTHORIZED": "Please log in again to keep syncing.",
+    "UNKNOWN": "Something went wrong. Try again later."
   }
 }
