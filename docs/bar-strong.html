@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Bar Strong">
+<title>Bar Strong</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;800;900&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+/* Layout idea: a gymnastics scoreboard header over a single column of training cards, with a bottom tab bar sized for thumbs. */
+:root{
+  --bg:#eef1f5;
+  --surface:#ffffff;
+  --ink:#101a2e;
+  --muted:#5b6478;
+  --line:#d8dde6;
+  --accent:#d6246e;
+  --accent-soft:#fbe3ee;
+  --accent-ink:#ffffff;
+  --good:#1f8a5b;
+  --good-soft:#dff3ea;
+  --warn:#b7791f;
+  --display:"Big Shoulders Display", "Arial Narrow", Impact, sans-serif;
+  --body:"Figtree", -apple-system, "Segoe UI", Roboto, sans-serif;
+  --r:14px;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0c1220; --surface:#151d2f; --ink:#eef1f7; --muted:#9aa3b6; --line:#26304a;
+    --accent:#ff4f8e; --accent-soft:#3a1628; --accent-ink:#1a0710; --good:#3ccf8e; --good-soft:#123326; --warn:#f0b54a;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0c1220; --surface:#151d2f; --ink:#eef1f7; --muted:#9aa3b6; --line:#26304a;
+  --accent:#ff4f8e; --accent-soft:#3a1628; --accent-ink:#1a0710; --good:#3ccf8e; --good-soft:#123326; --warn:#f0b54a;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:16px;line-height:1.45;-webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,input:focus-visible,select:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+h1,h2,h3{text-wrap:balance;margin:0}
+.wrap{max-width:720px;margin:0 auto;padding:calc(env(safe-area-inset-top) + 16px) max(16px, env(safe-area-inset-right)) calc(96px + env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));display:flex;flex-direction:column;gap:16px}
+
+/* Scoreboard */
+.board{background:var(--ink);color:var(--bg);border-radius:var(--r);padding:18px 20px;display:grid;grid-template-columns:1fr auto;gap:4px 16px;align-items:end;position:relative;overflow:hidden}
+.board::after{content:"";position:absolute;left:0;right:0;top:0;height:5px;background:var(--accent)}
+.board .hi{font-weight:600;opacity:.75;font-size:14px;letter-spacing:.02em}
+.board .lvlname{font-family:var(--display);font-weight:800;font-size:38px;line-height:1;text-transform:uppercase;letter-spacing:.01em}
+.board .score{font-family:var(--display);font-weight:900;font-size:72px;line-height:.85;font-variant-numeric:tabular-nums;grid-row:1 / span 3;grid-column:2;text-align:right}
+.board .score small{font-size:28px;opacity:.5}
+.board .week{display:flex;gap:6px;align-items:center;font-size:13px;opacity:.85;margin-top:8px}
+.dot{width:12px;height:12px;border-radius:50%;border:2px solid currentColor;opacity:.6}
+.dot.on{background:var(--accent);border-color:var(--accent);opacity:1}
+
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:16px}
+.card h2{font-family:var(--display);font-weight:800;font-size:26px;text-transform:uppercase;letter-spacing:.01em;line-height:1.05}
+.sub{color:var(--muted);font-size:14px}
+.row{display:flex;gap:12px;align-items:center}
+.stack{display:flex;flex-direction:column;gap:12px}
+.chip{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;padding:4px 10px;border-radius:999px;background:var(--accent-soft);color:var(--accent);text-transform:uppercase;letter-spacing:.04em}
+.chip.good{background:var(--good-soft);color:var(--good)}
+
+.btn{border:0;border-radius:12px;padding:14px 18px;font-weight:700;font-size:17px;background:var(--accent);color:var(--accent-ink);min-height:52px}
+.btn.big{width:100%;font-size:20px;min-height:60px;font-family:var(--display);text-transform:uppercase;letter-spacing:.04em;font-weight:800}
+.btn.ghost{background:transparent;color:var(--ink);border:2px solid var(--line)}
+.btn.small{min-height:40px;padding:8px 14px;font-size:15px}
+.btn:active{transform:scale(.98)}
+
+/* Exercise list */
+.exlist{display:flex;flex-direction:column;gap:0;margin:0;padding:0;list-style:none}
+.exlist li{display:grid;grid-template-columns:64px 1fr auto;gap:12px;align-items:center;padding:10px 0;border-top:1px solid var(--line)}
+.exlist li:first-child{border-top:0}
+.pose{width:64px;height:64px;border-radius:10px;background:var(--bg);color:var(--ink)}
+.pose svg{width:100%;height:100%;display:block}
+.exname{font-weight:700}
+.dose{font-family:var(--display);font-weight:800;font-size:22px;font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap}
+.dose small{display:block;font-family:var(--body);font-weight:500;font-size:12px;color:var(--muted)}
+
+/* Player */
+.player{position:fixed;inset:0;background:var(--bg);z-index:20;overflow-y:auto;display:none}
+.player.open{display:block}
+.player .wrap{padding-bottom:calc(24px + env(safe-area-inset-bottom))}
+.ptop{display:flex;justify-content:space-between;align-items:center}
+.progressbar{height:6px;border-radius:3px;background:var(--line);overflow:hidden}
+.progressbar i{display:block;height:100%;background:var(--accent);transition:width .3s}
+.bigpose{width:min(220px,60vw);aspect-ratio:1;margin:0 auto;color:var(--ink)}
+.bigpose svg{width:100%;height:100%}
+.pname{font-family:var(--display);font-weight:900;font-size:clamp(36px,9vw,56px);line-height:.95;text-transform:uppercase;text-align:center}
+.setdots{display:flex;justify-content:center;gap:10px}
+.setdots span{width:18px;height:18px;border-radius:50%;border:3px solid var(--line)}
+.setdots span.done{background:var(--good);border-color:var(--good)}
+.setdots span.now{border-color:var(--accent)}
+.clock{font-family:var(--display);font-weight:900;font-size:clamp(88px,26vw,150px);line-height:.9;text-align:center;font-variant-numeric:tabular-nums}
+.clock.rest{color:var(--good)}
+.target{text-align:center;font-size:18px;font-weight:600}
+.cues{margin:0;padding-left:20px;display:flex;flex-direction:column;gap:6px}
+.btnrow{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+
+/* Progress */
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);padding:12px}
+.stat b{display:block;font-family:var(--display);font-weight:900;font-size:40px;line-height:1;font-variant-numeric:tabular-nums}
+.stat span{font-size:13px;color:var(--muted)}
+.ladder{display:flex;flex-direction:column;gap:6px;margin:0;padding:0;list-style:none}
+.ladder li{display:grid;grid-template-columns:36px 1fr auto;gap:10px;align-items:center;padding:10px 12px;border-radius:10px;border:1px solid var(--line)}
+.ladder li.cur{border-color:var(--accent);background:var(--accent-soft)}
+.ladder li.past{opacity:.6}
+.ladder .n{font-family:var(--display);font-weight:900;font-size:26px;text-align:center}
+.field{display:flex;flex-direction:column;gap:6px}
+.field label{font-weight:600;font-size:14px}
+.field input,.field select{font:inherit;font-size:18px;padding:12px;border-radius:10px;border:2px solid var(--line);background:var(--bg);color:var(--ink);width:100%}
+.stepper{display:grid;grid-template-columns:52px 1fr 52px;gap:8px;align-items:center}
+.stepper output{font-family:var(--display);font-weight:900;font-size:40px;text-align:center;font-variant-numeric:tabular-nums}
+.stepper button{height:52px;border-radius:12px;border:2px solid var(--line);background:var(--bg);font-size:26px;font-weight:700}
+.chart svg{width:100%;height:auto;display:block}
+.log{margin:0;padding:0;list-style:none;font-size:15px}
+.log li{display:flex;justify-content:space-between;padding:8px 0;border-top:1px solid var(--line);font-variant-numeric:tabular-nums}
+.log li:first-child{border-top:0}
+.tips p{margin:0}
+.note{font-size:13px;color:var(--muted);text-align:center}
+
+/* Tab bar */
+nav.tabs{position:fixed;left:0;right:0;bottom:0;background:var(--surface);border-top:1px solid var(--line);display:flex;justify-content:center;padding-bottom:env(safe-area-inset-bottom);z-index:10}
+nav.tabs .in{display:grid;grid-template-columns:repeat(4,1fr);width:100%;max-width:720px}
+nav.tabs button{background:none;border:0;padding:10px 4px 12px;display:flex;flex-direction:column;align-items:center;gap:2px;font-size:12px;font-weight:600;color:var(--muted)}
+nav.tabs button svg{width:24px;height:24px}
+nav.tabs button[aria-current="page"]{color:var(--accent)}
+.view{display:none;flex-direction:column;gap:16px}
+.view.on{display:flex}
+
+/* Dialog */
+.modal{position:fixed;inset:0;background:rgba(5,10,20,.55);display:none;align-items:flex-end;justify-content:center;z-index:30;padding:16px}
+.modal.open{display:flex}
+.modal .card{width:100%;max-width:520px;margin-bottom:env(safe-area-inset-bottom)}
+@media (min-width:700px){.modal{align-items:center}}
+
+.celebrate{text-align:center}
+.celebrate .clock{color:var(--accent)}
+@media (prefers-reduced-motion: no-preference){
+  .pop{animation:pop .5s cubic-bezier(.2,1.6,.4,1)}
+  @keyframes pop{from{transform:scale(.6);opacity:.2}to{transform:scale(1);opacity:1}}
+}
+@media (min-width:700px){
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+}
+</style>
+</head>
+<body>
+<div class="wrap" id="app">
+  <header class="board" aria-live="polite">
+    <div class="hi" id="hi">Hi, gymnast</div>
+    <div class="lvlname" id="lvlname">Foundation</div>
+    <div class="score" id="score">1<small>/5</small></div>
+    <div class="week" id="week"></div>
+  </header>
+
+  <!-- TODAY -->
+  <section class="view on" id="v-today" aria-label="Today">
+    <div class="card stack">
+      <div class="row" style="justify-content:space-between;flex-wrap:wrap">
+        <h2>Today's workout</h2>
+        <span class="chip" id="todaychip">About 15 min</span>
+      </div>
+      <p class="sub" id="levelgoal" style="margin:0"></p>
+      <ul class="exlist" id="todaylist"></ul>
+      <button class="btn big" id="startbtn">Start workout</button>
+      <p class="note" style="margin:0">Includes a 2-minute warm-up. Rest 60 seconds between sets.</p>
+    </div>
+    <div class="card stack" id="nudge" hidden></div>
+  </section>
+
+  <!-- MOVES -->
+  <section class="view" id="v-moves" aria-label="Moves">
+    <div class="card stack">
+      <h2>All the moves</h2>
+      <p class="sub" style="margin:0">How to do each exercise. Tap a move to see the coaching cues.</p>
+      <ul class="exlist" id="movelist"></ul>
+    </div>
+  </section>
+
+  <!-- PROGRESS -->
+  <section class="view" id="v-progress" aria-label="Progress">
+    <div class="stats">
+      <div class="stat"><b id="st-best">0</b><span>Best pull-ups</span></div>
+      <div class="stat"><b id="st-hang">0s</b><span>Best chin-over-bar hold</span></div>
+      <div class="stat"><b id="st-sessions">0</b><span>Workouts done</span></div>
+    </div>
+    <div class="two">
+      <div class="card stack">
+        <div class="row" style="justify-content:space-between">
+          <h2>Test day</h2>
+          <span class="chip good">Every 2 weeks</span>
+        </div>
+        <p class="sub" style="margin:0">Fresh arms, after a warm-up. Count only strict reps: chin over the bar, all the way down, no kicking.</p>
+        <button class="btn" id="testbtn">Record a test</button>
+        <div class="chart" id="chart"></div>
+      </div>
+      <div class="card stack">
+        <h2>The ladder</h2>
+        <ol class="ladder" id="ladder"></ol>
+      </div>
+    </div>
+    <div class="card stack">
+      <h2>History</h2>
+      <ul class="log" id="log"></ul>
+    </div>
+    <div class="card stack">
+      <h2>Athlete</h2>
+      <div class="field"><label for="nameinput">Name</label><input id="nameinput" type="text" autocomplete="off" placeholder="Your son's name"></div>
+      <div class="field"><label for="levelselect">Training level</label><select id="levelselect"></select></div>
+      <p class="sub" id="syncnote" style="margin:0">Saved on this device.</p>
+    </div>
+  </section>
+
+  <!-- TIPS -->
+  <section class="view tips" id="v-tips" aria-label="Tips">
+    <div class="card stack">
+      <h2>How to use it</h2>
+      <p>Train <b>3 times a week</b>, with a day off in between (for example Monday, Wednesday, Friday). On gym practice days, ask the coach whether to add it after practice or save it for a home day.</p>
+      <p>Do every rep with good form. One clean pull-up beats five messy ones, and judges score the clean shape.</p>
+      <p>Every 2 weeks, do a <b>test</b> on the Progress tab. The app moves him up a level when he's ready.</p>
+    </div>
+    <div class="card stack">
+      <h2>The gymnast's shape</h2>
+      <p>Every bar exercise here uses a <b>hollow body</b>: legs squeezed together, toes pointed, belly tight, ribs pulled in. That's the same shape he needs on bars and rings, so strength and technique grow together.</p>
+    </div>
+    <div class="card stack">
+      <h2>Stay safe</h2>
+      <p><b>Stop</b> if he feels sharp pain in shoulders, elbows or wrists. Sore muscles the next day are normal; joint pain is not.</p>
+      <p><b>Look after hands.</b> Use chalk, keep calluses filed down, and skip bar work if he has a fresh rip.</p>
+      <p>No added weights. For growing kids, bodyweight and perfect form are the right tools.</p>
+      <p>Share the plan with his coach. They know his training load and can tell you if anything should change.</p>
+    </div>
+    <div class="card stack">
+      <h2>Put it on the home screen</h2>
+      <p><b>iPhone and iPad:</b> open this page in Safari, tap the Share button, then <b>Add to Home Screen</b>. It opens like an app.</p>
+      <p><b>Computer:</b> bookmark the page in any browser.</p>
+    </div>
+  </section>
+</div>
+
+<nav class="tabs" aria-label="Sections">
+  <div class="in">
+    <button data-tab="today" aria-current="page"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 5h18"/><circle cx="12" cy="9" r="2"/><path d="M8 5l2 6v8M16 5l-2 6v8"/></svg>Today</button>
+    <button data-tab="moves"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="4" y="4" width="16" height="16" rx="3"/><path d="M8 9h8M8 13h8M8 17h5"/></svg>Moves</button>
+    <button data-tab="progress"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 19l5-6 4 3 7-9"/><path d="M15 7h5v5"/></svg>Progress</button>
+    <button data-tab="tips"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/></svg>Tips</button>
+  </div>
+</nav>
+
+<!-- Workout player -->
+<div class="player" id="player" role="dialog" aria-modal="true" aria-label="Workout">
+  <div class="wrap" id="playerbody"></div>
+</div>
+
+<!-- Modal -->
+<div class="modal" id="modal" role="dialog" aria-modal="true">
+  <div class="card stack" id="modalbody"></div>
+</div>
+
+<script>
+(function(){
+"use strict";
+
+/* ---------- Content ---------- */
+const POSES = {
+  hang:   {bar:[20,12,80,12], head:[50,25], lines:[[42,12,46,32],[58,12,54,32],[50,31,50,60],[50,60,48,86],[50,60,52,86]]},
+  scap:   {bar:[20,12,80,12], head:[50,22], lines:[[42,12,45,28],[58,12,55,28],[50,28,50,57],[50,57,48,83],[50,57,52,83]], arrow:true},
+  top:    {bar:[20,12,80,12], head:[50,5],  lines:[[42,12,37,26],[37,26,47,17],[58,12,63,26],[63,26,53,17],[50,15,50,44],[50,44,48,72],[50,44,52,72]]},
+  half:   {bar:[20,12,80,12], head:[50,19], lines:[[42,12,34,24],[34,24,46,29],[58,12,66,24],[66,24,54,29],[50,27,50,55],[50,55,48,82],[50,55,52,82]]},
+  tuck:   {bar:[20,12,80,12], head:[50,25], lines:[[42,12,46,32],[58,12,54,32],[50,31,50,58],[50,58,68,52],[68,52,68,72]]},
+  lsit:   {bar:[20,12,80,12], head:[50,5],  lines:[[42,12,37,26],[37,26,47,17],[58,12,63,26],[63,26,53,17],[50,15,50,44],[50,44,84,44]]},
+  row:    {bar:[14,44,40,44], ground:true, head:[25,55], lines:[[30,44,33,57],[33,57,62,71],[62,71,90,86]]},
+  hollow: {ground:true, head:[33,66], lines:[[10,58,30,71],[30,71,58,76],[58,76,90,64]]},
+  box:    {bar:[20,12,80,12], ground:true, head:[50,9], box:true, lines:[[42,12,38,24],[38,24,47,20],[58,12,62,24],[62,24,53,20],[50,18,50,46],[50,46,66,56],[66,56,66,70]]},
+  warm:   {ground:true, head:[50,22], lines:[[50,30,50,60],[50,34,30,22],[50,34,70,22],[50,60,42,88],[50,60,58,88]], circles:true}
+};
+function poseSVG(key){
+  const p = POSES[key] || POSES.hang;
+  let s = '<svg viewBox="0 0 100 100" aria-hidden="true">';
+  if(p.ground) s += '<line x1="6" y1="90" x2="94" y2="90" stroke="currentColor" stroke-opacity=".25" stroke-width="2"/>';
+  if(p.box) s += '<rect x="60" y="70" width="22" height="20" rx="2" fill="currentColor" fill-opacity=".12" stroke="currentColor" stroke-opacity=".35" stroke-width="1.5"/>';
+  if(p.bar) s += '<line x1="'+p.bar[0]+'" y1="'+p.bar[1]+'" x2="'+p.bar[2]+'" y2="'+p.bar[3]+'" stroke="var(--accent)" stroke-width="4" stroke-linecap="round"/>';
+  p.lines.forEach(l=>{ s += '<line x1="'+l[0]+'" y1="'+l[1]+'" x2="'+l[2]+'" y2="'+l[3]+'" stroke="currentColor" stroke-width="5" stroke-linecap="round"/>'; });
+  s += '<circle cx="'+p.head[0]+'" cy="'+p.head[1]+'" r="6.5" fill="currentColor"/>';
+  if(p.arrow) s += '<path d="M78 60 V40 M72 46 L78 40 L84 46" stroke="var(--accent)" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/>';
+  if(p.circles) s += '<circle cx="26" cy="20" r="8" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-dasharray="4 4"/><circle cx="74" cy="20" r="8" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-dasharray="4 4"/>';
+  return s + '</svg>';
+}
+
+const EX = {
+  warmup: {name:"Warm-up", pose:"warm", type:"list", cues:["20 arm circles forwards, 20 backwards","10 shoulder shrugs up and down","10 wrist circles each way","5 slow cat-cow stretches on hands and knees","10 jumping jacks"]},
+  hang:   {name:"Dead hang", pose:"hang", type:"hold", cues:["Grab the bar, hands shoulder-width, thumbs around the bar","Arms straight, shoulders gently pulled down (not up by the ears)","Legs together, toes pointed, belly tight"], why:"Builds grip and shoulder strength for everything on the bar."},
+  scap:   {name:"Scap pulls", pose:"scap", type:"reps", cues:["Start in a dead hang with straight arms","Pull shoulders down and back so the body rises a few centimetres","Keep elbows straight the whole time","Pause 1 second at the top, then lower slowly"], why:"Teaches the first part of every pull-up and protects the shoulders."},
+  hollow: {name:"Hollow hold", pose:"hollow", type:"hold", cues:["Lie on your back, lower back pressed into the floor","Arms by your ears, legs straight and squeezed together","Lift shoulders and feet off the floor, toes pointed","If the back lifts, bend the knees or raise the legs higher"], why:"The gymnast's body shape. A strong hollow stops kicking and swinging."},
+  row:    {name:"Bar rows", pose:"row", type:"reps", cues:["Under a low bar, rings or a sturdy table edge","Body straight like a plank from head to heels","Pull your chest to the bar, elbows close to your sides","Lower with control"], why:"Builds the pulling muscles with less than full bodyweight."},
+  flexed: {name:"Chin-over-bar hold", pose:"top", type:"hold", cues:["Step up on a box or jump so your chin is above the bar","Hold there, elbows tight to your sides","Keep the hollow shape, legs together","Step down safely when time is up"], why:"Makes the hardest part of the pull-up, the top, feel strong."},
+  neg:    {name:"Slow lowers", pose:"top", type:"reps", tempo:"Count 5 on the way down", cues:["Jump or step up to chin over the bar","Lower as slowly as you can, count to 5","Go all the way to straight arms","Put feet down, reset, repeat"], why:"Lowering slowly is the fastest way to build a first pull-up."},
+  box:    {name:"Box-assisted pull-ups", pose:"box", type:"reps", cues:["Put a box or chair under the bar, feet resting on it","Pull with your arms, push only a little with your legs","Chin over the bar, then lower slowly","Use less leg help as you get stronger"], why:"Practises the full movement with a little help."},
+  half:   {name:"90° hold", pose:"half", type:"hold", cues:["Get to the top, then lower until elbows are at a right angle","Hold there, shoulders down, hollow body","This is the sticky point: owning it makes reps easier"], why:"Strengthens the middle of the pull-up, where most kids get stuck."},
+  tuck:   {name:"Hanging tuck raises", pose:"tuck", type:"reps", cues:["Hang with straight arms and active shoulders","Bring knees up to the chest without swinging","Lower slowly until legs are straight"], why:"Core strength on the bar for kips and casts."},
+  pullup: {name:"Strict pull-ups", pose:"top", type:"reps", cues:["Overhand grip, hands shoulder-width","Start from straight arms every rep","Hollow body, legs together, toes pointed, no kicking","Chin clearly over the bar, then lower with control"], why:"The main event."},
+  chin:   {name:"Chin-ups", pose:"top", type:"reps", cues:["Palms facing you, hands shoulder-width","Same strict form as pull-ups","Pull until chin is over the bar"], why:"Adds more biceps work and more good reps."},
+  pause:  {name:"Pause pull-ups", pose:"top", type:"reps", tempo:"Hold 2 seconds at the top", cues:["A strict pull-up","Freeze with chin over the bar for 2 seconds","Lower slowly"], why:"Builds control and strength at the top."},
+  lsit:   {name:"L-sit pull-ups", pose:"lsit", type:"reps", cues:["Hang, then lift straight legs in front to make an L","Keep legs up and toes pointed through the whole pull-up","If legs drop, bend knees into a tuck instead"], why:"Competition-level strength and body control together."}
+};
+
+// sets, value (reps or seconds), label for range
+const LEVELS = [
+  {n:1, name:"Foundation", who:"Can't do a pull-up yet", goal:"Goal: hold chin over the bar for 5 seconds.",
+    plan:[["hang",3,20],["scap",3,6],["row",3,8],["hollow",3,20]]},
+  {n:2, name:"Builder", who:"Can hold chin over bar, no pull-ups yet", goal:"Goal: your first strict pull-up.",
+    plan:[["flexed",3,10],["neg",3,3],["box",3,5],["row",3,10],["tuck",2,6],["hollow",3,25]]},
+  {n:3, name:"First reps", who:"1 to 3 pull-ups", goal:"Goal: 4 strict pull-ups in a row.",
+    plan:[["pullup",4,2,"1–2"],["neg",3,3],["half",3,10],["chin",2,2],["tuck",2,8],["hollow",3,30]]},
+  {n:4, name:"Strong", who:"4 to 7 pull-ups", goal:"Goal: 8 strict pull-ups in a row.",
+    plan:[["pullup",4,4,"3–4"],["pause",3,2],["chin",2,4],["tuck",3,8],["hollow",3,30]]},
+  {n:5, name:"Competition", who:"8 or more pull-ups", goal:"Goal: 12 strict pull-ups and 5 L-sit pull-ups.",
+    plan:[["lsit",3,3],["pullup",4,6],["pause",3,3],["neg",2,3],["tuck",3,10],["hollow",3,40]]}
+];
+function levelFromTest(p,h){ if(p>=8) return 5; if(p>=4) return 4; if(p>=1) return 3; if(h>=5) return 2; return 1; }
+
+/* ---------- State & storage ---------- */
+const LS_KEY = "barstrong.v1";
+let S = {name:"", level:1, sessions:[], tests:[], updatedAt:0};
+try { const raw = localStorage.getItem(LS_KEY); if(raw){ const o = JSON.parse(raw); if(o && typeof o==="object") S = Object.assign(S,o); } } catch(e){}
+
+let cloudDoc = null, writeChain = Promise.resolve(), saveTimer = null;
+function save(){
+  S.updatedAt = Date.now();
+  try { localStorage.setItem(LS_KEY, JSON.stringify(S)); } catch(e){}
+  if(cloudDoc){
+    clearTimeout(saveTimer);
+    saveTimer = setTimeout(()=>{
+      const body = JSON.parse(JSON.stringify(S));
+      writeChain = writeChain.then(()=>cloudDoc.set(body)).catch(()=>{ setSync("Saved on this device. Your account couldn't be reached just now."); });
+    }, 700);
+  }
+}
+function setSync(t){ const el = document.getElementById("syncnote"); if(el) el.textContent = t; }
+
+async function connectCloud(){
+  try{
+    if(!window.claude || typeof window.claude.use !== "function") return;
+    const [db, user] = await Promise.all([window.claude.use("db"), window.claude.use("user")]);
+    if(!db || !user) return;
+    const id = await user.id();
+    if(!id) return;
+    const ref = db.doc("data/users/" + id + "/state");
+    const snap = await Promise.race([ref.get(), new Promise((_,rej)=>setTimeout(()=>rej(new Error("timeout")),10000))]);
+    if(snap.exists){
+      const remote = snap.data() || {};
+      if((remote.updatedAt||0) > (S.updatedAt||0)){
+        S = Object.assign({name:"",level:1,sessions:[],tests:[],updatedAt:0}, JSON.parse(JSON.stringify(remote)));
+        try { localStorage.setItem(LS_KEY, JSON.stringify(S)); } catch(e){}
+        renderAll();
+      }
+    }
+    cloudDoc = ref;
+    if(!snap.exists || (snap.data().updatedAt||0) < (S.updatedAt||0)) { writeChain = writeChain.then(()=>ref.set(JSON.parse(JSON.stringify(S)))).catch(()=>{}); }
+    setSync("Saved to your Claude account, so it syncs between iPhone, iPad and computer.");
+  }catch(e){ /* stay local */ }
+}
+
+/* ---------- Helpers ---------- */
+const $ = id => document.getElementById(id);
+const esc = s => String(s).replace(/[&<>"']/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const today = () => { const d=new Date(); return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0"); };
+const fmtDate = iso => { const [y,m,d]=iso.split("-").map(Number); return new Date(y,m-1,d).toLocaleDateString(undefined,{day:"numeric",month:"short"}); };
+function weekStart(){ const d=new Date(); const day=(d.getDay()+6)%7; d.setHours(0,0,0,0); d.setDate(d.getDate()-day); return d; }
+function sessionsThisWeek(){ const ws=weekStart(); return S.sessions.filter(s=>{ const [y,m,d]=s.d.split("-").map(Number); return new Date(y,m-1,d)>=ws; }).length; }
+function doseText(item){ const ex=EX[item[0]]; const v=item[3]||item[2]; return ex.type==="hold" ? item[1]+" × "+item[2]+"s" : item[1]+" × "+v; }
+function lvl(){ return LEVELS[Math.min(Math.max(S.level,1),5)-1]; }
+
+/* ---------- Render ---------- */
+function renderBoard(){
+  const L = lvl();
+  $("hi").textContent = S.name ? "Hi, " + S.name : "Hi, gymnast";
+  $("lvlname").textContent = L.name;
+  $("score").innerHTML = L.n + "<small>/5</small>";
+  const n = sessionsThisWeek();
+  let dots = "";
+  for(let i=0;i<3;i++) dots += '<span class="dot'+(i<n?' on':'')+'"></span>';
+  $("week").innerHTML = dots + '<span>&nbsp;' + Math.min(n,3) + ' of 3 workouts this week' + (n>3?' (+'+(n-3)+' extra)':'') + '</span>';
+}
+function exRow(key, right){
+  const ex = EX[key];
+  return '<li><div class="pose">'+poseSVG(ex.pose)+'</div><div><div class="exname">'+esc(ex.name)+'</div><div class="sub">'+esc(ex.tempo || (ex.why||""))+'</div></div>'+right+'</li>';
+}
+function renderToday(){
+  const L = lvl();
+  $("levelgoal").textContent = L.goal;
+  $("todaylist").innerHTML = L.plan.map(it=>{
+    const ex = EX[it[0]];
+    return exRow(it[0], '<div class="dose">'+doseText(it)+'<small>'+(ex.type==="hold"?"sets × seconds":"sets × reps")+'</small></div>');
+  }).join("");
+  const done = S.sessions.some(s=>s.d===today());
+  $("todaychip").textContent = done ? "Done today" : "About 15 min";
+  $("todaychip").className = done ? "chip good" : "chip";
+  $("startbtn").textContent = done ? "Do it again" : "Start workout";
+
+  // nudge to test
+  const atLevel = S.sessions.filter(s=>s.l===L.n).length;
+  const lastTest = S.tests.length ? S.tests[S.tests.length-1].d : null;
+  const daysSince = lastTest ? Math.round((new Date(today()) - new Date(lastTest))/864e5) : null;
+  const nudge = $("nudge");
+  if(!S.tests.length){
+    nudge.hidden = false;
+    nudge.innerHTML = '<h2>Find the right level</h2><p class="sub" style="margin:0">Do a quick test so the app picks the right workout. It takes 2 minutes.</p><button class="btn" data-act="test">Do the test</button>';
+  } else if(atLevel>=6 && (daysSince===null || daysSince>=12)){
+    nudge.hidden = false;
+    nudge.innerHTML = '<h2>Test day!</h2><p class="sub" style="margin:0">'+atLevel+' workouts done at this level. Time to see if he can move up.</p><button class="btn" data-act="test">Record a test</button>';
+  } else nudge.hidden = true;
+}
+function renderMoves(){
+  const order = ["warmup","hang","scap","hollow","row","flexed","neg","box","half","tuck","pullup","chin","pause","lsit"];
+  $("movelist").innerHTML = order.map(k=>exRow(k,'<button class="btn ghost small" data-move="'+k+'" aria-label="How to do '+esc(EX[k].name)+'">How</button>')).join("");
+}
+function renderProgress(){
+  const best = S.tests.reduce((m,t)=>Math.max(m,t.p),0);
+  const bestH = S.tests.reduce((m,t)=>Math.max(m,t.h),0);
+  $("st-best").textContent = best;
+  $("st-hang").textContent = bestH + "s";
+  $("st-sessions").textContent = S.sessions.length;
+  $("ladder").innerHTML = LEVELS.map(L=>'<li class="'+(L.n===S.level?'cur':(L.n<S.level?'past':''))+'"><span class="n">'+L.n+'</span><span><b>'+L.name+'</b><br><span class="sub">'+L.who+'</span></span>'+(L.n===S.level?'<span class="chip">Now</span>':(L.n<S.level?'<span class="chip good">Done</span>':''))+'</li>').join("");
+  $("levelselect").innerHTML = LEVELS.map(L=>'<option value="'+L.n+'"'+(L.n===S.level?' selected':'')+'>Level '+L.n+': '+L.name+'</option>').join("");
+  if(document.activeElement !== $("nameinput")) $("nameinput").value = S.name || "";
+  renderChart();
+  const items = [];
+  S.tests.forEach(t=>items.push({d:t.d, txt:"Test: "+t.p+" pull-ups, "+t.h+"s hold", k:1}));
+  S.sessions.forEach(s=>items.push({d:s.d, txt:"Workout, level "+s.l, k:0}));
+  items.sort((a,b)=> a.d<b.d?1:a.d>b.d?-1:b.k-a.k);
+  $("log").innerHTML = items.length ? items.slice(0,30).map(i=>'<li><span>'+esc(i.txt)+'</span><span class="sub">'+fmtDate(i.d)+'</span></li>').join("") : '<li><span class="sub">Finished workouts and tests show up here.</span></li>';
+}
+function renderChart(){
+  const el = $("chart");
+  const T = S.tests;
+  if(T.length < 2){ el.innerHTML = '<p class="sub" style="margin:0">'+(T.length? 'Record one more test to see the progress line.' : 'After two tests you\'ll see a progress line here.')+'</p>'; return; }
+  const W=320,H=150,pl=28,pr=10,pt=12,pb=24;
+  const max = Math.max(4, ...T.map(t=>t.p));
+  const top = Math.ceil(max/2)*2;
+  const x = i => pl + (W-pl-pr) * (T.length===1?0.5:i/(T.length-1));
+  const y = v => pt + (H-pt-pb) * (1 - v/top);
+  let g = '';
+  for(let v=0; v<=top; v+=Math.max(1,Math.round(top/4))){ g += '<line x1="'+pl+'" x2="'+(W-pr)+'" y1="'+y(v)+'" y2="'+y(v)+'" stroke="var(--line)" stroke-width="1"/><text x="'+(pl-6)+'" y="'+(y(v)+4)+'" text-anchor="end" font-size="11" fill="var(--muted)">'+v+'</text>'; }
+  const pts = T.map((t,i)=>x(i)+","+y(t.p)).join(" ");
+  const area = 'M'+x(0)+','+y(0)+' L'+T.map((t,i)=>x(i)+','+y(t.p)).join(' L')+' L'+x(T.length-1)+','+y(0)+' Z';
+  const last = T[T.length-1];
+  el.innerHTML = '<svg viewBox="0 0 '+W+' '+H+'" role="img" aria-label="Pull-ups per test, latest '+last.p+'">'+g+
+    '<path d="'+area+'" fill="var(--accent)" fill-opacity=".12"/>'+
+    '<polyline points="'+pts+'" fill="none" stroke="var(--accent)" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>'+
+    T.map((t,i)=>'<circle cx="'+x(i)+'" cy="'+y(t.p)+'" r="'+(i===T.length-1?5:3)+'" fill="var(--accent)"/>').join("")+
+    '<text x="'+pl+'" y="'+(H-6)+'" font-size="11" fill="var(--muted)">'+fmtDate(T[0].d)+'</text>'+
+    '<text x="'+(W-pr)+'" y="'+(H-6)+'" font-size="11" text-anchor="end" fill="var(--muted)">'+fmtDate(last.d)+'</text></svg>'+
+    '<p class="sub" style="margin:4px 0 0">Strict pull-ups at each test</p>';
+}
+function renderAll(){ renderBoard(); renderToday(); renderMoves(); renderProgress(); }
+
+/* ---------- Tabs ---------- */
+document.querySelectorAll("nav.tabs button").forEach(b=>b.addEventListener("click",()=>{
+  document.querySelectorAll("nav.tabs button").forEach(x=>x.removeAttribute("aria-current"));
+  b.setAttribute("aria-current","page");
+  document.querySelectorAll(".view").forEach(v=>v.classList.remove("on"));
+  $("v-"+b.dataset.tab).classList.add("on");
+  window.scrollTo(0,0);
+}));
+
+/* ---------- Modal ---------- */
+function openModal(html){ $("modalbody").innerHTML = html; $("modal").classList.add("open"); const f=$("modalbody").querySelector("button,input"); if(f) f.focus(); }
+function closeModal(){ $("modal").classList.remove("open"); }
+$("modal").addEventListener("click", e=>{ if(e.target.id==="modal") closeModal(); });
+
+function showMove(k){
+  const ex = EX[k];
+  openModal('<div class="row"><div class="pose" style="width:88px;height:88px">'+poseSVG(ex.pose)+'</div><div><h2>'+esc(ex.name)+'</h2>'+(ex.why?'<p class="sub" style="margin:4px 0 0">'+esc(ex.why)+'</p>':'')+'</div></div><ol class="cues">'+ex.cues.map(c=>'<li>'+esc(c)+'</li>').join("")+'</ol><button class="btn" data-act="close">Got it</button>');
+}
+
+let testVals = {p:0,h:0};
+function showTest(){
+  const last = S.tests[S.tests.length-1];
+  testVals = {p:last?last.p:0, h:last?last.h:0};
+  openModal('<h2>Test day</h2><p class="sub" style="margin:0">Warm up first. Then do as many strict pull-ups as he can, rest 3 minutes, and time how long he can hold his chin over the bar.</p>'+
+    '<div class="field"><label>Strict pull-ups in a row</label><div class="stepper"><button data-step="p" data-d="-1" aria-label="One fewer">−</button><output id="tp">'+testVals.p+'</output><button data-step="p" data-d="1" aria-label="One more">+</button></div></div>'+
+    '<div class="field"><label>Chin-over-bar hold (seconds)</label><div class="stepper"><button data-step="h" data-d="-1" aria-label="One second less">−</button><output id="th">'+testVals.h+'</output><button data-step="h" data-d="1" aria-label="One second more">+</button></div></div>'+
+    '<div class="btnrow"><button class="btn ghost" data-act="close">Cancel</button><button class="btn" data-act="savetest">Save test</button></div>');
+}
+function saveTest(){
+  S.tests.push({d:today(), p:testVals.p, h:testVals.h});
+  const newL = levelFromTest(testVals.p, testVals.h);
+  const old = S.level;
+  S.level = newL;
+  save(); renderAll();
+  const up = newL>old, L = lvl();
+  openModal('<div class="celebrate stack"><div class="clock pop" style="font-size:96px">'+testVals.p+'</div><h2>'+(up?'Level up! ':'')+'Level '+L.n+': '+L.name+'</h2><p class="sub" style="margin:0">'+(up?'Great work. New exercises are ready on the Today tab.':(newL<old?'The plan has been adjusted to match today\'s test. Building back is normal after a break.':'Keep going at this level. '+L.goal))+'</p><button class="btn" data-act="close">Nice</button></div>');
+}
+
+/* ---------- Workout player ---------- */
+let W = null, tick = null, audioCtx = null;
+function beep(freq, dur){
+  try{
+    if(!audioCtx) audioCtx = new (window.AudioContext||window.webkitAudioContext)();
+    const o = audioCtx.createOscillator(), g = audioCtx.createGain();
+    o.frequency.value = freq; o.connect(g); g.connect(audioCtx.destination);
+    g.gain.setValueAtTime(.2, audioCtx.currentTime); g.gain.exponentialRampToValueAtTime(.001, audioCtx.currentTime+dur);
+    o.start(); o.stop(audioCtx.currentTime+dur);
+  }catch(e){}
+}
+function startWorkout(){
+  const L = lvl();
+  W = {steps:[["warmup",1,0]].concat(L.plan), i:0, set:0, phase:"work", t:0, end:0, running:false, level:L.n};
+  beep(660,.05); // unlock audio on iOS from a tap
+  $("player").classList.add("open");
+  document.body.style.overflow = "hidden";
+  renderPlayer();
+}
+function stopTimer(){ clearInterval(tick); tick=null; if(W) W.running=false; }
+function closePlayer(){ stopTimer(); W=null; $("player").classList.remove("open"); document.body.style.overflow=""; renderAll(); }
+function startCountdown(secs, onDone){
+  stopTimer();
+  W.end = Date.now() + secs*1000; W.running = true; W.t = secs;
+  tick = setInterval(()=>{
+    const left = Math.max(0, Math.ceil((W.end-Date.now())/1000));
+    if(left!==W.t){ W.t = left; const c=$("clock"); if(c) c.textContent = fmtClock(left); if(left<=3 && left>0) beep(520,.08); }
+    if(left<=0){ stopTimer(); beep(880,.35); onDone(); }
+  }, 200);
+}
+function fmtClock(s){ return s>=60 ? Math.floor(s/60)+":"+String(s%60).padStart(2,"0") : String(s); }
+function nextAfterSet(){
+  const step = W.steps[W.i];
+  W.set++;
+  if(W.set >= step[1]){
+    W.i++; W.set = 0;
+    if(W.i >= W.steps.length){ finishWorkout(); return; }
+    if(W.i===1){ W.phase="work"; renderPlayer(); return; } // no rest after warm-up
+  }
+  W.phase = "rest"; renderPlayer();
+  startCountdown(60, ()=>{ W.phase="work"; renderPlayer(); });
+}
+function finishWorkout(){
+  S.sessions.push({d:today(), l:W.level});
+  save();
+  W.phase = "done";
+  renderPlayer();
+}
+function renderPlayer(){
+  const body = $("playerbody");
+  if(!W) return;
+  const totalSets = W.steps.reduce((a,s)=>a+s[1],0);
+  const doneSets = W.steps.slice(0,W.i).reduce((a,s)=>a+s[1],0) + W.set;
+  const pct = W.phase==="done" ? 100 : Math.round(doneSets/totalSets*100);
+  let h = '<div class="ptop"><button class="btn ghost small" data-act="quit">'+(W.phase==="done"?"Close":"End")+'</button><span class="sub">'+(W.phase==="done"?"Finished":"Exercise "+(W.i+1)+" of "+W.steps.length)+'</span></div><div class="progressbar"><i style="width:'+pct+'%"></i></div>';
+
+  if(W.phase==="done"){
+    const n = sessionsThisWeek();
+    h += '<div class="celebrate stack" style="margin-top:24px"><div class="clock pop">'+n+'</div><h2>Workout done!</h2><p class="sub" style="margin:0">That\'s '+n+' this week'+(n>=3?'. Weekly goal reached.':'. Aim for 3, with a rest day in between.')+'</p><button class="btn big" data-act="quit">Back to Today</button></div>';
+    body.innerHTML = h; return;
+  }
+  const step = W.steps[W.i], ex = EX[step[0]];
+  if(W.phase==="rest"){
+    const nextStep = W.steps[W.i], nex = EX[nextStep[0]];
+    h += '<p class="target" style="margin-top:12px">Rest</p><div class="clock rest" id="clock" aria-live="off">'+fmtClock(W.t)+'</div>'+
+      '<div class="card row"><div class="pose">'+poseSVG(nex.pose)+'</div><div><div class="sub">Up next · set '+(W.set+1)+' of '+nextStep[1]+'</div><div class="exname">'+esc(nex.name)+'</div></div></div>'+
+      '<div class="btnrow"><button class="btn ghost" data-act="addrest">+15s</button><button class="btn" data-act="skiprest">Skip rest</button></div>';
+    body.innerHTML = h; return;
+  }
+  h += '<div class="bigpose">'+poseSVG(ex.pose)+'</div><div class="pname">'+esc(ex.name)+'</div>';
+  if(ex.type==="list"){
+    h += '<ol class="cues card">'+ex.cues.map(c=>'<li>'+esc(c)+'</li>').join("")+'</ol><button class="btn big" data-act="setdone">Warm-up done</button>';
+  } else {
+    let dots=''; for(let i=0;i<step[1];i++) dots+='<span class="'+(i<W.set?'done':(i===W.set?'now':''))+'"></span>';
+    h += '<div class="setdots" aria-label="Set '+(W.set+1)+' of '+step[1]+'">'+dots+'</div>';
+    if(ex.type==="hold"){
+      h += '<p class="target" style="margin:0">Set '+(W.set+1)+' of '+step[1]+' · hold '+step[2]+' seconds</p><div class="clock" id="clock">'+(W.running?fmtClock(W.t):step[2])+'</div>'+
+        (W.running ? '<button class="btn big ghost" data-act="stophold">Stop early</button>' : '<button class="btn big" data-act="starthold">Start hold</button>');
+    } else {
+      h += '<p class="target" style="margin:0">Set '+(W.set+1)+' of '+step[1]+'</p><div class="clock">'+(step[3]||step[2])+'</div><p class="target" style="margin:0">'+(ex.tempo?esc(ex.tempo):'reps')+'</p><button class="btn big" data-act="setdone">Set done</button>';
+    }
+    h += '<details class="card"><summary style="font-weight:700;cursor:pointer">How to do it</summary><ol class="cues" style="margin-top:10px">'+ex.cues.map(c=>'<li>'+esc(c)+'</li>').join("")+'</ol></details>';
+  }
+  body.innerHTML = h;
+}
+
+/* ---------- Events ---------- */
+document.addEventListener("click", e=>{
+  const t = e.target.closest("[data-act],[data-move],[data-step]");
+  if(!t) return;
+  if(t.dataset.move){ showMove(t.dataset.move); return; }
+  if(t.dataset.step){ const k=t.dataset.step; testVals[k]=Math.max(0, Math.min(k==="p"?50:180, testVals[k]+Number(t.dataset.d))); $(k==="p"?"tp":"th").textContent=testVals[k]; return; }
+  switch(t.dataset.act){
+    case "close": closeModal(); break;
+    case "test": showTest(); break;
+    case "savetest": saveTest(); break;
+    case "quit": closePlayer(); break;
+    case "setdone": nextAfterSet(); break;
+    case "starthold": { const step=W.steps[W.i]; beep(660,.1); startCountdown(step[2], ()=>nextAfterSet()); renderPlayer(); break; }
+    case "stophold": stopTimer(); nextAfterSet(); break;
+    case "skiprest": stopTimer(); W.phase="work"; renderPlayer(); break;
+    case "addrest": W.end += 15000; break;
+  }
+});
+$("startbtn").addEventListener("click", startWorkout);
+$("testbtn").addEventListener("click", showTest);
+$("nameinput").addEventListener("input", e=>{ S.name = e.target.value.trim().slice(0,30); renderBoard(); clearTimeout(window.__nt); window.__nt=setTimeout(save,600); });
+$("levelselect").addEventListener("change", e=>{ S.level = Number(e.target.value); save(); renderAll(); });
+document.addEventListener("keydown", e=>{ if(e.key==="Escape"){ if($("modal").classList.contains("open")) closeModal(); } });
+
+renderAll();
+connectCloud();
+})();
+</script>
+</body>
+</html>

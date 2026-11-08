@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Exercise Animations</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@800;900&family=Figtree:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+/* Preview of the animated exercise drawings. Pose data below is meant to move to frontend/data/poses.ts. */
+:root{
+  --bg:#eef1f5; --surface:#ffffff; --ink:#101a2e; --muted:#5b6478; --line:#d8dde6;
+  --accent:#d6246e; --accent-soft:#fbe3ee; --good:#1f8a5b;
+  --display:"Big Shoulders Display","Arial Narrow",Impact,sans-serif;
+  --body:"Figtree",-apple-system,"Segoe UI",Roboto,sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0c1220; --surface:#151d2f; --ink:#eef1f7; --muted:#9aa3b6; --line:#26304a;
+    --accent:#ff4f8e; --accent-soft:#3a1628; --good:#3ccf8e; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0c1220; --surface:#151d2f; --ink:#eef1f7; --muted:#9aa3b6; --line:#26304a;
+  --accent:#ff4f8e; --accent-soft:#3a1628; --good:#3ccf8e; color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--body);line-height:1.45;-webkit-font-smoothing:antialiased}
+.wrap{max-width:1100px;margin:0 auto;padding:24px 16px 48px}
+header{display:flex;flex-wrap:wrap;gap:12px;align-items:end;justify-content:space-between;margin-bottom:20px}
+h1{font-family:var(--display);font-weight:900;font-size:40px;line-height:1;text-transform:uppercase;margin:0}
+.sub{color:var(--muted);font-size:14px;margin:6px 0 0}
+.controls{display:flex;gap:8px}
+.controls button{font:inherit;font-weight:700;font-size:15px;min-height:44px;padding:8px 14px;border-radius:10px;border:2px solid var(--line);background:var(--surface);color:var(--ink);cursor:pointer}
+.controls button[aria-pressed="true"]{border-color:var(--accent);color:var(--accent)}
+.controls button:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px 14px 14px;display:flex;flex-direction:column;gap:6px}
+.card svg{width:100%;height:auto;display:block;background:var(--bg);border-radius:10px}
+.card h2{font-family:var(--display);font-weight:800;font-size:24px;line-height:1.05;text-transform:uppercase;margin:4px 0 0}
+.cap{font-size:15px;min-height:2.9em;margin:0}
+.stills{display:grid;gap:6px}
+.stills svg{border-radius:8px}
+.stills .cap{font-size:13px;min-height:0;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <h1 id="title">Exercise animations</h1>
+      <p class="sub" id="intro">Side view, facing right. Shows the gist of each move; check with the coach before it goes in the app.</p>
+    </div>
+    <div class="controls">
+      <button id="lang-en" aria-pressed="true">EN</button>
+      <button id="lang-nl" aria-pressed="false">NL</button>
+      <button id="pause" aria-pressed="false">Pause</button>
+      <button id="stills" aria-pressed="false">Key poses</button>
+    </div>
+  </header>
+  <div class="grid" id="grid"></div>
+</div>
+
+<script>
+(function(){
+"use strict";
+
+/* ---------- Skeleton ----------
+   Side view, body facing +x. Angles in degrees, SVG convention: 0 = right, 90 = down.
+   ua: shoulder→elbow, fa: elbow→hand, to: shoulder→hip, th: hip→knee, sh: knee→foot, hd: shoulder→head.
+   The root joint is fixed (hands on the bar, hips on the floor, feet on the floor); the rest follows.
+   An optional ik pin keeps hands or feet on a fixed point (low bar, box). */
+const LEN = {ua:13, fa:12, to:24, th:16, sh:15, hd:9};
+const HEAD_R = 6.5;
+const VIEW = [120, 110];
+const BAR = [62, 20];
+
+const HANG   = {ua:-90, fa:-90, to:90, th:86, sh:88, hd:-72};
+const TOP    = {ua:60,  fa:-80, to:92, th:82, sh:88, hd:-80};
+const HALF   = {ua:0,   fa:-90, to:78, th:84, sh:90, hd:-80};
+const STAND  = {ua:90,  fa:90,  to:90, th:90, sh:90, hd:-90};
+const PASSIVE = {ua:15};
+const ACTIVE  = {ua:13};
+
+const t = (en, nl) => ({en, nl});
+
+const EXERCISES = [
+  { id:"warmup", name:t("Warm-up","Warming-up"), root:"foot", at:[60,103.5], ground:106,
+    frames:[
+      {a:{...STAND, ua:90,  fa:90},  move:450, ease:"linear", cap:t("Big arm circles, then shrugs, wrist circles and jumping jacks","Grote armcirkels, daarna schouders ophalen, polsen draaien en jumping jacks")},
+      {a:{...STAND, ua:0,   fa:0},   move:450, ease:"linear"},
+      {a:{...STAND, ua:-90, fa:-90}, move:450, ease:"linear"},
+      {a:{...STAND, ua:-180,fa:-180},move:450, ease:"linear"}
+    ]},
+  { id:"hang", name:t("Dead hang","Dode hang"), root:"hand", at:BAR,
+    frames:[
+      {a:{...HANG, hd:-62}, len:PASSIVE, move:700, hold:800, cap:t("Grab the bar, arms straight","Pak de stang, armen gestrekt")},
+      {a:{...HANG, th:82, sh:84}, len:ACTIVE, move:600, hold:3000, ring:true, cap:t("Shoulders gently down, legs together, toes pointed: hold","Schouders licht omlaag, benen tegen elkaar, tenen gestrekt: vasthouden")}
+    ]},
+  { id:"scap", name:t("Scap pulls","Schouderbladtrekken"), root:"hand", at:BAR,
+    frames:[
+      {a:{...HANG, hd:-62}, len:PASSIVE, move:0, hold:600, cap:t("Dead hang, arms straight","Dode hang, armen gestrekt")},
+      {a:{...HANG, th:83, sh:85}, len:{ua:10.5}, move:800, hold:1000, cap:t("Pull shoulders down: the body rises, elbows stay straight","Schouders omlaag trekken: je lichaam komt omhoog, ellebogen blijven gestrekt")},
+      {a:{...HANG, hd:-62}, len:PASSIVE, move:1300, hold:200, cap:t("Lower slowly","Langzaam terug")}
+    ]},
+  { id:"hollow", name:t("Hollow hold","Holle houding"), root:"hip", at:[62,101], ground:104,
+    frames:[
+      {a:{to:0, hd:195, ua:180, fa:180, th:0, sh:0}, move:900, hold:800, cap:t("Lie on your back, arms by your ears","Op je rug, armen langs je oren")},
+      {a:{to:15, hd:205, ua:198, fa:192, th:-15, sh:-15}, move:900, hold:3000, ring:true, cap:t("Lift shoulders and feet, lower back stays on the floor","Schouders en voeten omhoog, onderrug blijft op de grond")}
+    ]},
+  { id:"row", name:t("Bar rows","Roeien aan lage stang"), root:"foot", at:[106,98], ground:100.5,
+    bar:[72,55], ik:{hand:[72,55], bend:-1},
+    frames:[
+      {a:{ua:0, fa:0, to:26, th:26, sh:26, hd:206}, move:1200, hold:500, cap:t("Body straight like a plank, arms straight","Lichaam recht als een plank, armen gestrekt")},
+      {a:{ua:0, fa:0, to:48, th:48, sh:48, hd:228}, move:900, hold:400, cap:t("Pull your chest to the bar, elbows close","Borst naar de stang, ellebogen langs je lichaam")}
+    ]},
+  { id:"flexed", name:t("Chin-over-bar hold","Kin boven de stang"), root:"hand", at:BAR,
+    frames:[
+      {a:HANG, len:ACTIVE, move:0, hold:500, cap:t("Step or jump up","Stap of spring omhoog")},
+      {a:TOP, move:600, hold:3000, ring:true, cap:t("Chin over the bar, elbows tight, legs together: hold","Kin boven de stang, ellebogen in, benen tegen elkaar: vasthouden")},
+      {a:HANG, len:ACTIVE, move:1000, hold:300, cap:t("Step down safely","Rustig naar beneden")}
+    ]},
+  { id:"neg", name:t("Slow lowers","Langzaam zakken"), root:"hand", at:BAR,
+    frames:[
+      {a:TOP, move:600, hold:700, cap:t("Jump up to chin over the bar","Spring omhoog tot je kin boven de stang is")},
+      {a:HANG, len:ACTIVE, move:5000, ease:"linear", count:5, hold:800, cap:t("Lower as slowly as you can: count to 5","Zak zo langzaam mogelijk: tel tot 5")}
+    ]},
+  { id:"box", name:t("Box-assisted pull-ups","Pull-ups met kist"), root:"hand", at:BAR,
+    ik:{foot:[70,72], bend:-1}, box:[60,74.5,26,30.5], ground:105,
+    frames:[
+      {a:HANG, len:ACTIVE, move:0, hold:500, cap:t("Feet on the box, arms straight","Voeten op de kist, armen gestrekt")},
+      {a:TOP, move:1000, hold:400, cap:t("Pull with your arms, push only a little with your legs","Trek met je armen, duw maar een beetje met je benen")},
+      {a:HANG, len:ACTIVE, move:1300, hold:200, cap:t("Lower slowly","Langzaam zakken")}
+    ]},
+  { id:"half", name:t("90° hold","90°-houding"), root:"hand", at:BAR,
+    frames:[
+      {a:TOP, move:900, hold:400, cap:t("Get to the top","Kom naar boven")},
+      {a:HALF, move:700, hold:3000, ring:true, cap:t("Lower until the elbows are at a right angle: hold","Zak tot je ellebogen haaks staan: vasthouden")},
+      {a:HANG, len:ACTIVE, move:900, hold:400, cap:t("Lower down","Zak rustig naar beneden")}
+    ]},
+  { id:"tuck", name:t("Hanging tuck raises","Knieheffen in hang"), root:"hand", at:BAR,
+    frames:[
+      {a:HANG, len:ACTIVE, move:0, hold:400, cap:t("Hang, shoulders active","Hang, schouders actief")},
+      {a:{...HANG, to:100, th:-45, sh:80}, len:ACTIVE, move:900, hold:300, cap:t("Knees to the chest, no swinging","Knieën naar je borst, niet zwaaien")},
+      {a:HANG, len:ACTIVE, move:1200, hold:200, cap:t("Lower slowly until the legs are straight","Langzaam zakken tot je benen gestrekt zijn")}
+    ]},
+  { id:"pullup", name:t("Strict pull-ups","Strikte pull-ups"), root:"hand", at:BAR,
+    frames:[
+      {a:HANG, len:ACTIVE, move:0, hold:500, cap:t("Straight arms, legs together, toes pointed","Gestrekte armen, benen tegen elkaar, tenen gestrekt")},
+      {a:TOP, move:1000, hold:300, cap:t("Chin clearly over the bar, no kicking","Kin duidelijk boven de stang, niet schoppen")},
+      {a:HANG, len:ACTIVE, move:1400, hold:200, cap:t("Lower with control, all the way down","Gecontroleerd helemaal zakken")}
+    ]},
+  { id:"chin", name:t("Chin-ups","Chin-ups"), root:"hand", at:BAR,
+    frames:[
+      {a:HANG, len:ACTIVE, move:0, hold:500, cap:t("Palms facing you, arms straight","Handpalmen naar je toe, armen gestrekt")},
+      {a:TOP, move:1000, hold:300, cap:t("Pull until the chin is over the bar","Trek op tot je kin boven de stang is")},
+      {a:HANG, len:ACTIVE, move:1400, hold:200, cap:t("Lower with control","Gecontroleerd zakken")}
+    ]},
+  { id:"pause", name:t("Pause pull-ups","Pull-ups met pauze"), root:"hand", at:BAR,
+    frames:[
+      {a:HANG, len:ACTIVE, move:0, hold:500, cap:t("A strict pull-up","Een strikte pull-up")},
+      {a:TOP, move:1000, hold:2000, ring:true, cap:t("Freeze for 2 seconds at the top","Bovenaan 2 tellen stil houden")},
+      {a:HANG, len:ACTIVE, move:1500, hold:200, cap:t("Lower slowly","Langzaam zakken")}
+    ]},
+  { id:"lsit", name:t("L-sit pull-ups","L-zit pull-ups"), root:"hand", at:BAR,
+    frames:[
+      {a:HANG, len:ACTIVE, move:800, hold:300, cap:t("Hang with straight arms","Hang met gestrekte armen")},
+      {a:{...HANG, to:92, th:0, sh:0, hd:-78}, len:ACTIVE, move:800, hold:400, cap:t("Lift straight legs into an L","Til je gestrekte benen tot een L")},
+      {a:{...TOP, to:100, th:4, sh:4, hd:-76}, move:1100, hold:300, cap:t("Pull up, legs stay up, toes pointed","Trek op, benen blijven omhoog, tenen gestrekt")},
+      {a:{...HANG, to:92, th:0, sh:0, hd:-78}, len:ACTIVE, move:1400, hold:300, cap:t("Lower slowly","Langzaam zakken")}
+    ]}
+];
+
+/* ---------- Kinematics ---------- */
+const rad = a => a*Math.PI/180;
+const dir = a => [Math.cos(rad(a)), Math.sin(rad(a))];
+const add = (p, v, k) => [p[0]+v[0]*k, p[1]+v[1]*k];
+
+function twoBone(a, target, l1, l2, bend){
+  const dx = target[0]-a[0], dy = target[1]-a[1];
+  const dist = Math.min(l1+l2-0.001, Math.max(Math.abs(l1-l2)+0.001, Math.hypot(dx,dy)));
+  const base = Math.atan2(dy, dx);
+  const ang = Math.acos(Math.max(-1, Math.min(1, (l1*l1 + dist*dist - l2*l2)/(2*l1*dist))));
+  const j = [a[0]+Math.cos(base+bend*ang)*l1, a[1]+Math.sin(base+bend*ang)*l1];
+  const ex = target[0]-j[0], ey = target[1]-j[1], el = Math.hypot(ex,ey) || 1;
+  return [j, [j[0]+ex/el*l2, j[1]+ey/el*l2]];
+}
+
+function solve(ex, pose){
+  const a = pose.a, L = pose.len, J = {};
+  if(ex.root === "hand"){
+    J.hand = ex.at; J.elbow = add(J.hand, dir(a.fa), -L.fa); J.shoulder = add(J.elbow, dir(a.ua), -L.ua);
+    J.hip = add(J.shoulder, dir(a.to), L.to);
+  } else if(ex.root === "hip"){
+    J.hip = ex.at; J.shoulder = add(J.hip, dir(a.to), -L.to);
+  } else {
+    J.foot = ex.at; J.knee = add(J.foot, dir(a.sh), -L.sh); J.hip = add(J.knee, dir(a.th), -L.th);
+    J.shoulder = add(J.hip, dir(a.to), -L.to);
+  }
+  if(!J.elbow){
+    if(ex.ik && ex.ik.hand) [J.elbow, J.hand] = twoBone(J.shoulder, ex.ik.hand, L.ua, L.fa, ex.ik.bend);
+    else { J.elbow = add(J.shoulder, dir(a.ua), L.ua); J.hand = add(J.elbow, dir(a.fa), L.fa); }
+  }
+  if(!J.knee){
+    if(ex.ik && ex.ik.foot) [J.knee, J.foot] = twoBone(J.hip, ex.ik.foot, L.th, L.sh, ex.ik.bend);
+    else { J.knee = add(J.hip, dir(a.th), L.th); J.foot = add(J.knee, dir(a.sh), L.sh); }
+  }
+  J.head = add(J.shoulder, dir(a.hd), L.hd);
+  J.neck = dir(a.hd);
+  return J;
+}
+
+const lerpAng = (x, y, k) => x + ((((y-x) % 360) + 540) % 360 - 180) * k;
+function mix(p, q, k){
+  const a = {}, len = {};
+  for(const key in p.a) a[key] = lerpAng(p.a[key], q.a[key], k);
+  for(const key in LEN) len[key] = p.len[key] + (q.len[key]-p.len[key])*k;
+  return {a, len};
+}
+const EASE = { inout: k => 0.5 - Math.cos(Math.PI*k)/2, linear: k => k };
+
+// Normalise frames and build the timeline.
+EXERCISES.forEach(ex => {
+  ex.frames = ex.frames.map(f => ({...f, a:{...f.a}, len:{...LEN, ...(f.len||{})}, move:f.move||0, hold:f.hold||0}));
+  ex.total = ex.frames.reduce((s,f) => s + f.move + f.hold, 0);
+});
+
+function stateAt(ex, ms){
+  let tm = ms % ex.total;
+  const n = ex.frames.length;
+  for(let i = 0; i < n; i++){
+    const f = ex.frames[i], prev = ex.frames[(i-1+n) % n];
+    if(tm < f.move){
+      const k = tm / f.move;
+      return {pose: mix(prev, f, EASE[f.ease||"inout"](k)), frame:f,
+              count: f.count ? Math.max(1, Math.ceil((1-k)*f.count)) : null, ring:null};
+    }
+    tm -= f.move;
+    if(tm < f.hold) return {pose:f, frame:f, count:null, ring: f.ring ? tm / f.hold : null};
+    tm -= f.hold;
+  }
+  const last = ex.frames[n-1];
+  return {pose:last, frame:last, count:null, ring:null};
+}
+
+/* ---------- Drawing ---------- */
+const NS = "http://www.w3.org/2000/svg";
+function el(tag, attrs, parent){
+  const e = document.createElementNS(NS, tag);
+  for(const k in attrs) e.setAttribute(k, attrs[k]);
+  if(parent) parent.appendChild(e);
+  return e;
+}
+const pts = arr => arr.map(p => p[0].toFixed(2)+","+p[1].toFixed(2)).join(" ");
+
+function buildFigure(ex){
+  const svg = el("svg", {viewBox:"0 0 "+VIEW[0]+" "+VIEW[1], role:"img"});
+  const ground = ex.ground || 108;
+  el("line", {x1:4, x2:VIEW[0]-4, y1:ground, y2:ground, stroke:"var(--muted)", "stroke-opacity":".45", "stroke-width":1.5}, svg);
+  if(ex.root === "hand") el("line", {x1:ex.at[0], x2:ex.at[0], y1:0, y2:ex.at[1], stroke:"var(--muted)", "stroke-opacity":".35", "stroke-width":1.5}, svg);
+  if(ex.box) el("rect", {x:ex.box[0], y:ex.box[1], width:ex.box[2], height:ex.box[3], rx:2, fill:"var(--muted)", "fill-opacity":".15", stroke:"var(--muted)", "stroke-opacity":".5", "stroke-width":1.2}, svg);
+  const common = {fill:"none", stroke:"var(--ink)", "stroke-width":5, "stroke-linecap":"round", "stroke-linejoin":"round"};
+  // A background-coloured halo under arm and leg keeps them readable where they cross the torso.
+  const halo = {...common, stroke:"var(--bg)", "stroke-width":8.5};
+  const parts = {
+    torso: el("polyline", common, svg),
+    legHalo: el("polyline", halo, svg),
+    leg:   el("polyline", common, svg),
+    armHalo: el("polyline", halo, svg),
+    arm:   el("polyline", common, svg),
+    head:  el("circle", {r:HEAD_R, fill:"var(--ink)"}, svg),
+    eye:   el("circle", {r:1.15, fill:"var(--bg)"}, svg)
+  };
+  const bar = ex.root === "hand" ? ex.at : ex.bar;
+  if(bar) el("circle", {cx:bar[0], cy:bar[1], r:3.6, fill:"var(--accent)"}, svg);
+  parts.ringTrack = el("circle", {cx:107, cy:13, r:7, fill:"none", stroke:"var(--line)", "stroke-width":2.5, visibility:"hidden"}, svg);
+  parts.ring = el("circle", {cx:107, cy:13, r:7, fill:"none", stroke:"var(--accent)", "stroke-width":2.5, "stroke-linecap":"round",
+    transform:"rotate(-90 107 13)", "stroke-dasharray":"0 44", visibility:"hidden"}, svg);
+  parts.count = el("text", {x:107, y:19, "text-anchor":"middle", "font-size":17, "font-weight":900, fill:"var(--accent)",
+    "font-family":"Big Shoulders Display, Arial Narrow, sans-serif", visibility:"hidden"}, svg);
+  return {svg, parts};
+}
+
+function draw(fig, ex, st){
+  const J = solve(ex, st.pose), P = fig.parts;
+  const neckEnd = add(J.shoulder, J.neck, Math.max(0, st.pose.len.hd - HEAD_R + 1));
+  // Halo runs from 4 units past the body joint to 2 units short of the hand/foot, so it never cuts a gap in the torso.
+  const trim = (a, b, k) => { const dx = b[0]-a[0], dy = b[1]-a[1], l = Math.max(1, Math.hypot(dx,dy)); return [a[0]+dx/l*k, a[1]+dy/l*k]; };
+  P.torso.setAttribute("points", pts([neckEnd, J.shoulder, J.hip]));
+  P.legHalo.setAttribute("points", pts([trim(J.hip, J.knee, 4), J.knee, trim(J.foot, J.knee, 2)]));
+  P.leg.setAttribute("points", pts([J.hip, J.knee, J.foot]));
+  P.armHalo.setAttribute("points", pts([trim(J.shoulder, J.elbow, 4), J.elbow, trim(J.hand, J.elbow, 2)]));
+  P.arm.setAttribute("points", pts([J.shoulder, J.elbow, J.hand]));
+  P.head.setAttribute("cx", J.head[0]); P.head.setAttribute("cy", J.head[1]);
+  const front = [-J.neck[1], J.neck[0]];
+  P.eye.setAttribute("cx", J.head[0] + front[0]*2.9 + J.neck[0]*0.9);
+  P.eye.setAttribute("cy", J.head[1] + front[1]*2.9 + J.neck[1]*0.9);
+  const showRing = st.ring !== null && st.ring !== undefined;
+  P.ringTrack.setAttribute("visibility", showRing ? "visible" : "hidden");
+  P.ring.setAttribute("visibility", showRing ? "visible" : "hidden");
+  if(showRing){ const c = 2*Math.PI*7; P.ring.setAttribute("stroke-dasharray", (c*st.ring).toFixed(2)+" "+c.toFixed(2)); }
+  P.count.setAttribute("visibility", st.count ? "visible" : "hidden");
+  if(st.count) P.count.textContent = st.count;
+}
+
+/* ---------- Page ---------- */
+const atParam = /[?&]at=(\d+)/.exec(location.search); // ?at=1500 freezes the animation at 1.5 s, for checking
+let lang = "en", paused = !!atParam, stillMode = /[?&]still/.test(location.search), pausedAt = atParam ? Number(atParam[1]) : 0, offset = 0;
+const reduced = window.matchMedia("(prefers-reduced-motion: reduce)");
+const grid = document.getElementById("grid");
+let cards = [];
+
+const UI = {
+  en:{title:"Exercise animations", intro:"Side view, facing right. Shows the gist of each move; check with the coach before it goes in the app.", pause:"Pause", play:"Play", stills:"Key poses"},
+  nl:{title:"Oefeninganimaties", intro:"Zijaanzicht, kijkt naar rechts. Laat de kern van elke oefening zien; laat de trainer kijken voordat het in de app komt.", pause:"Pauze", play:"Afspelen", stills:"Kernhoudingen"}
+};
+
+function build(){
+  grid.innerHTML = ""; cards = [];
+  const still = stillMode || reduced.matches;
+  EXERCISES.forEach(ex => {
+    const card = document.createElement("article");
+    card.className = "card";
+    const h = document.createElement("h2"); h.textContent = ex.name[lang];
+    if(still){
+      const box = document.createElement("div");
+      box.className = "stills";
+      box.style.gridTemplateColumns = "repeat(" + Math.min(ex.frames.length, 2) + ",1fr)";
+      ex.frames.forEach(f => {
+        const wrap = document.createElement("div");
+        const fig = buildFigure(ex);
+        draw(fig, ex, {pose:f, count:null, ring:null});
+        fig.svg.setAttribute("aria-label", (f.cap||ex.frames[0].cap)[lang]);
+        wrap.appendChild(fig.svg);
+        if(f.cap){ const p = document.createElement("p"); p.className = "cap"; p.textContent = f.cap[lang]; wrap.appendChild(p); }
+        box.appendChild(wrap);
+      });
+      card.append(h, box);
+    } else {
+      const fig = buildFigure(ex);
+      const cap = document.createElement("p"); cap.className = "cap"; cap.setAttribute("aria-live","off");
+      card.append(fig.svg, h, cap);
+      cards.push({ex, fig, cap, last:null});
+    }
+    grid.appendChild(card);
+  });
+}
+
+function frame(now){
+  const ms = paused ? pausedAt : now - offset;
+  cards.forEach(c => {
+    const st = stateAt(c.ex, ms);
+    draw(c.fig, c.ex, st);
+    const text = (st.frame.cap || c.ex.frames[0].cap)[lang];
+    if(text !== c.last){ c.cap.textContent = text; c.fig.svg.setAttribute("aria-label", c.ex.name[lang] + ": " + text); c.last = text; }
+  });
+  requestAnimationFrame(frame);
+}
+
+function setLang(l){
+  lang = l; document.documentElement.lang = l;
+  document.getElementById("lang-en").setAttribute("aria-pressed", l === "en");
+  document.getElementById("lang-nl").setAttribute("aria-pressed", l === "nl");
+  document.getElementById("title").textContent = UI[l].title;
+  document.getElementById("intro").textContent = UI[l].intro;
+  document.getElementById("pause").textContent = paused ? UI[l].play : UI[l].pause;
+  document.getElementById("stills").textContent = UI[l].stills;
+  build();
+}
+
+document.getElementById("lang-en").onclick = () => setLang("en");
+document.getElementById("lang-nl").onclick = () => setLang("nl");
+document.getElementById("pause").onclick = e => {
+  const now = performance.now();
+  if(paused){ offset = now - pausedAt; paused = false; } else { pausedAt = now - offset; paused = true; }
+  e.currentTarget.setAttribute("aria-pressed", paused);
+  e.currentTarget.textContent = paused ? UI[lang].play : UI[lang].pause;
+};
+document.getElementById("stills").onclick = e => {
+  stillMode = !stillMode; e.currentTarget.setAttribute("aria-pressed", stillMode); build();
+};
+document.getElementById("stills").setAttribute("aria-pressed", stillMode);
+if(reduced.addEventListener) reduced.addEventListener("change", build);
+
+build();
+requestAnimationFrame(frame);
+})();
+</script>
+</body>
+</html>
