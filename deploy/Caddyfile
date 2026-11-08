@@ -1,0 +1,31 @@
+# Serves the Nuxt static files and proxies /api to the Spring Boot API.
+# SITE_ADDRESS defaults to :80 (plain HTTP behind the Cloudflare Tunnel on the Synology).
+# On a VPS set SITE_ADDRESS to the domain, e.g. gymbuddy.example.nl, and Caddy gets HTTPS certificates itself.
+{$SITE_ADDRESS::80} {
+	encode zstd gzip
+
+	header {
+		X-Content-Type-Options nosniff
+		Referrer-Policy strict-origin-when-cross-origin
+		X-Frame-Options DENY
+		-Server
+	}
+
+	handle /api/* {
+		reverse_proxy api:8080
+	}
+
+	handle {
+		root * /srv
+
+		# Hashed build files never change; HTML, the service worker and the manifest must always be fresh.
+		@immutable path /_nuxt/* /_fonts/*
+		header @immutable Cache-Control "public, max-age=31536000, immutable"
+		@fresh path / /*.html /sw.js /manifest.webmanifest
+		header @fresh Cache-Control "no-cache"
+
+		# Single-page app: unknown paths get the app shell.
+		try_files {path} {path}/index.html /200.html
+		file_server
+	}
+}

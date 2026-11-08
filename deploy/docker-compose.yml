@@ -1,0 +1,86 @@
+# GymBuddy stack. Copy .env.example to .env and fill it in, then:
+#   Synology (with Cloudflare Tunnel): docker compose --profile synology up -d
+#   VPS (Caddy does HTTPS):            set SITE_ADDRESS and HTTP_PORT=80, open 80/443, docker compose up -d
+# To build the images locally instead of pulling them: docker compose build
+name: gymbuddy
+
+services:
+  caddy:
+    image: ${IMAGE_PREFIX:-ghcr.io/arieveek}/gymbuddy-web:${IMAGE_TAG:-latest}
+    build:
+      context: ..
+      dockerfile: deploy/web.Dockerfile
+    restart: unless-stopped
+    environment:
+      SITE_ADDRESS: ${SITE_ADDRESS:-:80}
+    ports:
+      # Optional on the Synology (the tunnel reaches Caddy inside Docker); needed on a VPS.
+      - "${HTTP_PORT:-8088}:80"
+      - "${HTTPS_PORT:-8443}:443"
+    volumes:
+      - caddy_data:/data
+    depends_on:
+      - api
+
+  api:
+    image: ${IMAGE_PREFIX:-ghcr.io/arieveek}/gymbuddy-api:${IMAGE_TAG:-latest}
+    build: ../backend
+    restart: unless-stopped
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/gymbuddy
+      SPRING_DATASOURCE_USERNAME: gymbuddy
+      SPRING_DATASOURCE_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}
+      GYMBUDDY_JWT_SECRET: ${GYMBUDDY_JWT_SECRET:?set GYMBUDDY_JWT_SECRET in .env}
+      GYMBUDDY_WEB_ORIGIN: ${GYMBUDDY_WEB_ORIGIN:?set GYMBUDDY_WEB_ORIGIN in .env}
+      JAVA_TOOL_OPTIONS: -Duser.timezone=UTC
+    depends_on:
+      db:
+        condition: service_healthy
+
+  db:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: gymbuddy
+      POSTGRES_USER: gymbuddy
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U gymbuddy -d gymbuddy"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  backup:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    entrypoint: ["/bin/sh", "/backup.sh"]
+    environment:
+      PGHOST: db
+      PGUSER: gymbuddy
+      PGDATABASE: gymbuddy
+      PGPASSWORD: ${POSTGRES_PASSWORD:?set POSTGRES_PASSWORD in .env}
+      TZ: ${TZ:-Europe/Amsterdam}
+      KEEP_DAYS: ${BACKUP_KEEP_DAYS:-14}
+    volumes:
+      - ./backup.sh:/backup.sh:ro
+      - ./backups:/backups
+    depends_on:
+      db:
+        condition: service_healthy
+
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    profiles: ["synology"]
+    restart: unless-stopped
+    command: tunnel --no-autoupdate run
+    environment:
+      # Not marked required: Compose would then demand it on a VPS too, where this profile is off.
+      TUNNEL_TOKEN: ${TUNNEL_TOKEN:-}
+    depends_on:
+      - caddy
+
+volumes:
+  db_data:
+  caddy_data:

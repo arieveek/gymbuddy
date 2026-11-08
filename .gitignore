@@ -44,3 +44,6 @@ dist/
 .vscode/
 .DS_Store
 Thumbs.db
+
+# Database dumps written by the backup container
+deploy/backups/

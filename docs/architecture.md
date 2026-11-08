@@ -4,7 +4,7 @@
 
 ## Overview
 
-GymBuddy is a pull-up training app for a young competition gymnast: one Nuxt codebase runs as the website and the iPhone/iPad app, and a Spring Boot API stores progress behind a login.
+GymBuddy is a pull-up training app for a young competition gymnast: one Nuxt codebase runs as the website and the iPhone/iPad app, and a Spring Boot API syncs progress behind a login. The app is local-first: it works fully on the device without an account, and signing in adds sync between devices.
 
 - **What it does:** a level test places him on one of 5 levels; he follows a 15-minute workout 3 times a week; a retest every 2 weeks moves him up. Training never ends: the workout keeps growing with every test, also after the top level (see [Training model](#training-model)).
 - **Profiles:** each athlete has a profile with first name, age group (child or adult), level and language. The app is built for a child but works for an adult too.
@@ -80,7 +80,7 @@ Nuxt in single-page mode, built once as static files and shipped two ways: to th
 
 | Concern | Choice | Notes |
 |---|---|---|
-| Framework | Nuxt (Vue 3, TypeScript) | `ssr: false`, built with `nuxi generate` |
+| Framework | Nuxt 4 (Vue 3, TypeScript) | `ssr: false`, built with `nuxt generate`; sources in `frontend/app/` |
 | Native app | Capacitor (iOS) | One universal app for iPhone and iPad; built in Xcode on a Mac |
 | UI | Nuxt UI (Tailwind) | Large touch targets, readable from the bar |
 | State | Pinia | training store: athlete profile, sessions, tests |
@@ -93,21 +93,25 @@ Nuxt in single-page mode, built once as static files and shipped two ways: to th
 
 ### Structure
 
-- `pages/` — `index.vue` (Today), `workout.vue` (player), `moves.vue`, `progress.vue`, `profile.vue`, `tips.vue`, `login.vue`
-- `data/` — `exercises.ts`, `levels.ts`, `milestones.ts`: the training content as plain TypeScript, edited in code, with Dutch and English text side by side
-- `utils/` — `plan.ts` (today's workout from level, step, age group and latest test), `progress.ts` (streaks, personal bests, goals, milestones): pure functions with unit tests
-- `i18n/locales/` — `nl.json`, `en.json`: UI text (buttons, labels, messages, Tips)
-- `composables/` — `useTimer.ts` (hold and rest countdowns), `useApi.ts`
-- `stores/` — `training.ts`, `auth.ts`
+Under `frontend/app/`:
+
+- `pages/` — `index.vue` (Today), `workout.vue` (player), `moves.vue`, `progress.vue`, `profile.vue`, `tips.vue`, `welcome.vue` (first start), `login.vue`
+- `data/` — `exercises.ts`, `levels.ts`, `milestones.ts`, `tips.ts`, `poses.ts`: the training content as plain TypeScript, edited in code, with Dutch and English text side by side
+- `utils/` — `plan.ts` (today's workout from level, step, age group and latest test), `progress.ts` (streaks, personal bests, goals, milestones), `sync.ts` (outbox and merge): pure functions with unit tests in `frontend/test/`
+- `composables/` — `useTimer.ts` (hold and rest countdowns), `useFeedback.ts` (beeps, haptics, keep awake), `useSync.ts`, `useTokenStore.ts`
+- `stores/` — `training.ts` (profiles, workouts, tests, outbox), `auth.ts`
+- `plugins/` — `api.ts` (`$api`), `sync.client.ts`, `locale.client.ts`
+
+UI text lives in `frontend/i18n/locales/` (`nl.json`, `en.json`).
 
 ### Exercise media
 
 Each exercise is explained with a short looping animation or clip, shown on the Moves screen and in the workout player. Getting the form right matters more than looks.
 
-- **First: animated SVG.** Each exercise gets 2–4 key poses (for example dead hang → scap pull → back) that loop smoothly, drawn as SVG like the prototype's `POSES`. They are tiny, work offline, follow the colour tokens and dark mode, and show exactly the form described in the cues. They honour `prefers-reduced-motion` by showing the still key poses. The working preview with all 14 exercises, in both languages, is [`docs/exercise-animations.html`](exercise-animations.html); its pose data and small solver move to `frontend/data/poses.ts` and an `<ExerciseAnimation>` component in step 1.
+- **First: animated SVG.** Each exercise gets 2–4 key poses (for example dead hang → scap pull → back) that loop smoothly, drawn as SVG like the prototype's `POSES`. They are tiny, work offline, follow the colour tokens and dark mode, and show exactly the form described in the cues. They honour `prefers-reduced-motion` by showing the still key poses. The working preview with all 14 exercises, in both languages, is [`docs/exercise-animations.html`](exercise-animations.html); its pose data and solver now live in `frontend/app/data/poses.ts`, drawn by the `<ExerciseAnimation>` component.
 - **Later, per exercise: real filmed clips.** 3–6 seconds, filmed from the side against a plain background, then muted, looped, H.264 MP4 at 720p (about 200–500 KB each) with a poster image. Played with `autoplay muted loop playsinline` so they work on iPhone. Film an adult or the coach, or film the child without his face, because the web version is public.
 - **No AI-generated video for instruction.** Current video models get hands on the bar, elbow angles and body shape wrong. AI images or video may be used for decoration only (splash screen, App Store art).
-- **Where they live:** files in `frontend/public/media/exercises/`, bundled in the app so they work offline at the gym. Each exercise in `data/exercises.ts` has `media: { poses, video?, poster? }`; a clip, when there is one, is used instead of the animation.
+- **Where they live:** files in `frontend/public/media/exercises/`, bundled in the app so they work offline at the gym. When clips arrive, each exercise in `data/exercises.ts` gets an optional `video` (and `poster`); a clip, when there is one, is used instead of the animation.
 - **Review:** the coach checks every animation and clip before it ships.
 
 ### Languages
@@ -127,11 +131,12 @@ A single Spring Boot service owns authentication and progress data; it issues it
 
 | Concern | Choice |
 |---|---|
-| Runtime | Java 21, current Spring Boot release |
+| Runtime | Java 21, Spring Boot 4.1, Maven wrapper |
 | Starters | Web, Security, OAuth2 Resource Server, Data JPA, Validation, Actuator |
 | Database access | Spring Data JPA + PostgreSQL driver |
 | Migrations | Flyway (`db/migration/V1__init.sql`, ...) |
-| Packaging | Docker image built with Buildpacks or a small Dockerfile |
+| Packaging | `backend/Dockerfile` (multi-stage, JRE 21, non-root) |
+| Tests | Integration tests over HTTP against PostgreSQL via Testcontainers |
 
 ### Authentication
 
@@ -179,7 +184,7 @@ Start on the Synology with a Cloudflare Tunnel; the same Docker Compose stack mo
 
 | Service | Image | Role |
 |---|---|---|
-| caddy | caddy | Serves the Nuxt static files, proxies `/api` to the API |
+| caddy | gymbuddy-web (Caddy with the Nuxt static files baked in, `deploy/web.Dockerfile`) | Serves the Nuxt static files, proxies `/api` to the API |
 | api | gymbuddy-api (built from `backend/`) | Spring Boot on port 8080, internal only |
 | db | postgres | Data on a named volume, internal only |
 | cloudflared | cloudflare/cloudflared | Synology only: public HTTPS without opening router ports |
@@ -196,7 +201,7 @@ Start on the Synology with a Cloudflare Tunnel; the same Docker Compose stack mo
 ### Releases
 
 - **Backend and web:** GitHub Actions builds the API image and the Nuxt static files on each push to main; deploy by pulling the new image and running `docker compose up -d`.
-- **iOS app:** `nuxi generate` → `npx cap sync ios` → archive in Xcode → TestFlight for the family. The App Store is optional.
+- **iOS app:** `nuxt generate` (with `NUXT_PUBLIC_API_BASE` set to the full API URL) → `npx cap sync ios` → archive in Xcode → TestFlight for the family. The App Store is optional.
 - **Secrets:** JWT signing key and database password in a `.env` file on the server, never in the repo.
 - **Backups:** Hyper Backup copies the nightly dumps off the NAS.
 
@@ -209,7 +214,7 @@ gymbuddy/
   CLAUDE.md            architecture summary + conventions
   docs/architecture.md this document
   frontend/            Nuxt + Capacitor (ios/ folder lives here)
-  backend/             Spring Boot (Maven or Gradle)
+  backend/             Spring Boot (Maven)
   deploy/
     docker-compose.yml
     Caddyfile

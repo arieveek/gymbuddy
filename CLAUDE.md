@@ -1,39 +1,46 @@
 # GymBuddy
 
-Pull-up training app for a young competition gymnast. One Nuxt codebase runs as the website and the iPhone/iPad app; a Spring Boot API stores progress behind a parent login.
+Pull-up training app for a young competition gymnast. One Nuxt codebase runs as the website and the iPhone/iPad app; a Spring Boot API syncs progress behind an optional parent login.
 
 **Read [docs/architecture.md](docs/architecture.md) before making structural changes.** It is the source of truth for the stack, API, data model, deployment and build order.
 
 ## Stack
 
-- **Frontend** (`frontend/`): Nuxt (Vue 3, TypeScript) with `ssr: false`, built with `nuxi generate`; Nuxt UI, Pinia, Capacitor for the iOS app (`frontend/ios/`), `@vite-pwa/nuxt` for the web.
-- **Backend** (`backend/`): Java 21, Spring Boot, self-issued JWTs (Spring `JwtEncoder` + OAuth2 Resource Server), Spring Data JPA, PostgreSQL, Flyway migrations in `db/migration/`.
-- **Deploy** (`deploy/`): one Docker Compose stack — caddy, api, db, cloudflared, backup.
+- **Frontend** (`frontend/`): Nuxt 4 (Vue 3, TypeScript) with `ssr: false`, built with `nuxt generate`; sources in `frontend/app/`. Nuxt UI, Pinia (persisted to localStorage), `@nuxtjs/i18n`, Capacitor for the iOS app (`frontend/ios/`, created on a Mac), `@vite-pwa/nuxt` for the web.
+- **Backend** (`backend/`): Java 21, Spring Boot 4.1 (Maven wrapper), self-issued HS256 JWTs (Spring `JwtEncoder` + OAuth2 Resource Server), Spring Data JPA, PostgreSQL 17, Flyway migrations in `src/main/resources/db/migration/`.
+- **Deploy** (`deploy/`): one Docker Compose stack — caddy (web image with the static site), api, db, backup, cloudflared (Synology profile). See `deploy/README.md`.
 
-## Prototype
+## Where things live
 
-`docs/bar-strong.html` is the clickable single-file prototype ("Bar Strong"). It is the reference for screens, styling and training content, not code to copy as is.
+- Training content: `frontend/app/data/` (`exercises.ts`, `levels.ts`, `milestones.ts`, `tips.ts`, `poses.ts` for the animated drawings).
+- Training rules: `frontend/app/utils/plan.ts` (today's workout, steps, light weeks) and `progress.ts` (levels from tests, streaks, goals, milestones, retest nudge). Pure functions, tested in `frontend/test/`.
+- Local state and the sync outbox: `frontend/app/stores/training.ts`; sync: `composables/useSync.ts` + `utils/sync.ts`; auth: `stores/auth.ts`, `plugins/api.ts` (`$api`).
+- UI text: `frontend/i18n/locales/{nl,en}.json`.
 
-- **Content to port into `frontend/data/`:** `EX` (exercises: name, pose, type `hold`/`reps`/`list`, cues, why, tempo), `LEVELS` (5 levels, each plan is `[exercise, sets, value, label?]`), `levelFromTest()` (≥8 pull-ups → 5, ≥4 → 4, ≥1 → 3, hold ≥5s → 2, else 1), and the `POSES` stick-figure SVGs.
-- **Screens:** Today (scoreboard header, workout list, test nudge after 6 workouts at a level and 12+ days since the last test), workout player (warm-up, sets, hold countdowns, 60s rest with +15s/skip, beeps), Moves, Progress (stats, test stepper, chart, level ladder, history, athlete name and level), Tips.
-- **Look:** colour tokens and dark mode in the `:root` block, Big Shoulders Display + Figtree fonts, 52–60px touch targets.
-- **Differs from the architecture:** the prototype has no age group or language in the profile, ends at level 5 with a finite ladder, and uses fixed doses. Follow the Training model section of `docs/architecture.md` instead: steps within levels, open-ended level 5, streaks and milestones.
-- **Do not carry over:** the `window.claude` cloud sync (`connectCloud`). Persistence is Pinia + local storage now and the Spring API later. Records in the prototype have no ids (`{d, l}` sessions, `{d, p, h}` tests); the app gives each one a client-made UUID.
+## Prototypes
+
+`docs/bar-strong.html` (screens, look, original content) and `docs/exercise-animations.html` (animated poses) are references. Both are ported; change the app, not the prototypes. Where they differ from `docs/architecture.md` (finite ladder, fixed doses, no age group or language), the architecture wins.
 
 ## Conventions
 
-- Training content (exercises, levels) lives in `frontend/data/` as TypeScript. Do not move it to the database.
-- The app is bilingual, Dutch (`nl`) and English (`en`). UI text goes in `frontend/i18n/locales/{nl,en}.json` via `@nuxtjs/i18n`; never hard-code user-facing strings. Text in `frontend/data/` is `{ nl, en }` objects. Every change adds both languages. The backend returns error codes, not display text.
+- Training content (exercises, levels) lives in `frontend/app/data/` as TypeScript. Do not move it to the database.
+- The app is bilingual, Dutch (`nl`) and English (`en`). UI text goes in the locale files via `@nuxtjs/i18n`; never hard-code user-facing strings. Text in `frontend/app/data/` is `{ nl, en }` objects. Every change adds both languages. The backend returns error codes, not display text.
+- The app is local-first: it works fully without an account; signing in adds sync. Every local change goes through the training store so it is queued in the outbox.
 - Every athlete query is scoped to the signed-in user. Never load an athlete, session or test by id alone.
-- Session and test POSTs carry a client-generated UUID; inserts must be idempotent so offline syncs never duplicate.
-- Auth uses bearer tokens, not cookies (Capacitor runs from `capacitor://localhost`). Refresh tokens are stored hashed and rotate on every refresh.
+- Athlete, session and test ids are client-made UUIDs; posts must stay idempotent so offline syncs never duplicate. Profiles merge last-write-wins on `updatedAt`.
+- Auth uses bearer tokens, not cookies (Capacitor runs from `capacitor://localhost`). Refresh tokens are stored hashed and rotate on every refresh; reusing one revokes all of that account's tokens.
 - An athlete profile is name, age group (`child`/`adult`), level and language. Keep personal data to that: no birth date or photos.
-- Exercise explanations are animated SVG key poses first (reference: `docs/exercise-animations.html`, to be ported, not copied as is), real filmed clips later (`frontend/public/media/exercises/`). Never AI-generated video or images for showing form.
-- Training has no finish line: level 5 scales from the latest test, and there is always a next goal. Plan and progress rules are pure functions in `frontend/utils/` with unit tests.
+- Exercise explanations are animated SVG key poses (`poses.ts`), real filmed clips later (`frontend/public/media/exercises/`). Never AI-generated video or images for showing form.
+- Training has no finish line: level 5 scales from the latest test, and there is always a next goal.
 - Secrets (JWT signing key, DB password) go in `deploy/.env` on the server, never in the repo; only `.env.example` is committed.
 - Keep it simple: one repo, one Compose stack, no extra services without a reason.
 
+## Running locally
+
+- API: `cd backend && ./mvnw spring-boot:test-run` starts it on 8080 with a throwaway PostgreSQL in Docker.
+- Web: `cd frontend && npm run dev` proxies `/api` to `http://localhost:8080` (set `API_TARGET` if that port is taken).
+
 ## Before opening a PR
 
-- Run the backend tests.
-- Run `nuxi typecheck` and the frontend unit tests (Vitest) in `frontend/`.
+- Run the backend tests: `cd backend && ./mvnw verify` (needs Docker for Testcontainers).
+- Run `npm run typecheck` and `npm test` in `frontend/`.

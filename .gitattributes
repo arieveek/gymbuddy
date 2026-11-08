@@ -1,0 +1,6 @@
+# Store text with LF so shell scripts and the Maven wrapper work inside Linux containers.
+* text=auto eol=lf
+*.cmd text eol=crlf
+*.bat text eol=crlf
+*.png binary
+*.jar binary
