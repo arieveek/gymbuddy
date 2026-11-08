@@ -29,7 +29,8 @@ Pull-up training app for a young competition gymnast. One Nuxt codebase runs as 
 - After login the app works offline. Every local change goes through the training store so it is queued in the outbox. Logout clears the device's training data; a different account logging in starts clean.
 - Every athlete query is scoped to the signed-in user. Never load an athlete, session or test by id alone.
 - Athlete, session and test ids are client-made UUIDs; posts must stay idempotent so offline syncs never duplicate. Profiles merge last-write-wins on `updatedAt`.
-- Auth uses bearer tokens, not cookies (Capacitor runs from `capacitor://localhost`). Refresh tokens are stored hashed and rotate on every refresh; reusing one revokes all of that account's tokens.
+- Auth uses bearer tokens, not cookies (Capacitor runs from `capacitor://localhost`). Refresh tokens are stored hashed and rotate on every refresh; reusing one revokes all of that account's tokens, so every refresh goes through `auth.refresh()` (shared request + cross-tab Web Lock).
+- "Keep me logged in" (default on) = 30-day refresh token that slides: the app refreshes on every open (`auth.touch()`), restarting the 30 days. Without it: 12 hours max, kept in sessionStorage/memory only.
 - An athlete profile is name, age group (`child`/`adult`), level and language. Keep personal data to that: no birth date or photos.
 - Exercise explanations are animated SVG key poses (`poses.ts`), real filmed clips later (`frontend/public/media/exercises/`). Never AI-generated video or images for showing form.
 - Training has no finish line: level 5 scales from the latest test, and there is always a next goal.

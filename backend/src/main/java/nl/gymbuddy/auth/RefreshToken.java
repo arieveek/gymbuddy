@@ -31,19 +31,28 @@ public class RefreshToken {
 	@Column(name = "created_at", nullable = false)
 	private Instant createdAt;
 
+	/** "Keep me logged in": the rotated token gets the long lifetime again, so it slides with use. */
+	@Column(nullable = false)
+	private boolean remember;
+
 	protected RefreshToken() {
 	}
 
-	public RefreshToken(UUID userId, String tokenHash, Instant expiresAt) {
+	public RefreshToken(UUID userId, String tokenHash, Instant expiresAt, boolean remember) {
 		this.id = UUID.randomUUID();
 		this.userId = userId;
 		this.tokenHash = tokenHash;
 		this.expiresAt = expiresAt;
+		this.remember = remember;
 		this.createdAt = Instant.now();
 	}
 
 	public UUID getUserId() {
 		return userId;
+	}
+
+	public boolean isRemember() {
+		return remember;
 	}
 
 	public boolean isRevoked() {

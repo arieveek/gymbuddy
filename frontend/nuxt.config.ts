@@ -24,7 +24,9 @@ export default defineNuxtConfig({
   runtimeConfig: {
     public: {
       // Same-origin '/api' on the web; the native app sets the full URL at build time (NUXT_PUBLIC_API_BASE).
-      apiBase: '/api'
+      apiBase: '/api',
+      // Shown next to "Keep me logged in"; keep in step with the API's GYMBUDDY_REMEMBER_ME_TTL (NUXT_PUBLIC_REMEMBER_DAYS).
+      rememberDays: 30
     }
   },
 

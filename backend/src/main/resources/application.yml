@@ -34,4 +34,7 @@ gymbuddy:
   admin-email: ${GYMBUDDY_ADMIN_EMAIL:}
   admin-password: ${GYMBUDDY_ADMIN_PASSWORD:}
   access-token-ttl: 15m
-  refresh-token-ttl: 30d
+  # "Keep me logged in": the login lasts this long after the app was last opened; every open starts it over.
+  remember-me-ttl: ${GYMBUDDY_REMEMBER_ME_TTL:30d}
+  # Without "keep me logged in": at most this long, and the app forgets the login when it is closed.
+  session-ttl: 12h

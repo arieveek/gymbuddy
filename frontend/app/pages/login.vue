@@ -11,6 +11,8 @@ const route = useRoute()
 const mode = ref<'login' | 'register'>('login')
 const email = ref('')
 const password = ref('')
+const remember = ref(true)
+const rememberDays = useRuntimeConfig().public.rememberDays
 const busy = ref(false)
 const error = ref<string | null>(null)
 const registered = ref(false)
@@ -33,7 +35,7 @@ async function submit() {
       password.value = ''
       return
     }
-    await auth.login(email.value, password.value)
+    await auth.login(email.value, password.value, remember.value)
     // Data from another account on this device is cleared; this account's own unsynced changes are kept and uploaded.
     store.claimFor(auth.email!)
     store.queueAll()
@@ -86,6 +88,13 @@ function switchMode() {
         >
         <p v-if="mode === 'register'" class="sub">{{ t('login.passwordHint') }}</p>
       </div>
+      <div v-if="mode === 'login'" class="remember">
+        <input id="remember" v-model="remember" type="checkbox">
+        <label for="remember">
+          <span class="exname">{{ t('login.remember') }}</span>
+          <span class="sub">{{ remember ? t('login.rememberOn', { days: rememberDays }) : t('login.rememberOff') }}</span>
+        </label>
+      </div>
       <p v-if="error" class="error" role="alert">{{ error }}</p>
       <button class="btn big" type="submit" :disabled="busy">
         {{ busy ? t('login.busy') : mode === 'login' ? t('login.submit') : t('login.registerSubmit') }}
@@ -102,4 +111,7 @@ function switchMode() {
 .hero::after { content: ""; position: absolute; left: 0; right: 0; top: 0; height: 5px; background: var(--accent); }
 .hero h1 { font-family: var(--display); font-weight: 900; font-size: 56px; line-height: 1; text-transform: uppercase; }
 .hero p { margin: 6px 0 0; opacity: .8; }
+.remember { display: grid; grid-template-columns: 28px 1fr; gap: 10px; align-items: start; }
+.remember input { width: 26px; height: 26px; margin: 2px 0 0; accent-color: var(--accent); }
+.remember label { display: flex; flex-direction: column; gap: 2px; cursor: pointer; }
 </style>

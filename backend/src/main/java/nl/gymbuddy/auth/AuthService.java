@@ -4,6 +4,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+import java.time.Duration;
 import java.time.Instant;
 import java.util.Base64;
 import java.util.HexFormat;
@@ -16,6 +17,7 @@ import nl.gymbuddy.config.GymbuddyProperties;
 
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.jose.jws.MacAlgorithm;
 import org.springframework.security.oauth2.jwt.JwsHeader;
@@ -69,14 +71,14 @@ public class AuthService {
 	}
 
 	@Transactional
-	public TokenResponse login(String email, String password) {
+	public TokenResponse login(String email, String password, boolean rememberMe) {
 		User user = users.findByEmail(normalize(email)).orElse(null);
 		boolean ok = passwordEncoder.matches(password, user != null ? user.getPasswordHash() : dummyHash);
 		if (user == null || !ok) {
 			throw new ApiException(HttpStatus.UNAUTHORIZED, "INVALID_CREDENTIALS");
 		}
 		requireApproved(user);
-		return issue(user.getId());
+		return issue(user.getId(), rememberMe);
 	}
 
 	@Transactional(noRollbackFor = ApiException.class)
@@ -97,7 +99,15 @@ public class AuthService {
 		}
 		requireApproved(user);
 		stored.revoke(now);
-		return issue(stored.getUserId());
+		// The new token gets a full lifetime from now: the login slides with every app open.
+		return issue(stored.getUserId(), stored.isRemember());
+	}
+
+	/** Removes expired refresh tokens; every app open rotates one, so they would pile up. Runs nightly. */
+	@Scheduled(cron = "0 30 4 * * *")
+	@Transactional
+	public int purgeExpiredTokens() {
+		return tokens.deleteExpired(Instant.now());
 	}
 
 	/** Pending and blocked accounts get a code the app can explain, only after the password was right. */
@@ -114,8 +124,9 @@ public class AuthService {
 		tokens.findByTokenHash(hash(refreshToken)).ifPresent(t -> t.revoke(Instant.now()));
 	}
 
-	private TokenResponse issue(UUID userId) {
+	private TokenResponse issue(UUID userId, boolean remember) {
 		Instant now = Instant.now();
+		Duration refreshTtl = remember ? props.rememberMeTtl() : props.sessionTtl();
 		JwtClaimsSet claims = JwtClaimsSet.builder()
 				.issuer("gymbuddy")
 				.subject(userId.toString())
@@ -128,8 +139,8 @@ public class AuthService {
 		byte[] raw = new byte[32];
 		RANDOM.nextBytes(raw);
 		String refresh = Base64.getUrlEncoder().withoutPadding().encodeToString(raw);
-		tokens.save(new RefreshToken(userId, hash(refresh), now.plus(props.refreshTokenTtl())));
-		return new TokenResponse(access, refresh, props.accessTokenTtl().toSeconds());
+		tokens.save(new RefreshToken(userId, hash(refresh), now.plus(refreshTtl), remember));
+		return new TokenResponse(access, refresh, props.accessTokenTtl().toSeconds(), refreshTtl.toSeconds(), remember);
 	}
 
 	private static ApiException invalidRefresh() {

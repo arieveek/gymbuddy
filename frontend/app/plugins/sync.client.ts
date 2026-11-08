@@ -12,14 +12,19 @@ export default defineNuxtPlugin({
     await auth.init()
     const { sync } = useSync()
 
-    // Refresh the role (admin link) when online; failures are fine, the next sync refreshes the token.
-    if (auth.signedIn) auth.loadMe().catch(() => {})
-    void sync()
-    window.addEventListener('online', () => void sync())
-    document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') void sync() })
+    // Opening the app starts a remembered login's 30 days over (refresh), then syncs.
+    const opened = async () => {
+      await auth.touch()
+      await sync()
+    }
+    if (auth.signedIn) {
+      void opened().then(() => auth.loadMe()).catch(() => {}) // also refreshes the role for the admin link
+    }
+    window.addEventListener('online', () => void opened())
+    document.addEventListener('visibilitychange', () => { if (document.visibilityState === 'visible') void opened() })
     if (Capacitor.isNativePlatform()) {
       const { App } = await import('@capacitor/app')
-      await App.addListener('resume', () => void sync())
+      await App.addListener('resume', () => void opened())
     }
 
     let timer: ReturnType<typeof setTimeout> | null = null

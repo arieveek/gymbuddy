@@ -5,7 +5,16 @@ interface TokenResponse {
   accessToken: string
   refreshToken: string
   expiresIn: number
+  /** Seconds until the login ends unless the app is used again; every refresh starts it over. */
+  refreshExpiresIn: number
+  remember: boolean
 }
+
+/**
+ * Opening the app always refreshes the login (which starts its 30 days over). While the app stays open,
+ * coming back to it (tab switch, resume) refreshes at most this often.
+ */
+const TOUCH_EVERY_MS = 5 * 60 * 1000
 
 interface Me {
   id: string
@@ -35,6 +44,7 @@ export const useAuthStore = defineStore('auth', () => {
   const isAdmin = computed(() => tokens.value?.role === 'admin')
   const store = useTokenStore()
   let refreshing: Promise<boolean> | null = null
+  let lastTouch = 0
 
   const base = () => useRuntimeConfig().public.apiBase as string
 
@@ -45,7 +55,7 @@ export const useAuthStore = defineStore('auth', () => {
   }
 
   async function save(res: TokenResponse, mail: string, role: StoredTokens['role']) {
-    tokens.value = { access: res.accessToken, refresh: res.refreshToken, email: mail, role }
+    tokens.value = { access: res.accessToken, refresh: res.refreshToken, email: mail, role, remember: res.remember }
     await store.write(tokens.value)
   }
 
@@ -57,9 +67,10 @@ export const useAuthStore = defineStore('auth', () => {
     await store.write(tokens.value)
   }
 
-  async function login(mail: string, password: string) {
-    const res = await $fetch<TokenResponse>(`${base()}/auth/login`, { method: 'POST', body: { email: mail, password } })
+  async function login(mail: string, password: string, rememberMe: boolean) {
+    const res = await $fetch<TokenResponse>(`${base()}/auth/login`, { method: 'POST', body: { email: mail, password, rememberMe } })
     await save(res, mail.trim().toLowerCase(), 'user')
+    lastTouch = Date.now()
     await loadMe()
   }
 
@@ -91,14 +102,25 @@ export const useAuthStore = defineStore('auth', () => {
     await navigateTo({ path: '/login', query: { reason } })
   }
 
-  /** Gets a new token pair. Concurrent callers share one request, so a token is never presented twice. */
+  /**
+   * Gets a new token pair, which also starts the login's lifetime over. A refresh token may be used only once
+   * (reuse signs the account out everywhere), so: calls in this tab share one request, and across browser tabs a
+   * Web Lock serialises them and a tab first picks up a token another tab already rotated.
+   */
   function refresh(): Promise<boolean> {
     if (!tokens.value) return Promise.resolve(false)
-    refreshing ??= (async () => {
-      const current = tokens.value!
+    refreshing ??= withLock(async () => {
+      const held = tokens.value
+      if (!held) return false
+      const stored = await store.read()
+      if (stored && stored.refresh !== held.refresh) {
+        tokens.value = stored // another tab already rotated it
+        return true
+      }
       try {
-        const res = await $fetch<TokenResponse>(`${base()}/auth/refresh`, { method: 'POST', body: { refreshToken: current.refresh } })
-        await save(res, current.email, current.role)
+        const res = await $fetch<TokenResponse>(`${base()}/auth/refresh`, { method: 'POST', body: { refreshToken: held.refresh } })
+        await save(res, held.email, held.role)
+        lastTouch = Date.now()
         return true
       }
       catch (e) {
@@ -106,14 +128,24 @@ export const useAuthStore = defineStore('auth', () => {
         if (code !== 'NETWORK') await sessionEnded(code === 'ACCOUNT_BLOCKED' || code === 'ACCOUNT_PENDING' ? 'not-approved' : 'expired')
         return false
       }
-      finally {
-        refreshing = null
-      }
-    })()
+    }).finally(() => { refreshing = null })
     return refreshing
+  }
+
+  /** Called when the app is opened or comes back to the front: keeps a remembered login alive for another 30 days. */
+  async function touch() {
+    if (!tokens.value || Date.now() - lastTouch < TOUCH_EVERY_MS) return
+    if (typeof navigator !== 'undefined' && navigator.onLine === false) return
+    await refresh()
   }
 
   const accessToken = () => tokens.value?.access ?? null
 
-  return { ready, signedIn, email, isAdmin, init, login, register, logout, loadMe, sessionEnded, refresh, accessToken }
+  return { ready, signedIn, email, isAdmin, init, login, register, logout, loadMe, sessionEnded, refresh, touch, accessToken }
 })
+
+/** Runs `fn` under a cross-tab Web Lock where available (all current browsers and iOS 15.4+), otherwise directly. */
+function withLock<T>(fn: () => Promise<T>): Promise<T> {
+  const locks = typeof navigator !== 'undefined' ? navigator.locks : undefined
+  return locks ? locks.request('gymbuddy-refresh', fn) as Promise<T> : fn()
+}

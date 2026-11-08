@@ -142,10 +142,11 @@ A single Spring Boot service owns authentication and progress data; it issues it
 
 1. A parent requests an account with email and password (hashed with BCrypt). The account starts as `pending` and gets no tokens.
 2. The admin approves it on the admin page (`/admin` in the web app). The admin account itself is created at startup from `GYMBUDDY_ADMIN_EMAIL` / `GYMBUDDY_ADMIN_PASSWORD`; registering can never make someone admin.
-3. Login (approved accounts only; pending and blocked get `ACCOUNT_PENDING` / `ACCOUNT_BLOCKED`) returns a short-lived access token (JWT, ~15 minutes) and a refresh token (~30 days).
+3. Login (approved accounts only; pending and blocked get `ACCOUNT_PENDING` / `ACCOUNT_BLOCKED`) returns a short-lived access token (JWT, ~15 minutes) and a refresh token. With **Keep me logged in** (ticked by default) the refresh token lasts 30 days (`GYMBUDDY_REMEMBER_ME_TTL`) and is stored on the device; without it, it lasts at most 12 hours and lives only in sessionStorage (web) or memory (app), so closing the app logs out.
+   The window slides: every time the app is opened (and when it returns to the front, at most every 5 minutes) it refreshes, and the new token gets the full lifetime again. Someone who opens the app at least once a month never has to log in again. Expired tokens are purged nightly.
 4. Every API request looks the account up: only approved accounts get through, so blocking or deleting someone works immediately, not after their token expires.
 5. Access tokens are signed by Spring's `JwtEncoder` and validated by the resource server config.
-6. Refresh tokens are random strings stored hashed in the database, so they can be revoked; each refresh rotates the token.
+6. Refresh tokens are random strings stored hashed in the database, so they can be revoked; each refresh rotates the token. Browser tabs share one token, so refreshes are serialised across tabs with a Web Lock and a tab first adopts a token another tab already rotated (reuse would sign the account out everywhere).
 7. Bearer tokens, not cookies: the Capacitor app runs from `capacitor://localhost`, where cookies are unreliable.
 8. CORS allows the web domain and `capacitor://localhost`.
 9. Devices can be shared: logging out removes the training data from the device (after syncing), and when a different account logs in the previous account's data is cleared first.
@@ -176,7 +177,7 @@ Five PostgreSQL tables, created by Flyway; exercises and levels are not stored h
 | Table | Columns | Notes |
 |---|---|---|
 | `users` | id uuid, email unique, password_hash, role (`user`/`admin`), status (`pending`/`approved`/`blocked`), approved_at, created_at | The parent account; only approved ones can use the app |
-| `refresh_tokens` | id, user_id → users, token_hash, expires_at, revoked_at | One row per signed-in device |
+| `refresh_tokens` | id, user_id → users, token_hash, expires_at, revoked_at, remember | One live row per signed-in device; `remember` keeps the long, sliding lifetime |
 | `athletes` | id uuid, user_id → users, name, age_group (`child`/`adult`), level 1–5, language (`nl`/`en`), updated_at | The profile; a family can have more than one |
 | `sessions` | id uuid (client-made), athlete_id → athletes, date, level, step, light_week, reps_total, hold_seconds_total, created_at | One completed workout; the totals keep history right when plans change |
 | `tests` | id uuid (client-made), athlete_id → athletes, date, pullups, hang_seconds, created_at | One test result; the frontend derives the level from it |
