@@ -76,6 +76,9 @@ export interface PoseAnimation {
   bar?: Vec
   box?: [number, number, number, number]
   scene?: Scene
+  /** A weight held in the near hand (and the far hand too when `propBoth`). */
+  prop?: 'dumbbell' | 'kettlebell'
+  propBoth?: boolean
   ik?: { hand?: Vec, foot?: Vec, bend: 1 | -1 }
   frames: PoseFrame[]
 }

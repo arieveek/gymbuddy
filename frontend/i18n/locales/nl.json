@@ -121,7 +121,9 @@
       "dipbar": "Dipbar",
       "bench": "Bank",
       "wall": "Muur",
-      "band": "Elastiek of stok"
+      "band": "Elastiek of stok",
+      "dumbbell": "Dumbbells",
+      "kettlebell": "Kettlebell"
     },
     "category": {
       "prehab": "Warming-up & blessurepreventie",

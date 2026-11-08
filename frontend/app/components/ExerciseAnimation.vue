@@ -75,6 +75,11 @@ const rungs = computed(() => {
   return ys
 })
 const bar = computed(() => barOf(anim.value))
+const propHands = computed<Vec[]>(() => {
+  if (!anim.value.prop) return []
+  const J = j.value
+  return anim.value.propBoth && J.left ? [J.hand, J.left.hand] : [J.hand]
+})
 const ringLen = 2 * Math.PI * 7
 </script>
 
@@ -114,6 +119,15 @@ const ringLen = 2 * Math.PI * 7
     </g>
     <circle :cx="shapes.head[0]" :cy="shapes.head[1]" :r="HEAD_R" class="head" />
     <circle v-for="(e, i) in shapes.eyes" :key="i" :cx="e[0]" :cy="e[1]" r="1.15" class="eye" />
+    <template v-for="(h, i) in propHands" :key="`prop-${i}`">
+      <g v-if="anim.prop === 'dumbbell'" class="prop">
+        <circle :cx="h[0]" :cy="h[1]" r="4" />
+      </g>
+      <g v-else-if="anim.prop === 'kettlebell'" class="prop">
+        <path :d="`M ${h[0] - 2.4} ${h[1] + 2.2} Q ${h[0]} ${h[1] - 2.2} ${h[0] + 2.4} ${h[1] + 2.2}`" class="handle-kb" />
+        <circle :cx="h[0]" :cy="h[1] + 6.4" r="4.8" />
+      </g>
+    </template>
     <circle v-if="bar" :cx="bar[0]" :cy="bar[1]" r="3.6" class="bar" />
     <circle v-for="(post, i) in scene.posts ?? []" :key="`post-${i}`" :cx="post[0]" :cy="post[1]" r="3" class="bar" />
 
@@ -140,6 +154,8 @@ const ringLen = 2 * Math.PI * 7
 .head { fill: var(--ink); }
 .eye { fill: var(--bg); }
 .bar { fill: var(--accent); }
+.prop circle { fill: var(--accent); stroke: var(--bg); stroke-width: 1.2; }
+.handle-kb { fill: none; stroke: var(--accent); stroke-width: 2; }
 .ring-track { fill: none; stroke: var(--line); stroke-width: 2.5; }
 .ring { fill: none; stroke: var(--accent); stroke-width: 2.5; stroke-linecap: round; }
 .count { font-family: var(--display); font-weight: 900; font-size: 17px; fill: var(--accent); }

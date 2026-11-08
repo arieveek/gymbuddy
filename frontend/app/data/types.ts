@@ -27,7 +27,9 @@ export const EXERCISE_IDS = [
   // legs and jumps
   'squat', 'squat_jump', 'gym_jumps', 'stick_landing', 'long_jump', 'split_squat', 'pistol_assisted', 'calf_raise', 'glute_bridge', 'nordic',
   // flexibility
-  'hamstring_rung', 'front_split', 'butterfly', 'middle_split', 'pike_stretch', 'pike_hang', 'hip_flexor', 'side_bend', 'thoracic', 'bridge', 'kicks'
+  'hamstring_rung', 'front_split', 'butterfly', 'middle_split', 'pike_stretch', 'pike_hang', 'hip_flexor', 'side_bend', 'thoracic', 'bridge', 'kicks',
+  // light weights (dumbbells, kettlebell)
+  'wrist_curl', 'db_rotation', 'ytw_raise', 'db_row', 'db_press', 'goblet_squat', 'kb_deadlift', 'farmer_carry'
 ] as const
 
 export type ExerciseId = typeof EXERCISE_IDS[number]
@@ -37,8 +39,8 @@ export type ExerciseType = 'hold' | 'reps' | 'list'
 export const CATEGORIES = ['prehab', 'pull', 'push', 'core', 'handstand', 'legs', 'flexibility'] as const
 export type Category = typeof CATEGORIES[number]
 
-/** floor, wall bars, pull-up bar, dip bar, bench, a wall, a band or stick. */
-export const EQUIPMENT = ['floor', 'wallbars', 'pullupbar', 'dipbar', 'bench', 'wall', 'band'] as const
+/** floor, wall bars, pull-up bar, dip bar, bench, a wall, a band or stick, light dumbbells, a kettlebell. */
+export const EQUIPMENT = ['floor', 'wallbars', 'pullupbar', 'dipbar', 'bench', 'wall', 'band', 'dumbbell', 'kettlebell'] as const
 export type Equipment = typeof EQUIPMENT[number]
 
 /** 1 beginner, 2 intermediate, 3 advanced. */

@@ -44,8 +44,8 @@ export const TIPS: Record<AgeGroup, TipSection[]> = {
           'Stop bij scherpe pijn in schouders, ellebogen of polsen. Spierpijn de volgende dag is normaal, pijn in gewrichten niet.'),
         t('Look after hands: use chalk, keep calluses filed down, and skip bar work with a fresh rip.',
           'Zorg voor je handen: gebruik magnesium, vijl eelt bij en sla stangwerk over bij een open blaar.'),
-        t('No added weights. For growing kids, bodyweight and perfect form are the right tools.',
-          'Geen extra gewicht. Voor kinderen in de groei zijn lichaamsgewicht en goede techniek genoeg.'),
+        t('Bodyweight comes first. Light dumbbells or a kettlebell are fine for the exercises marked for them: a weight he can lift 15 times cleanly, with an adult nearby, never a maximal lift.',
+          'Eigen lichaamsgewicht gaat voor. Lichte dumbbells of een kettlebell mogen bij de oefeningen die ervoor bedoeld zijn: een gewicht dat hij 15 keer netjes kan tillen, met een volwassene erbij, nooit maximaal.'),
         t('Share the plan with the coach. They know the training load and can say if anything should change.',
           'Laat de trainer het plan zien. Die kent de trainingsbelasting en kan zeggen of er iets anders moet.')
       ]

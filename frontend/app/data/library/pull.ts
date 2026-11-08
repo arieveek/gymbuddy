@@ -183,7 +183,7 @@ export const PULL: Exercise[] = [
       t('Chin over the bar, lower with control', 'Kin boven de stang, gecontroleerd zakken')
     ],
     why: t('Keeps strength growing once bodyweight reps are easy.', 'Houdt je kracht groeiend als pull-ups met lichaamsgewicht makkelijk zijn.'),
-    safety: t('Adults only. Children train with bodyweight.', 'Alleen voor volwassenen. Kinderen trainen met hun eigen gewicht.'),
+    safety: t('Adults only. Children use light weights only in the exercises made for them.', 'Alleen voor volwassenen. Kinderen gebruiken lichte gewichten alleen bij de oefeningen die daarvoor bedoeld zijn.'),
     sources: [], commonPractice: true
   }
 ]

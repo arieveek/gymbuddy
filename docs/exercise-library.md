@@ -71,7 +71,8 @@ product-comparison sites, forum threads.
 From the medical and federation sources above:
 
 - **How often:** 2–3 short home sessions a week on non-consecutive days, at least one full rest day, and 8–12 hours of sleep. Club training counts too: if he already trains many hours, keep home work short. [bjsm-youth, nhs, boston-childrens, gymnz]
-- **How much:** start with 1–2 sets at easy-to-moderate effort; later 2–4 sets of 6–12 reps, holds of 10–30 s. Move up a step after 3 clean sets of 8. Bodyweight only — no added weight for children; technique first. [bjsm-youth, rbwf-routine, sporza, ghq-principles]
+- **How much:** start with 1–2 sets at easy-to-moderate effort; later 2–4 sets of 6–12 reps, holds of 10–30 s. Move up a step after 3 clean sets of 8. Technique first. [bjsm-youth, rbwf-routine, ghq-principles]
+- **Weights:** bodyweight work comes first for gymnasts, but light free weights are fine for children with supervision: a weight he can lift about 15 times with clean form, no maximal lifts, technique checked by an adult. Weight training does not stunt growth. [aap-resistance, bjsm-youth, nsca-ltad, sporza, ghq-home]
 - **Supervision and setup:** an adult nearby, a mat under the wall bars, climb only to a safe height. Check that the dip bar and bench hooks sit fully on a rung every time. Learn new skills at the club first. [schn, ghq-home, veiligheid, szeged]
 - **Wall-bar mounting:** solid masonry of at least 12 cm or wooden studs, never plasterboard alone; ceiling at least 250 cm; re-tighten the fixings in the first month. [fitshop-benchk, peak-stall]
 - **Flexibility:** stretch to mild discomfort, never pain; no oversplits (past a flat split); no forced back bends; walkovers only at the club. Extra care in growth spurts, when flexibility drops. If he is very bendy (hypermobile), build strength rather than more stretch. [ghq-flexibility, dance-teacher, aap-gymnastics]
@@ -193,6 +194,23 @@ Level: 1 beginner, 2 intermediate, 3 advanced. ★ = learn at the club first. Eq
 | Bridge | 2 | FL | Test standard; open shoulders | usag-tops, gymbc-kickstart, gymmax |
 | Active kicks | 1 | FL, WB | Active flexibility for leaps | ghq-splits, ghq-flexibility |
 
+### Light weights (dumbbells, kettlebell)
+Shown to children with the note "light weight, 15 clean reps, adult nearby, never maximal".
+
+| Exercise | Lvl | Equipment | Why | Sources |
+|---|---|---|---|---|
+| Wrist curls | 1 | DU, BE | Stronger forearms take load off the wrists | american-gymnast, childrens-mercy |
+| Side-lying shoulder rotation | 1 | DU, FL | Rotator cuff for bars and rings | american-gymnast (common practice) |
+| Y-T-W raises | 1 | DU, FL | Shoulder-blade control | aap-resistance, bjsm-youth (common practice) |
+| One-arm dumbbell row | 1 | DU, BE | Horizontal pull balances pushing | ghq-home, ghq-principles |
+| Overhead press | 1 | DU | Overhead strength in the handstand line | aap-resistance, bjsm-youth (common practice) |
+| Goblet squat | 1 | KB, DU | Legs for take-offs and landings | aap-resistance, bjsm-youth (common practice) |
+| Kettlebell deadlift | 2 | KB | Hamstrings and hips protect knees and back | aap-gymnastics, aap-resistance (common practice) |
+| Farmer's carry | 1 | KB, DU | Grip and trunk for bars and rings | aap-resistance, bjsm-youth (common practice) |
+
+DU dumbbells, KB kettlebell.
+
 ### Left out on purpose
-Oversplits (past flat), walkovers or limbers at home, bridge walk-down on the wall bars, human flag, and any added
-weight for children: the sources advise against these at home or for this age, or reserve them for the club.
+Oversplits (past flat), walkovers or limbers at home, bridge walk-down on the wall bars, human flag, kettlebell swings
+(technique to learn with a coach), heavy or maximal lifts, and weighted pull-ups for children (adults only): the
+sources advise against these at home or for this age, or reserve them for the club.

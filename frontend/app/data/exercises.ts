@@ -6,6 +6,7 @@ import { CORE } from './library/core'
 import { HANDSTAND } from './library/handstand'
 import { LEGS } from './library/legs'
 import { FLEXIBILITY } from './library/flexibility'
+import { WEIGHTS } from './library/weights'
 
 export type { Exercise } from './types'
 
@@ -13,7 +14,7 @@ export type { Exercise } from './types'
  * The exercise library, from docs/exercise-library.md. One file per category in data/library/.
  * Completeness (every id exactly once, both languages, sources, progressions) is checked in test/library.test.ts.
  */
-export const LIBRARY: Exercise[] = [...PREHAB, ...PULL, ...PUSH, ...CORE, ...HANDSTAND, ...LEGS, ...FLEXIBILITY]
+export const LIBRARY: Exercise[] = [...PREHAB, ...PULL, ...PUSH, ...CORE, ...HANDSTAND, ...LEGS, ...FLEXIBILITY, ...WEIGHTS]
 
 export const EXERCISES = Object.fromEntries(LIBRARY.map(e => [e.id, e])) as Record<ExerciseId, Exercise>
 

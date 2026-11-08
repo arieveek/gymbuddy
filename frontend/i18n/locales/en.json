@@ -121,7 +121,9 @@
       "dipbar": "Dip bar",
       "bench": "Bench",
       "wall": "Wall",
-      "band": "Band or stick"
+      "band": "Band or stick",
+      "dumbbell": "Dumbbells",
+      "kettlebell": "Kettlebell"
     },
     "category": {
       "prehab": "Warm-up & prehab",

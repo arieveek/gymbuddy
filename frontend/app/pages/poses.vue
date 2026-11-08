@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { EXERCISES, MOVE_ORDER } from '~/data/exercises'
 import { POSES } from '~/data/poses'
-import { CATEGORIES, type Category } from '~/data/types'
+import { CATEGORIES, EQUIPMENT, type Category, type Equipment } from '~/data/types'
 
 /** Every drawing with all its key frames and captions, for checking with the coach. Not in the tab bar. */
 definePageMeta({ layout: 'bare' })
@@ -10,7 +10,9 @@ const text = useText()
 const route = useRoute()
 
 const only = computed(() => (CATEGORIES as readonly string[]).includes(String(route.query.cat)) ? route.query.cat as Category : null)
-const list = computed(() => MOVE_ORDER.map(id => EXERCISES[id]).filter(e => !only.value || e.category === only.value))
+const eq = computed(() => (EQUIPMENT as readonly string[]).includes(String(route.query.eq)) ? route.query.eq as Equipment : null)
+const list = computed(() => MOVE_ORDER.map(id => EXERCISES[id])
+  .filter(e => (!only.value || e.category === only.value) && (!eq.value || e.equipment.includes(eq.value))))
 </script>
 
 <template>
