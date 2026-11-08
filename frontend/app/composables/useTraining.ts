@@ -12,7 +12,11 @@ export function useTraining() {
   const step = computed(() => currentStep(store.activeSessions, level.value))
   const lightWeek = computed(() => isLightWeek(store.activeSessions[0]?.date, todayISO()))
   const injuries = computed<BodyArea[]>(() => store.active?.injuries ?? [])
+  /** Device-only settings (not synced). */
+  const growthSpurt = computed(() => !!store.device.growthSpurt)
+  const ageBand = computed(() => (store.active?.ageGroup === 'child' ? store.device.ageBand ?? null : null))
   const input = computed<WorkoutInput>(() => ({
+    growthSpurt: growthSpurt.value,
     level: level.value,
     step: step.value,
     ageGroup: store.active?.ageGroup ?? 'child',
@@ -26,5 +30,5 @@ export function useTraining() {
   const minutes = computed(() => estimateMinutes(workout.value))
   const doneToday = computed(() => store.activeSessions.some(s => s.date === todayISO()))
 
-  return { store, level, def, step, lightWeek, injuries, workout, skipped, minutes, doneToday }
+  return { store, level, def, step, lightWeek, injuries, growthSpurt, ageBand, workout, skipped, minutes, doneToday }
 }

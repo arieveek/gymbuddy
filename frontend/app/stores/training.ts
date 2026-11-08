@@ -1,10 +1,17 @@
 import { defineStore } from 'pinia'
 import type { AgeGroup, Athlete, Level, Locale, Session, TestResult } from '~/data/types'
+import type { AgeBand } from '~/data/kngu'
 import { todayISO } from '~/utils/date'
 import { levelFromTest } from '~/utils/progress'
 import { enqueue, mergeAthletes, mergeById, type OutboxOp } from '~/utils/sync'
 
-const byDate = <T extends { date: string, createdAt: string }>(a: T, b: T) =>
+export interface DeviceProfile {
+  ageBand?: AgeBand
+  growthSpurt?: boolean
+  knguDone?: string[]
+}
+
+const byDate =<T extends { date: string, createdAt: string }>(a: T, b: T) =>
   a.date.localeCompare(b.date) || a.createdAt.localeCompare(b.createdAt)
 
 /**
@@ -20,11 +27,28 @@ export const useTrainingStore = defineStore('training', () => {
   const lastSyncAt = ref<string | null>(null)
   /** Email of the account this data belongs to, so the next person logging in on a shared device never sees it. */
   const owner = ref<string | null>(null)
+  /**
+   * Per athlete, kept on this device only and never sent to the server: age band, growth-spurt mode and
+   * the KNGU goals ticked off. (The sync only uploads `athletes`, `sessions` and `tests`.)
+   */
+  const deviceOnly = ref<Record<string, DeviceProfile>>({})
 
   const active = computed(() => athletes.value.find(a => a.id === activeId.value) ?? athletes.value[0] ?? null)
   const activeSessions = computed(() => sessions.value.filter(s => s.athleteId === active.value?.id).sort(byDate))
   const activeTests = computed(() => tests.value.filter(t => t.athleteId === active.value?.id).sort(byDate))
   const latestTest = computed(() => activeTests.value.at(-1) ?? null)
+  const device = computed<DeviceProfile>(() => (active.value ? deviceOnly.value[active.value.id] ?? {} : {}))
+
+  function setDevice(patch: Partial<DeviceProfile>) {
+    const a = active.value
+    if (!a) return
+    deviceOnly.value = { ...deviceOnly.value, [a.id]: { ...deviceOnly.value[a.id], ...patch } }
+  }
+
+  function toggleGoal(goalId: string) {
+    const done = device.value.knguDone ?? []
+    setDevice({ knguDone: done.includes(goalId) ? done.filter(g => g !== goalId) : [...done, goalId] })
+  }
 
   const queue = (op: OutboxOp) => { outbox.value = enqueue(outbox.value, op) }
 
@@ -98,6 +122,7 @@ export const useTrainingStore = defineStore('training', () => {
     outbox.value = []
     lastSyncAt.value = null
     owner.value = null
+    deviceOnly.value = {}
   }
 
   /** Called after login: keeps the data if it is this account's, otherwise starts clean. */
@@ -116,10 +141,11 @@ export const useTrainingStore = defineStore('training', () => {
   }
 
   return {
-    athletes, activeId, sessions, tests, outbox, lastSyncAt, owner,
-    active, activeSessions, activeTests, latestTest,
-    createAthlete, updateAthlete, setActive, addSession, addTest, queueAll, dequeue, applyRemote, reset, claimFor
+    athletes, activeId, sessions, tests, outbox, lastSyncAt, owner, deviceOnly,
+    active, activeSessions, activeTests, latestTest, device,
+    createAthlete, updateAthlete, setActive, addSession, addTest, queueAll, dequeue, applyRemote, reset, claimFor,
+    setDevice, toggleGoal
   }
 }, {
-  persist: { pick: ['athletes', 'activeId', 'sessions', 'tests', 'outbox', 'lastSyncAt', 'owner'] }
+  persist: { pick: ['athletes', 'activeId', 'sessions', 'tests', 'outbox', 'lastSyncAt', 'owner', 'deviceOnly'] }
 })

@@ -3,12 +3,15 @@ import { EXERCISES, MOVE_ORDER } from '~/data/exercises'
 import { SOURCES } from '~/data/sources'
 import { CATEGORIES, EQUIPMENT, type BodyArea, type Category, type Difficulty, type Equipment, type Exercise, type ExerciseId } from '~/data/types'
 import { blockedBy } from '~/data/loads'
+import { GROWTH_CAUTION } from '~/data/kngu'
 
 const { t } = useI18n()
 const text = useText()
 const store = useTrainingStore()
 
-const { workout, injuries } = useTraining()
+const { workout, injuries, growthSpurt } = useTraining()
+const growthCaution = (id: ExerciseId) => growthSpurt.value && (GROWTH_CAUTION.includes(id) || EXERCISES[id].category === 'flexibility')
+const route = useRoute()
 const hideBlocked = ref(false)
 const blocked = (id: ExerciseId) => blockedBy(id, injuries.value)
 const areaNames = (areas: BodyArea[]) => areas.map(a => t(`injury.area.${a}`).toLowerCase()).join(', ')
@@ -49,6 +52,12 @@ const openId = ref<ExerciseId | null>(null)
 const open = computed({ get: () => openId.value !== null, set: (v) => { if (!v) openId.value = null } })
 const caption = ref('')
 const ex = computed<Exercise | null>(() => (openId.value ? EXERCISES[openId.value] : null))
+
+// Deep link from the KNGU goals: /moves?open=tuck_planche
+onMounted(() => {
+  const id = route.query.open
+  if (typeof id === 'string' && id in EXERCISES) openId.value = id as ExerciseId
+})
 </script>
 
 <template>
@@ -100,6 +109,7 @@ const ex = computed<Exercise | null>(() => (openId.value ? EXERCISES[openId.valu
             <span v-if="inPlan.has(e.id)" class="chip good">{{ t('library.inPlan') }}</span>
             <span v-if="e.coachFirst" class="chip">{{ t('library.coachFirst') }}</span>
             <span v-if="blocked(e.id).length" class="chip warn">{{ t('injury.notNow', { areas: areaNames(blocked(e.id)) }) }}</span>
+            <span v-if="growthCaution(e.id)" class="chip warn">{{ t('growth.badge') }}</span>
           </template>
           <button class="btn ghost small" :aria-label="t('moves.howTo', { name: text(e.name) })" @click="openId = e.id">
             {{ t('moves.how') }}
@@ -113,6 +123,9 @@ const ex = computed<Exercise | null>(() => (openId.value ? EXERCISES[openId.valu
         <div v-if="openId && ex" class="stack">
           <p v-if="blocked(openId).length" class="safety" role="alert">
             <b>{{ t('injury.notNow', { areas: areaNames(blocked(openId)) }) }}</b> {{ t('injury.detail') }}
+          </p>
+          <p v-if="growthCaution(openId)" class="safety" role="note">
+            <b>{{ t('growth.badge') }}:</b> {{ EXERCISES[openId].category === 'flexibility' ? t('growth.flexDetail') : t('growth.jumpDetail') }}
           </p>
           <ExerciseAnimation :id="openId" @caption="caption = $event" />
           <p class="target" aria-live="off">{{ caption }}</p>

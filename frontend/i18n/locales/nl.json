@@ -91,6 +91,33 @@
     "weekProgress": "Dat is {n} van {target} deze week. Neem een rustdag voor de volgende.",
     "back": "Terug naar Vandaag"
   },
+  "device": {
+    "title": "Alleen op deze telefoon",
+    "badge": "Niet online",
+    "intro": "Deze instellingen blijven op dit apparaat. Ze worden niet naar de server gestuurd en zijn niet zichtbaar op andere telefoons of tablets.",
+    "ageBand": "Leeftijdscategorie",
+    "years": "{band} jr",
+    "ageBandHint": "Toont de KNGU-doelen voor deze leeftijd op het tabblad Voortgang."
+  },
+  "growth": {
+    "toggle": "Groeit nu snel (groeispurt)",
+    "hint": "Eén set minder bij alles, een waarschuwing bij sprongen en rekoefeningen, en een herinnering over kniepijn.",
+    "todayTitle": "Groeispurt: rustig aan",
+    "todayBody": "Vandaag één set minder. Botten groeien sneller dan spieren, dus de lenigheid neemt af en de knieën worden zwaarder belast. Pijn net onder de knieschijf (komt veel voor bij jongens van 10–15)? Minder springen, en naar de dokter als het niet overgaat.",
+    "badge": "Groeispurt: rustig aan",
+    "jumpDetail": "Minder en lagere sprongen zolang hij snel groeit; stop als een knie of hiel pijn doet.",
+    "flexDetail": "De lenigheid neemt vaak af tijdens een groeispurt. Houd de rek rustig vast, nooit forceren."
+  },
+  "kngu": {
+    "title": "KNGU-doelen",
+    "intro": "De KNGU-doelen voor fysieke voorbereiding voor {band}-jarigen. Dit zijn doelen voor de hele leeftijdscategorie, niet voor elke week. Vink ze af als hij ze kan.",
+    "home": "Thuis",
+    "club": "Bij de club",
+    "practise": "Oefenen: {name}",
+    "source": "Bron: KNGU Technische Leerlijn Turnen Heren 2021. Vinkjes worden alleen op deze telefoon bewaard.",
+    "setBand": "Kies zijn leeftijdscategorie op het scherm Profiel om de KNGU-doelen voor zijn leeftijd te zien.",
+    "toProfile": "Naar Profiel"
+  },
   "injury": {
     "title": "Blessures",
     "intro": "Tik op een plek die pijn doet of geblesseerd is. Oefeningen die die plek belasten worden overgeslagen in de training van vandaag en gemarkeerd in de bibliotheek.",

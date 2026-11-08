@@ -39,6 +39,8 @@ export interface WorkoutInput {
   lightWeek: boolean
   /** Current injuries; exercises loading these areas are left out. */
   injuries?: BodyArea[]
+  /** Growth spurt: like a lighter week, one set less on everything, for as long as it lasts. */
+  growthSpurt?: boolean
 }
 
 const resolve = (dose: number | ((c: PlanContext) => number), c: PlanContext) => typeof dose === 'function' ? dose(c) : dose
@@ -66,7 +68,7 @@ export function buildWorkout(input: WorkoutInput): WorkoutStep[] {
     if (blockedBy(item.ex, input.injuries).length) continue
     let sets = resolve(item.sets, ctx) + Math.floor(extra * (item.setInc ?? 0))
     const value = Math.floor(resolve(item.value, ctx) + extra * (item.inc ?? 0))
-    if (input.lightWeek) sets = Math.max(1, sets - 1)
+    if (input.lightWeek || input.growthSpurt) sets = Math.max(1, sets - 1)
     steps.push({ ex: item.ex, sets, value })
   }
   return steps

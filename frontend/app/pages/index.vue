@@ -5,7 +5,7 @@ import { retestNudge } from '~/utils/progress'
 
 const { t } = useI18n()
 const text = useText()
-const { store, def, workout, minutes, doneToday, lightWeek, level, skipped, injuries } = useTraining()
+const { store, def, workout, minutes, doneToday, lightWeek, level, skipped, injuries, growthSpurt } = useTraining()
 const injuryAreas = computed(() => injuries.value.map(a => t(`injury.area.${a}`).toLowerCase()).join(', '))
 const testOpen = ref(false)
 
@@ -41,6 +41,11 @@ const doseLabel = (ex: (typeof items.value)[number]) => EXERCISES[ex.ex].type ==
       </ul>
       <NuxtLink to="/workout" class="btn big">{{ doneToday ? t('today.again') : t('today.start') }}</NuxtLink>
       <p class="note">{{ t('today.note') }}</p>
+    </div>
+
+    <div v-if="growthSpurt" class="card stack" role="note">
+      <h2>{{ t('growth.todayTitle') }}</h2>
+      <p class="sub">{{ t('growth.todayBody') }}</p>
     </div>
 
     <div v-if="skipped.length" class="card stack" role="note">

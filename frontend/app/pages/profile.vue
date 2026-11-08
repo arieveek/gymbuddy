@@ -39,6 +39,8 @@ function addAthlete() {
 
     <InjuryCard />
 
+    <DeviceCard />
+
     <div class="card stack">
       <h2>{{ t('profile.athletes') }}</h2>
       <div class="segmented" style="grid-auto-flow: row">

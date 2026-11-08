@@ -86,6 +86,12 @@ describe('buildWorkout', () => {
     expect(buildWorkout({ ...base, level: 2, step: 1, injuries: ['knee'] }).map(s => s.ex)).toEqual(healthy)
   })
 
+  it('drops a set on everything during a growth spurt', () => {
+    const normal = buildWorkout({ ...base, level: 1, step: 2 })
+    const growing = buildWorkout({ ...base, level: 1, step: 2, growthSpurt: true })
+    normal.forEach((s, i) => expect(growing[i]!.sets).toBe(Math.max(1, s.sets - 1)))
+  })
+
   it('offers weighted pull-ups only to adults with 12+ reps', () => {
     const has = (ageGroup: 'child' | 'adult', testPullups: number) =>
       buildWorkout({ ...base, ageGroup, level: 5, step: 1, testPullups }).some(s => s.ex === 'weighted')

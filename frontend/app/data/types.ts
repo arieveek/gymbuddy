@@ -33,7 +33,7 @@ export const EXERCISE_IDS = [
   // second research round
   'stick_sequence', 'overhead_liftoff', 'serratus_punch', 'towel_scrunch', 'clamshell',
   'support_shrugs', 'side_lean', 'rear_support', 'seal_walk', 'tuck_planche',
-  'walkout', 'bear_crawl', 'stalder_hang',
+  'walkout', 'bear_crawl', 'stalder_hang', 'shoulder_stand_bars',
   'lat_stretch', 'wall_leg_lift', 'straddle_lift', 'ankle_stretch',
   'quad_lean', 'pogo_hops', 'line_hops', 'single_leg_balance'
 ] as const

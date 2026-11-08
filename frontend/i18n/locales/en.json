@@ -91,6 +91,33 @@
     "weekProgress": "That's {n} of {target} this week. Rest a day before the next one.",
     "back": "Back to Today"
   },
+  "device": {
+    "title": "Only on this phone",
+    "badge": "Not online",
+    "intro": "These settings stay on this device. They are not sent to the server and do not appear on other phones or tablets.",
+    "ageBand": "Age band",
+    "years": "{band} yrs",
+    "ageBandHint": "Shows the KNGU goals for this age on the Progress tab."
+  },
+  "growth": {
+    "toggle": "Growing fast right now (growth spurt)",
+    "hint": "One set less on everything, a warning on jumps and stretches, and a reminder about knee pain.",
+    "todayTitle": "Growth spurt: go easy",
+    "todayBody": "One set less today. Bones are growing faster than muscles, so flexibility drops and knees take more load. Pain just below the kneecap (common in boys of 10–15)? Fewer jumps, and see a doctor if it doesn't go away.",
+    "badge": "Growth spurt: go easy",
+    "jumpDetail": "Fewer and lower jumps while he is growing fast; stop if a knee or heel hurts.",
+    "flexDetail": "Flexibility often drops during a growth spurt. Hold the stretch gently, never force it."
+  },
+  "kngu": {
+    "title": "KNGU goals",
+    "intro": "The KNGU physical-preparation goals for {band} year olds. These are goals for the whole age band, not for every week. Tick them off when he can do them.",
+    "home": "At home",
+    "club": "At the club",
+    "practise": "Practise: {name}",
+    "source": "Source: KNGU Technische Leerlijn Turnen Heren 2021. Ticks are saved on this phone only.",
+    "setBand": "Choose his age band on the Profile screen to see the KNGU goals for his age.",
+    "toProfile": "To Profile"
+  },
   "injury": {
     "title": "Injuries",
     "intro": "Tap a sore or injured area. Exercises that load it are left out of today's workout and marked in the library.",

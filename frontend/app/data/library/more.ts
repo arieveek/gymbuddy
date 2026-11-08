@@ -152,11 +152,23 @@ export const MORE: Exercise[] = [
     id: 'stalder_hang', type: 'hold', category: 'core', equipment: ['wallbars'], difficulty: 2,
     name: t('Straddle hang on the wall bars', 'Stalderhang aan het wandrek'),
     cues: [
-      t('Face the wall bars, hands on a high rung', 'Gezicht naar het wandrek, handen op een hoge sport'),
-      t('Feet wide on a rung below, legs straight, bottom back', 'Voeten wijd op een sport lager, benen gestrekt, billen naar achteren'),
-      t('Hold 5 seconds; arms straight', 'Houd 5 tellen vast; armen gestrekt')
+      t('Face the wall bars, hands shoulder-width on a rung, arms by the ears', 'Gezicht naar het wandrek, handen op schouderbreedte op een sport, armen tegen de oren'),
+      t('Feet 2 rungs below the hands, a little wider than the shoulders', 'Voeten 2 sporten onder de handen, iets breder dan de schouders'),
+      t('Hang with arms and legs straight, head neutral: 5 seconds', 'Hang met gestrekte armen en benen, hoofd neutraal: 5 tellen')
     ],
     why: t('A KNGU test position: pike flexibility with strength, for stalders on high bar later.', 'Een KNGU-testhouding: lenigheid in de pikhouding met kracht, later voor stalders aan rek.'),
+    sources: ['kngu-leerlijn']
+  },
+  {
+    id: 'shoulder_stand_bars', type: 'reps', category: 'core', equipment: ['wallbars', 'floor'], difficulty: 2,
+    name: t('Shoulder stand at the wall bars', 'Schouderstand aan wandrek'),
+    cues: [
+      t('Lie on your back, head toward the wall bars, hold a low rung with bent arms', 'Lig op je rug met je hoofd naar het wandrek, houd een lage sport vast met gebogen armen'),
+      t('Go up into a candlestick: body straight, pelvis tucked', 'Kom omhoog in kaarshouding: lichaam gestrekt, bekken gekanteld'),
+      t('Lower the straight body to 30° above the floor, hold 3 seconds, come back up from the hips', 'Zak met een gestrekt lichaam tot 30° boven de vloer, houd 3 tellen vast, kom terug omhoog vanuit je heupen')
+    ],
+    why: t('A KNGU test for 9–10 year olds: body tension and core strength through the whole body.', 'Een KNGU-test voor 9- en 10-jarigen: lichaamsspanning en rompkracht door je hele lichaam.'),
+    safety: t('Weight on the shoulders, never on the neck. A mat under you.', 'Gewicht op je schouders, nooit op je nek. Een mat onder je.'),
     sources: ['kngu-leerlijn']
   },
   // Flexibility

@@ -100,10 +100,18 @@ export const MORE_POSES: Partial<Record<ExerciseId, PoseAnimation>> = {
     ]
   },
   stalder_hang: {
-    root: 'hand', at: [96, rungY(8, G)], ground: G, scene: { wallbars: 96 }, ik: { foot: [93, rungY(3, G)], bend: 1 },
+    root: 'hand', at: [96, rungY(7, G)], ground: G, scene: { wallbars: 96 }, ik: { foot: [93, rungY(4, G)], bend: 1 },
     frames: [
-      { a: { ua: -60, fa: -60, to: 95, th: 0, sh: 0, hd: -80 }, move: 900, hold: 300, cap: t('Hands high, feet on a lower rung', 'Handen hoog, voeten op een lagere sport') },
-      { a: { ua: -32, fa: -32, to: 112, th: 0, sh: 0, hd: -40 }, move: 1200, hold: 2500, ring: true, cap: t('Feet wide, legs straight, bottom back', 'Voeten wijd, benen gestrekt, billen naar achteren') }
+      { a: { ua: -70, fa: -70, to: 100, th: 0, sh: 0, hd: -80 }, move: 900, hold: 300, cap: t('Hands on a rung, feet 2 rungs lower', 'Handen op een sport, voeten 2 sporten lager') },
+      { a: { ua: -20, fa: -20, to: 116, th: 0, sh: 0, hd: -30 }, move: 1200, hold: 2500, ring: true, cap: t('Hang back, arms and legs straight: 5 s', 'Hang naar achteren, armen en benen gestrekt: 5 tellen') }
+    ]
+  },
+  shoulder_stand_bars: {
+    root: 'hand', at: [31, rungY(1, G)], ground: G, scene: { wallbars: 30 },
+    frames: [
+      { a: { ua: -95, fa: 150, to: -85, th: -88, sh: -88, hd: 180 }, move: 1000, hold: 400, cap: t('Candlestick, holding a low rung', 'Kaarshouding, een lage sport vast') },
+      { a: { ua: -95, fa: 150, to: -30, th: -30, sh: -30, hd: 180 }, move: 1600, hold: 1500, ring: true, cap: t('Lower the straight body to 30°: hold 3', 'Zak met een gestrekt lichaam tot 30°: 3 tellen') },
+      { a: { ua: -95, fa: 150, to: -85, th: -88, sh: -88, hd: 180 }, move: 1400, hold: 300, cap: t('Back up, starting from the hips', 'Terug omhoog, vanuit je heupen') }
     ]
   },
   lat_stretch: {

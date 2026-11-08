@@ -79,6 +79,7 @@ export const LOADS: Record<ExerciseId, BodyArea[]> = {
   walkout: ['wrist', 'shoulder', 'hip'],
   bear_crawl: ['wrist', 'shoulder', 'knee'],
   stalder_hang: ['hands', 'shoulder', 'hip'],
+  shoulder_stand_bars: ['shoulder', 'back'],
 
   // Handstand and balance
   releve: ['ankle'],

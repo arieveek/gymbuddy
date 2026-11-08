@@ -64,6 +64,9 @@ const history = computed(() => {
       </div>
     </div>
 
+    <!-- KNGU goals for his age band (device-only) -->
+    <KnguGoals v-if="store.active?.ageGroup === 'child'" />
+
     <!-- 3. Milestones -->
     <div class="card stack">
       <h2>{{ t('progress.milestonesTitle') }}</h2>

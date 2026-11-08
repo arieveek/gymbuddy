@@ -112,6 +112,16 @@ From the KNGU boys' curriculum [kngu-leerlijn], used in the app:
 | wandrek, sport | wall bars, rung |
 | rek, ringen, voltige, sprong, vloer | high bar, rings, pommel horse, vault, floor |
 
+## KNGU goals by age band
+
+The app shows the 8 KNGU physical-preparation goals for the chosen age band (7–8, 9–10, 11–12, 13–14) on the
+Progress tab, marked "at home" or "at the club" and linked to library exercises. For 9–10: physical series with a stick,
+straddle handstand belly to the wall (5 s, hands within 25 cm), spitz gespreid (3 s L-sit, 3 s high straddle V, 3 s
+L-sit), courbette on foam rolls (club), two splits (3 s, one arm up), straddle L press to handstand and back (club),
+tuck planche with knees behind the arms (3 s) and a shoulder stand at the wall bars lowered to 30° (3 s). Source:
+[kngu-leerlijn], pages 7–18 and 20, 28, 37, 46. The age band, growth-spurt mode and ticked goals are kept on the
+phone only.
+
 **Correction:** the first version of the app called the hollow body "holle houding" and the arch "bolle houding".
 In Dutch gymnastics it is the other way round, so this has been fixed. "Weegschaal" (T-scale) and a Dutch word for
 relevé were not found in any source and stay unverified.
